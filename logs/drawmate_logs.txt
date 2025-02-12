@@ -1,0 +1,42 @@
+
+
+ERROR ----- Wed 12 Feb 2025 08_34_05
+======================================
+
+ERROR Message: 'Template file not found: /home/landotech/Desktop/GitHub/drawmate/data/templates/builder-template-master.json
+'
+drawmate.py | Line Number: 460
+
+ERROR ----- Wed 12 Feb 2025 08_36_46
+======================================
+
+ERROR Message: 'Template file not found: /home/landotech/Desktop/GitHub/drawmate/data/templates/builder-template-master.json
+'
+drawmate.py | Line Number: 460
+
+ERROR ----- Wed 12 Feb 2025 08_37_01
+======================================
+
+ERROR Message: 'Template file not found: /home/landotech/Desktop/GitHub/drawmate/data/templates/builder-template-master.json
+'
+drawmate.py | Line Number: 460
+
+ERROR ----- Wed 12 Feb 2025 08_40_07
+======================================
+
+ERROR Message: 'Template file not found: /home/landotech/Desktop/GitHub/drawmate/data/templates/builder-template-master.json
+'
+drawmate.py | Line Number: 460
+
+ERROR ----- Wed 12 Feb 2025 08_42_58
+======================================
+
+ERROR Message: 'Template file not found: /home/landotech/Desktop/GitHub/drawmate/data/templates/builder-template-master.json
+'
+drawmate.py | Line Number: 460
+
+SUCCESS ----- Wed 12 Feb 2025 08_43_48
+======================================
+
+SUCCESS Message: 'No key errors were detected during template creation.'
+drawmate.py | Line Number: 495
