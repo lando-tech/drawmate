@@ -362,14 +362,12 @@ class Drawmate:
             appliance_array (list[Dtp]): _description_
             text_box_array (list[TextBox]): _description_
         """
-        counter = 0
         for dtp, text in zip(appliance_array, text_box_array):
             self.conn_mgr = Connections(dtp, text, first_level=True)
             # Add function to receive labels for connections
             # for i in connection_labels:
             # conn_mgr.add_connection(i, arrow)
-            counter += 1
-            label = f"HDMI 000{counter}"
+            label = ""
             # self.conn_mgr.add_connection(label, "arrow", label_array)
             new_connection = self.conn_mgr.create_connection(label, "arrow")
             self.first_level_conn_array.append(new_connection)
@@ -392,7 +390,6 @@ class Drawmate:
             sublevel_array (list): _description_
             third_level (bool): _description_
         """
-        counter = 0
         # is_closest = False
         for item in sublevel_array:
             # Start value for the closest first level appliance
@@ -427,8 +424,7 @@ class Drawmate:
             ):
                 self.conn_mgr = Connections(closest_dtp, item, first_level=False)
                 # add labels here
-                counter += 1
-                label = f"HDMI 000{counter}"
+                label = ""
                 new_connection = self.conn_mgr.create_connection(label, "arrow")
                 if third_level:
                     self.third_level_conn_array.append(new_connection)

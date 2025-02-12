@@ -2,6 +2,12 @@
 
 Automate wiremaps and diagrams using draw.io XML format.
 
+## Production
+
+The underlying engine is fully functional, but the cli utility is still under development.
+There is also a flask web app I have tested and plan to add in the near future.
+Contributors are welcome!
+
 ## Basic Overview
 
  1. Create diagram templates from scratch by using an easy and simple API.

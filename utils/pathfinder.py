@@ -16,22 +16,8 @@ class PathFinder:
     def __init__(self):
         # Path to the data directories to export to other modules
         self.XML_EXPORT_DIR = f"{self.get_project_dir()}/data/xml_files/xml_exports/"
-        self.XML_TEST = f"{self.get_project_dir()}/data/xml_files/test_xml/"
         self.XML_TEMPLATES = f"{self.get_project_dir()}/data/xml_files/xml_templates/"
         self.TEMPLATE_DIR = f"{self.get_project_dir()}/data/templates/"
-        self.TEMPLATE_HASH_DIR = f"{self.get_project_dir()}/data/template_hash/"
-        self.JSON_DIR = f"{self.get_project_dir()}/data/json_files/"
-        self.JSON_TEST = f"{self.get_project_dir()}/data/json_files/test_json/"
-        self.CONNECTIONS_DIR = f"{self.get_project_dir()}/data/connections/"
-        self.CSV_DIR = f"{self.get_project_dir()}/data/csv_files/"
-        self.TXT_DIR = f"{self.get_project_dir()}/data/txt_files/"
-        self.HTML_DIR = f"{self.get_project_dir()}/data/html_files/"
-        self.PDF_DIR = f"{self.get_project_dir()}/data/pdf_files/"
-        self.PNG_DIR = f"{self.get_project_dir()}/data/png_files/"
-        self.SVG_DIR = f"{self.get_project_dir()}/data/svg_files/"
-        self.SCRIPTS_DIR = f"{self.get_project_dir()}/scripts/drawio_cli.sh"
-        self.CONFIG_TOML = f"{self.get_project_dir()}/config/config.toml"
-        self.GRAPH_CONFIG_TOML = f"{self.get_project_dir()}/config/graph_config.toml"
         self.log_dir = f"{self.get_project_dir()}/logs/"
         self.FILETYPES = [
             (("xml files", "*.xml"), ("all files", "*.*")),
@@ -67,14 +53,6 @@ class PathFinder:
     def get_xml_templates(self):
         """Return the contents of the xml uploads dir, sorted by timestamp"""
         with os.scandir(self.XML_TEMPLATES) as entries:
-            file_paths = [entry.path for entry in entries if entry.is_file()]
-
-        return sorted(file_paths, key=lambda x: os.path.getmtime(x))
-
-    def export_json_templates(self):
-        """Return the contents of the json directory sorted by timestamp"""
-
-        with os.scandir(self.JSON_DIR) as entries:
             file_paths = [entry.path for entry in entries if entry.is_file()]
 
         return sorted(file_paths, key=lambda x: os.path.getmtime(x))
