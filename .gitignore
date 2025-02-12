@@ -169,3 +169,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+data/xml_files/xml_templates/*
+logs/drawmate_logs.txt
+logs/doc_builder_logs.txt
