@@ -133,12 +133,13 @@ class Matrix(Rect):
     def __init__(
         self,
         connections_count: int,
+        matrix_label: str,
         width: int,
         height: int,
         x: int,
         y: int,
     ):
-        super().__init__(x=x, y=y, width=width, height=height, label="", _type="matrix")
+        super().__init__(x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix")
         # Number of connections on Matrix
         self.num_connections = connections_count
         # Array to store each text box on the matrix
@@ -152,13 +153,13 @@ class Matrix(Rect):
         # Array to store the third level appliances attached to the matrix/second level appliances
         self.third_level_dtp_rects = []
 
-    def add_matrix_label(self, matrix_x, matrix_y):
+    def add_matrix_label(self, matrix_x, matrix_y, matrix_label: str):
         """_summary_
 
         Returns:
             _type_: _description_
         """
-        _label = "Matrix"
+        _label = matrix_label 
         _width = 200
         _height = 80
         label_x = matrix_x

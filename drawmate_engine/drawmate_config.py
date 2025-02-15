@@ -21,6 +21,7 @@ class GraphDimensions:
 
 @dataclass
 class MatrixDimensions:
+    labels: str
     width: int
     height: int
     x: int
@@ -90,6 +91,7 @@ class DrawmateConfig:
             return None
 
         return MatrixDimensions(
+            dimensions["labels"],
             dimensions["width"],
             dimensions["height"],
             dimensions["x"],

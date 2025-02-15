@@ -140,7 +140,7 @@ class Drawmate:
 
         # Create label for matrix
         matrix_label = self.matrix_rect.add_matrix_label(
-            self.matrix_rect.attributes["x"], self.matrix_rect.attributes["y"]
+            self.matrix_rect.attributes["x"], self.matrix_rect.attributes["y"], self.matrix_rect.attributes["label"]
         )
         self.create_mxobject(matrix_label.attributes, is_arrow=False)
 
@@ -503,9 +503,13 @@ def draw_matrix_one(matrix_dimensions: MatrixDimensions):
     matrix_x = matrix_dimensions.x
     matrix_y = matrix_dimensions.y
 
+    # Matrix Label
+    matrix_label = matrix_dimensions.labels
+
     # Create matrix 1
     matrix_rect_1 = Matrix(
         connections_count=num_connections,
+        matrix_label=matrix_label,
         width=matrix_width,
         height=matrix_height,
         x=matrix_x,
