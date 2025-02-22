@@ -2,7 +2,7 @@
 Summary:
 """
 
-import json
+# import json
 from drawmate_engine.doc_builder import generate_id
 from utils.pathfinder import PathFinder
 
@@ -26,8 +26,6 @@ matrix on the graph.
 """
 INPUT_OUTPUT_SPACING_MATRIX = 100
 INPUT_OUTPUT_SPACING_APPLIANCE = 100
-
-TEMPLATE_PATH = f"{pf.TEMPLATE_DIR}builder-template.json"
 
 
 class Rect:
@@ -55,7 +53,7 @@ class Rect:
             width (int): Width of the rect.
             height (int): Height of the rect.
             label (str): The label of the rect.
-            type (str): The type descriptor: See README for type naming convention.
+            _type (str): The type descriptor: See README for type naming convention.
             style (str, optional): xml style type. Defaults to DEFAULT_STYLE.
         """
         self.attributes = {
@@ -95,7 +93,7 @@ class ArrowRect:
             source_x (int): The source X coord of the arrow.
             source_y (int): The source Y coord of the arrow.
             label (str): A label for the arrow. If no label is needed, pass an empty string.
-            type (str): The type descriptor: See README for type naming convention.
+            _type (str): The type descriptor: See README for type naming convention.
             style (str, optional): The xml style type. Defaults to DEFAULT_STYLE.
         """
         self.attributes = {
@@ -118,12 +116,7 @@ class Matrix(Rect):
     of the matrix may be created, and each matrix will manage its own connections.
 
     Args:
-        num_inputs (int): The number of inputs on the matrix.
-        num_outputs (int): The number of outputs on the matrix.
-        num_dtp_left (int): The number of appliances on the left side of the matrix.
-        num_dtp_right (int): The number of appliances on the right side of the matrix.
-        num_second_level_dtp_left (int): The number of second level appliances to the left of the matrix.
-        num_second_level_dtp_right (int): The number of second level appliances to the right of the matrix.
+        connections_count (int): Number of connections on the matrix.
         width (int): The width of the matrix.
         height (int): The height of the matrix.
         x (int): The X coord of the top left corner of the matrix.
@@ -139,7 +132,9 @@ class Matrix(Rect):
         x: int,
         y: int,
     ):
-        super().__init__(x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix")
+        super().__init__(
+            x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix"
+        )
         # Number of connections on Matrix
         self.num_connections = connections_count
         # Array to store each text box on the matrix
@@ -159,7 +154,7 @@ class Matrix(Rect):
         Returns:
             _type_: _description_
         """
-        _label = matrix_label 
+        _label = matrix_label
         _width = 200
         _height = 80
         label_x = matrix_x
@@ -184,7 +179,7 @@ class Matrix(Rect):
 
         Args:
             label (str): The label for the text box, which will be shown on the graph object.
-            type (_type_): See README for type descriptor naming conventions.
+            _type (_type_): See README for type descriptor naming conventions.
             is_output (bool): Determines wether the text is an output.
                               If true, the text box will be placed on the right side of the object.
         """
@@ -284,7 +279,6 @@ class Matrix(Rect):
         Args:
             dtp_x (int): x coord of current appliance.
             dtp_y (int): y coord of current appliance.
-            is_third_level (bool): is the current level the third level of appliances.
             in_label: label for input of the appliance - DEFAULT = IN.
             out_label: label for output of the appliance - DEFAULT = OUT.
         """
@@ -576,7 +570,7 @@ class TextBox(Rect):
         height (int): Height of the rect.
         label (str): Label for the textbox.
         style (str): The style of the textbox.
-        type (str): The type descriptor: See README for type naming convention.
+        _type (str): The type descriptor: See README for type naming convention.
     """
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["text-box"]
@@ -610,7 +604,7 @@ class Arrow(ArrowRect):
         source_x (int): Source X coord.
         source_y (int): Source Y coord
         label (str): Label for the arrow/connection, if none pass an empty string.
-        type (str): The type descriptor: See README for type naming convention.
+        _type (str): The type descriptor: See README for type naming convention.
         style (str, optional): xml style for arrows/connections. Defaults to DEFAULT_STYLE.
     """
 

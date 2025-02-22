@@ -26,8 +26,8 @@ def get_timestamp():
     return formatted_timestamp
 
 
-BUILDER_TEMPLATE_PATH = f"{pf.XML_EXPORT_DIR}builder-template.drawio"
-TEMPLATE_STORAGE_PATH = f"{pf.XML_TEMPLATES}builder_template__{get_timestamp()}.drawio"
+BUILDER_TEMPLATE_PATH = f"{pf.xml_export_dir}builder-template.drawio"
+TEMPLATE_STORAGE_PATH = f"{pf.xml_templates}builder_template__{get_timestamp()}.drawio"
 
 MX_OBJECT_ATTRIBUTES = {
     "label": "",
@@ -202,17 +202,17 @@ class DocBuilder:
         self.root.appendChild(cell_one)
         self.root.appendChild(cell_two)
 
-    def create_xml(self):
+    def create_xml(self, output_file_path: str):
         """
         Summary:
         Writes the xml template to disk, omitting the xml declaration.
         """
         xml_data = self.new_xml.childNodes[0].toprettyxml(indent="  ")
         try:
-            with open(BUILDER_TEMPLATE_PATH, "w", encoding="utf-8") as file:
+            with open(output_file_path, "w", encoding="utf-8") as file:
                 file.write(xml_data)
                 if file:
-                    log_data = f"Export-Template file saved: {pf.XML_EXPORT_DIR}"
+                    log_data = f"Export-Template file saved: {output_file_path}"
                     log_mgr.add_log(
                         object_log="doc_builder",
                         message=log_data,
@@ -371,14 +371,14 @@ class MxObject(DocBuilder):
             self.attributes["vertex"] = "1"
             self.attributes["id"] = str(generate_id())
 
-        def set_mxcell_values_point(self, style: str):
+        def set_mxcell_values_point(self, style: str, value: str):
             """_summary_
 
             Args:
                 style (str): _description_
             """
             self.attributes["vertex"] = ""
-            self.attributes["value"] = ""
+            self.attributes["value"] = value
             self.attributes["style"] = style
             self.attributes["edge"] = "1"
             self.attributes["id"] = str(generate_id())

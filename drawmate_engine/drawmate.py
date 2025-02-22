@@ -16,7 +16,7 @@ global doc
 pf = PathFinder()
 log_mgr = LogManager()
 
-TEMPLATE_PATH = f"{pf.TEMPLATE_DIR}builder-template-master.json"
+TEMPLATE_PATH = f"{pf.template_dir}builder-template-master.json"
 draw_config = DrawmateConfig(template_path=TEMPLATE_PATH)
 
 
@@ -54,7 +54,7 @@ class Drawmate:
         if is_arrow:
             # Create mxCell object
             cell = mx_obj.MxCell()
-            cell.set_mxcell_values_point(data["style"])
+            cell.set_mxcell_values_point(data["style"], data["label"])
 
             # Append mxCell to mxObject
             cell_elem = mx_obj.create_xml_element("mxCell", cell.attributes)
@@ -140,7 +140,9 @@ class Drawmate:
 
         # Create label for matrix
         matrix_label = self.matrix_rect.add_matrix_label(
-            self.matrix_rect.attributes["x"], self.matrix_rect.attributes["y"], self.matrix_rect.attributes["label"]
+            self.matrix_rect.attributes["x"],
+            self.matrix_rect.attributes["y"],
+            self.matrix_rect.attributes["label"],
         )
         self.create_mxobject(matrix_label.attributes, is_arrow=False)
 
@@ -362,15 +364,28 @@ class Drawmate:
             appliance_array (list[Dtp]): _description_
             text_box_array (list[TextBox]): _description_
         """
+        counter_left = 0
+        counter_right = 0
         for dtp, text in zip(appliance_array, text_box_array):
+
             self.conn_mgr = Connections(dtp, text, first_level=True)
-            # Add function to receive labels for connections
-            # for i in connection_labels:
-            # conn_mgr.add_connection(i, arrow)
-            label = ""
-            # self.conn_mgr.add_connection(label, "arrow", label_array)
+
+            counter_left += 1
+
+            if counter_left == self.matrix_rect.num_connections + 1:
+                counter_left = 1
+            elif counter_left > self.matrix_rect.num_connections + 1:
+                counter_right += 1
+                counter_left = counter_right
+
+            label = self.get_connection_label(
+                appliance_x=dtp.attributes["x"],
+                level=1,
+                counter=counter_left,
+            )
             new_connection = self.conn_mgr.create_connection(label, "arrow")
             self.first_level_conn_array.append(new_connection)
+
         for index, item in enumerate(self.first_level_conn_array):
             if self.first_level_labels[index][0].strip() == "":
                 pass
@@ -390,7 +405,10 @@ class Drawmate:
             sublevel_array (list): _description_
             third_level (bool): _description_
         """
-        # is_closest = False
+
+        counter_left = 0
+        counter_right = 0
+
         for item in sublevel_array:
             # Start value for the closest first level appliance
             closest_dtp = None
@@ -403,6 +421,8 @@ class Drawmate:
             # The x and y cords for the current second level appliance
             item_x = int(item.attributes["x"])
             item_y = int(item.attributes["y"])
+
+            # Connections counter
 
             for dtp in first_level_array:
                 dtp_x = int(dtp.attributes["x"])
@@ -424,11 +444,37 @@ class Drawmate:
             ):
                 self.conn_mgr = Connections(closest_dtp, item, first_level=False)
                 # add labels here
-                label = ""
-                new_connection = self.conn_mgr.create_connection(label, "arrow")
                 if third_level:
+                    counter_left += 1
+
+                    if counter_left == self.matrix_rect.num_connections + 1:
+                        counter_left = 1
+                    elif counter_left > self.matrix_rect.num_connections + 1:
+                        counter_right += 1
+                        counter_left = counter_right
+
+                    label = self.get_connection_label(
+                        appliance_x=item_x,
+                        level=3,
+                        counter=counter_left,
+                    )
+                    new_connection = self.conn_mgr.create_connection(label, "arrow")
                     self.third_level_conn_array.append(new_connection)
                 else:
+                    counter_left += 1
+
+                    if counter_left == self.matrix_rect.num_connections + 1:
+                        counter_left = 1
+                    elif counter_left > self.matrix_rect.num_connections + 1:
+                        counter_right += 1
+                        counter_left = counter_right
+
+                    label = self.get_connection_label(
+                        appliance_x=item_x,
+                        level=2,
+                        counter=counter_left,
+                    )
+                    new_connection = self.conn_mgr.create_connection(label, "arrow")
                     self.second_level_conn_array.append(new_connection)
 
         if third_level:
@@ -449,8 +495,58 @@ class Drawmate:
                 if self.second_level_labels[index][0] != "":
                     self.create_mxobject(item.attributes, is_arrow=True)
 
+    def get_connection_label(
+        self, appliance_x, level: int, counter: int
+    ) -> str:
+        """
 
-def draw() -> bool:
+        Args:
+            appliance_x:
+            level:
+            counter:
+
+        Returns:
+
+        """
+
+        if level == 1:
+            if int(appliance_x) < int(self.matrix_rect.attributes["x"]):
+                if counter >= 10:
+                    return "00" + str(counter)
+                else:
+                    return "000" + str(counter)
+            else:
+                if counter >= 10:
+                    return "10" + str(counter)
+                else:
+                    return "100" + str(counter)
+
+        if level == 2:
+            if int(appliance_x) < int(self.matrix_rect.attributes["x"]):
+                if counter >= 10:
+                    return "01" + str(counter)
+                else:
+                    return "010" + str(counter)
+            else:
+                if counter >= 10:
+                    return "11" + str(counter)
+                else:
+                    return "110" + str(counter)
+
+        if level == 3:
+            if int(appliance_x) < int(self.matrix_rect.attributes["x"]):
+                if counter >= 10:
+                    return "02" + str(counter)
+                else:
+                    return "020" + str(counter)
+            else:
+                if counter >= 10:
+                    return "12" + str(counter)
+                else:
+                    return "120" + str(counter)
+
+
+def draw(output_file_path: str) -> bool:
     """_summary_"""
 
     try:
@@ -466,7 +562,7 @@ def draw() -> bool:
         doc = create_document(x=dx, y=dy, width=page_width, height=page_height)
         matrix_dims = draw_config.get_matrix_dimensions()
         draw_matrix_one(matrix_dims)
-        doc.create_xml()
+        doc.create_xml(output_file_path)
         log_data = "No key errors were detected during template creation."
         log_mgr.add_log(
             object_log="drawmate",
