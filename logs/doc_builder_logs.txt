@@ -71,3 +71,16 @@ SUCCESS ----- Thu 13 Feb 2025 01_32_10
 
 SUCCESS Message: 'Storage-Template file saved: /home/landotech/Desktop/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-02-13T013210.drawio'
 doc_builder.py | Line Number: 230
+
+ERROR ----- Tue 04 Mar 2025 03_57_54
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: 'C:/Users/OneDrive/Desktop/test.drawio''
+doc_builder.py | Line Number: 225
+
+SUCCESS ----- Tue 04 Mar 2025 03_57_54
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: C:\Users\aaron\GitHub\drawmate/data/xml_files/xml_templates/builder_template__2025-03-04T035754.drawio'
+doc_builder.py | Line Number: 230
