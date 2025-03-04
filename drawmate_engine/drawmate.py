@@ -732,16 +732,19 @@ def process_nodes(matrix_arr):
     y_spacing = 140
     left_x = int(matrix.attributes["x"]) - x_spacing
     right_x = int(matrix.attributes["x"]) + x_spacing
-    y = int(matrix.attributes["y"]) - y_spacing
+    start_y = int(matrix.attributes["y"]) - y_spacing
     left_nodes = matrix_arr[0]
     right_nodes = matrix_arr[1]
-    create_nodes(left_nodes, left_x, y, x_spacing, y_spacing, True)
-    create_nodes(right_nodes, right_x, y, x_spacing, y_spacing, False)
+    create_nodes(left_nodes, left_x, start_y, x_spacing, y_spacing, True)
+    create_nodes(right_nodes, right_x, start_y, x_spacing, y_spacing, False)
 
 
-def create_nodes(node_arr: list, x, y, x_spacing, y_spacing, left: bool):
+def create_nodes(node_arr: list, x, start_y, x_spacing, y_spacing, left: bool):
+
+    print(f"Starting y coord = {start_y}")
 
     for index, item in enumerate(node_arr):
+        y = start_y
         level_counter = 0
         for r_index, row in enumerate(item):
             label, l_input, r_output = row
@@ -749,18 +752,17 @@ def create_nodes(node_arr: list, x, y, x_spacing, y_spacing, left: bool):
             # print("Current label: " + label)
             # print("Next label: " + next_label)
 
-            if label == "" and next_label == "":
+            if label.strip() == "" and next_label.strip() == "":
                 y = y + (y_spacing * 2)
-                continue
-            elif label == "":
-                continue
-
-            if next_label == "":
+                if r_index == 0:
+                    x = x - x_spacing if left else x + x_spacing
+            elif label.strip() == "":
                 y = y + y_spacing
 
-            if index > 0 and level_counter == 0:
-                print("Level counter reset")
-                print(label)
+            if next_label.strip() == "":
+                y = y + y_spacing
+
+            if index > 0 and r_index == 0:
                 y = int(matrix.attributes["y"]) - y_spacing
                 if left:
                     x = x - x_spacing
@@ -778,7 +780,7 @@ def create_nodes(node_arr: list, x, y, x_spacing, y_spacing, left: bool):
 
 
 dc = DrawmateConfig(
-    "/home/landotech/GitHub/drawmate/data/templates/builder-template-master.json"
+    "C:/Users/aaron/GitHub/drawmate/data/templates/builder-template-master.json"
 )
 drawmate = Drawmate(draw_config=dc)
 drawmate.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4000)
@@ -786,5 +788,5 @@ matrix = drawmate.create_matrix()
 drawmate.create_mxobject(matrix.attributes, is_arrow=False)
 matrix_array = dc.build_matrix_array()
 process_nodes(matrix_array)
-drawmate.create_xml("/home/landotech/GitHub/drawmate/data/output.drawio")
+drawmate.create_xml("C:/Users/aaron/GitHub/drawmate/data/output.drawio")
 

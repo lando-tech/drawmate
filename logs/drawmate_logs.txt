@@ -77,3 +77,10 @@ ERROR ----- Tue 04 Mar 2025 07_40_42
 ERROR Message: 'Template file not found: /home/GitHub/drawmate/data/output.drawio
 '
 drawmate.py | Line Number: 460
+
+ERROR ----- Wed 05 Mar 2025 07_15_27
+======================================
+
+ERROR Message: 'Template file not found: /home/landotech/GitHub/drawmate/data/templates/builder-template-master.json
+'
+drawmate.py | Line Number: 460
