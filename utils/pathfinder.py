@@ -15,9 +15,9 @@ class PathFinder:
 
     def __init__(self):
         # Path to the data directories to export to other modules
-        self.XML_EXPORT_DIR = f"{self.get_project_dir()}/data/xml_files/xml_exports/"
-        self.XML_TEMPLATES = f"{self.get_project_dir()}/data/xml_files/xml_templates/"
-        self.TEMPLATE_DIR = f"{self.get_project_dir()}/data/templates/"
+        self.xml_export_dir = f"{self.get_project_dir()}/data/xml_files/xml_exports/"
+        self.xml_template_dir = f"{self.get_project_dir()}/data/xml_files/xml_templates/"
+        self.xml_templates = f"{self.get_project_dir()}/data/templates/"
         self.log_dir = f"{self.get_project_dir()}/logs/"
         self.FILETYPES = [
             (("xml files", "*.xml"), ("all files", "*.*")),
@@ -45,14 +45,14 @@ class PathFinder:
     def get_xml_exports(self):
         """Return the contents of the xml exports dir, sorted by timestamp"""
 
-        with os.scandir(self.XML_EXPORT_DIR) as entries:
+        with os.scandir(self.xml_export_dir) as entries:
             file_paths = [entry.path for entry in entries if entry.is_file()]
 
         return sorted(file_paths, key=lambda x: os.path.getmtime(x))
 
     def get_xml_templates(self):
         """Return the contents of the xml uploads dir, sorted by timestamp"""
-        with os.scandir(self.XML_TEMPLATES) as entries:
+        with os.scandir(self.xml_template_dir) as entries:
             file_paths = [entry.path for entry in entries if entry.is_file()]
 
         return sorted(file_paths, key=lambda x: os.path.getmtime(x))
@@ -60,7 +60,7 @@ class PathFinder:
     def export_template(self):
         """Return the latest entry in the template_list"""
         with open(
-            f"{self.TEMPLATE_DIR}builder-template-master.json", "r", encoding="utf-8"
+            f"{self.templates}builder-template-master.json", "r", encoding="utf-8"
         ) as export:
             exported_data = json.load(export)
 
@@ -70,7 +70,7 @@ class PathFinder:
         """Return a list of current templates"""
         template_list = None
         with open(
-            f"{self.TEMPLATE_DIR}builder-template-master.json", "r", encoding="utf-8"
+            f"{self.templates}builder-template-master.json", "r", encoding="utf-8"
         ) as view:
             template_view = json.load(view)
 

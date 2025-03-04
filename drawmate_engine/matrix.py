@@ -552,10 +552,12 @@ class Dtp(Rect):
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
 
     # Add a type argument to pass into each instance of the DTP Rect
-    def __init__(self, x: int, y: int, style=DEFAULT_STYLE):
+    def __init__(self, x: int, y: int, label, style=DEFAULT_STYLE):
         super().__init__(
-            x=x, y=y, style=style, label="", _type="DTP", width=160, height=80
+            x=x, y=y, style=style, label=label, _type="DTP", width=160, height=90
         )
+        self.left_ptr = None
+        self.right_ptr = None
 
 
 class TextBox(Rect):

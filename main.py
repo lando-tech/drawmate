@@ -58,7 +58,5 @@ if __name__ == "__main__":
             )
             print("/home/user/<output-file-path>")
 
-        if update_template(user_input_file):
-            time.sleep(3)
-            draw(user_output_file)
-            print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}")
+        draw(user_input_file, user_output_file)
+        print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}")

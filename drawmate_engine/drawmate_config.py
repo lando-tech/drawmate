@@ -2,8 +2,8 @@ import json
 from dataclasses import dataclass
 from typing import Optional
 
-from drawmate_engine.doc_builder import create_document, MxObject
-from drawmate_engine.matrix import Rect, Matrix, Dtp, Connections, TextBox
+from doc_builder import create_document, MxObject
+from matrix import Rect, Matrix, Dtp, Connections, TextBox
 from utils.pathfinder import PathFinder
 from utils.log_manager import LogManager
 
@@ -162,3 +162,22 @@ class DrawmateConfig:
                 self.template_data["third-level-left"]["labels"],
                 self.template_data["third-level-right"]["labels"],
             )
+
+    def build_matrix_array(self) -> tuple[list, list]:
+        left_side = []
+        right_side = []
+        levels = [
+            "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth"
+        ]
+        for level in levels:
+            for key, value in self.template_data.items():
+                current_key = key.split('-')
+                current_level = current_key[0]
+                current_side = current_key[-1]
+
+                if current_level == level and current_side == "left":
+                    left_side.append(list(value["labels"]))
+                elif current_level == level and current_side == "right":
+                    right_side.append(list(value["labels"]))
+
+        return left_side, right_side

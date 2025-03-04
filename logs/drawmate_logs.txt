@@ -70,3 +70,10 @@ SUCCESS ----- Thu 13 Feb 2025 01_32_10
 
 SUCCESS Message: 'No key errors were detected during template creation.'
 drawmate.py | Line Number: 495
+
+ERROR ----- Tue 04 Mar 2025 07_40_42
+======================================
+
+ERROR Message: 'Template file not found: /home/GitHub/drawmate/data/output.drawio
+'
+drawmate.py | Line Number: 460

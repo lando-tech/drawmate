@@ -1,0 +1,65 @@
+<mxfile>
+  <diagram>
+    <mxGraphModel dx="4000" dy="4000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="4000" pageHeight="4000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <object label="Webex EQ CODEC, CS-CODEC-EQ-NR++" type="matrix" id="2734686770583351257">
+          <mxCell id="8511116091692914623" value="Webex EQ CODEC, CS-CODEC-EQ-NR++" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="3000" y="3000" width="200" height="1200" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="Webex EQ CODEC, CS-CODEC-EQ-NR++" type="DTP" id="5285060601084493847">
+          <mxCell id="9537275747175178949" value="Webex EQ CODEC, CS-CODEC-EQ-NR++" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3000" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="Webex EQ CODEC, CS-CODEC-EQ-NR++" type="DTP" id="4261419559614153902">
+          <mxCell id="7519996013044797822" value="Webex EQ CODEC, CS-CODEC-EQ-NR++" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3100" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="DA HD 4K Plus, 60-1607-01" type="DTP" id="7473054379456814809">
+          <mxCell id="1826465260015493547" value="DA HD 4K Plus, 60-1607-01" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3200" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="232-ATSC 4K HDTV, 5114-001" type="DTP" id="6755536484003837197">
+          <mxCell id="5905614276629806633" value="232-ATSC 4K HDTV, 5114-001" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3300" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="" type="DTP" id="4066151772568327444">
+          <mxCell id="684189419773585555" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3400" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="" type="DTP" id="2651288163346092577">
+          <mxCell id="5894124562881247770" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3500" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="DTP 4K 230 Tx, 60-1271-12" type="DTP" id="2953662445399005227">
+          <mxCell id="3230383655252809580" value="DTP 4K 230 Tx, 60-1271-12" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3600" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="DTP 4K 230 Tx, 60-1271-12" type="DTP" id="189630190307506886">
+          <mxCell id="623980476238481921" value="DTP 4K 230 Tx, 60-1271-12" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3700" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="DTP 4K 230 Tx, 60-1271-12" type="DTP" id="7873133875899645406">
+          <mxCell id="9135574766231921262" value="DTP 4K 230 Tx, 60-1271-12" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3800" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+        <object label="DTP 4K 230 Tx, 60-1271-12" type="DTP" id="5307330641201467390">
+          <mxCell id="9043585569535740790" value="DTP 4K 230 Tx, 60-1271-12" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+            <mxGeometry x="2600" y="3900" width="160" height="80" relative="" as="geometry"/>
+          </mxCell>
+        </object>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
