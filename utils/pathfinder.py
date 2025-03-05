@@ -60,7 +60,7 @@ class PathFinder:
     def export_template(self):
         """Return the latest entry in the template_list"""
         with open(
-            f"{self.templates}builder-template-master.json", "r", encoding="utf-8"
+            f"{self.json_templates}builder-template-master.json", "r", encoding="utf-8"
         ) as export:
             exported_data = json.load(export)
 
@@ -70,7 +70,7 @@ class PathFinder:
         """Return a list of current templates"""
         template_list = None
         with open(
-            f"{self.templates}builder-template-master.json", "r", encoding="utf-8"
+            f"{self.json_templates}builder-template-master.json", "r", encoding="utf-8"
         ) as view:
             template_view = json.load(view)
 

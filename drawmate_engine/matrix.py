@@ -131,7 +131,7 @@ class Matrix(Rect):
         x: int,
         y: int,
     ):
-        super().__init__(x=x, y=y, width=width, height=height, label="", _type="matrix")
+        super().__init__(x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix")
         self.num_connections = connections_count
 
 

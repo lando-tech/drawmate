@@ -2,8 +2,6 @@ import json
 from dataclasses import dataclass
 from typing import Optional
 
-from doc_builder import create_document, MxObject
-from matrix import Rect, Matrix, Dtp, Connections, TextBox
 from utils.pathfinder import PathFinder
 from utils.log_manager import LogManager
 
@@ -129,3 +127,6 @@ class DrawmateConfig:
         return self.template_data.get("connections-left"), self.template_data.get(
             "connections-right"
         )
+
+    def get_matrix_label(self):
+        return self.template_data.get("matrices")["labels"]

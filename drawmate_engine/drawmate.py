@@ -1,7 +1,7 @@
-from drawmate_config import DrawmateConfig
+from drawmate_engine.drawmate_config import DrawmateConfig
 from drawmate_engine.matrix import TextBox
-from matrix import Matrix, Dtp, Connections, Rect
-from doc_builder import DocBuilder, MxObject
+from drawmate_engine.matrix import Matrix, Dtp, Connections, Rect
+from drawmate_engine.doc_builder import DocBuilder, MxObject
 
 
 class Drawmate(DocBuilder):
@@ -16,21 +16,32 @@ class Drawmate(DocBuilder):
         self.node_dict = {}
 
     def build_graph(self):
+        # Set Graph values
         self.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4000)
+        # Initialize the matrix
         matrix_array = self.dc.build_matrix_array()
+        # Process nodes
         self.node_dict = self.process_nodes(matrix_array)
+        # Create Node pointers
         self.create_node_ptrs(self.node_dict["left_side"], left=True)
         self.create_node_ptrs(self.node_dict["right_side"], left=False)
+        # Create Connections for Nodes
         self.create_connections(self.node_dict["left_side"], left=True)
         self.create_connections(self.node_dict["right_side"], left=False)
+        # Create nodes
         self.create_nodes(self.node_dict["left_side"])
         self.create_nodes(self.node_dict["right_side"])
+        # Create Label input/output textbox for each node
         self.create_node_textbox(self.node_dict["left_side"])
         self.create_node_textbox(self.node_dict["right_side"])
+        # Create label textboxes for each node
         self.create_node_label(self.node_dict["left_side"])
         self.create_node_label(self.node_dict["right_side"])
-        self.create_mxobject(self.matrix.attributes, is_arrow=False, is_dtp=False)
+        # Create the matrix object
+        self.create_mxobject(self.matrix.attributes, is_arrow=False, is_dtp=False, is_matrix=True)
+        self.create_matrix_label()
         self.create_matrix_connections()
+        # Create final XML Document
         self.create_xml(output_file_path=self.output_file)
 
     def create_matrix(self) -> Matrix:
@@ -76,19 +87,38 @@ class Drawmate(DocBuilder):
             )
             y += 120
 
-    def create_mxobject(self, data: dict, is_arrow: bool, is_dtp: bool):
+    def create_matrix_label(self):
+        x = int(self.matrix.attributes["x"])
+        y = int(self.matrix.attributes["y"]) - 40
+        width = int(self.matrix.attributes["width"])
+        height = 80
+        m_label = self.matrix.attributes["label"]
+        matrix_text_box = TextBox(
+            x=x,
+            y=y,
+            width=width,
+            height=height,
+            label=m_label,
+            _type="matrix",
+            style="text-box"
+        )
+        self.create_mxobject(matrix_text_box.attributes, is_arrow=False, is_dtp=False)
+
+    def create_mxobject(self, data: dict, is_arrow: bool, is_dtp: bool, is_matrix: bool = None):
         """
         Summary:
             Creates the document structure for the xml object, appending each
             node to the appropriate parent.
 
         Args:
+            is_matrix:
+            is_dtp:
             data (dict): The attributes of an instance of the Rect class or one of its children.
             is_arrow (bool): Check if the Rect is an ArrowRect.
         """
         # Create object node
         mx_obj = MxObject()
-        if is_dtp:
+        if is_dtp or is_matrix:
             mx_obj.set_object_values("", data["type"])
         else:
             mx_obj.set_object_values(data["label"], data["type"])
@@ -118,7 +148,7 @@ class Drawmate(DocBuilder):
         else:
             # Create mxCell object
             cell = mx_obj.MxCell()
-            if is_dtp:
+            if is_dtp or is_matrix:
                 cell.set_mxcell_values(value="", style=data["style"])
             else:
                 cell.set_mxcell_values(value=data["label"], style=data["style"])
@@ -223,7 +253,7 @@ class Drawmate(DocBuilder):
             if node.attributes["label"].strip() == "":
                 continue
             else:
-                drawmate.create_mxobject(node.attributes, is_arrow=False, is_dtp=True)
+                self.create_mxobject(node.attributes, is_arrow=False, is_dtp=True)
 
     def create_node_textbox(self, dtp_array: list[Dtp]):
 
@@ -414,12 +444,3 @@ class Drawmate(DocBuilder):
         column_index = node_index // max_per_column
         row_index = node_index % max_per_column
         return column_index, row_index
-
-
-if __name__ == "__main__":
-    input_file_path = (
-        "/home/landotech/GitHub/drawmate/data/templates/builder-template-master.json"
-    )
-    output_file_path = "/home/landotech/GitHub/drawmate/data/output.drawio"
-    drawmate = Drawmate(input_file_path, output_file_path)
-    drawmate.build_graph()

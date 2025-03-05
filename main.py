@@ -1,5 +1,6 @@
 import sys
 
+from drawmate_engine.drawmate import Drawmate
 
 if __name__ == "__main__":
 
@@ -20,4 +21,6 @@ if __name__ == "__main__":
             )
             print("/home/user/<output-file-path>")
 
+        drawmate = Drawmate(input_file=user_input_file, output_file=user_output_file)
+        drawmate.build_graph()
         print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}")

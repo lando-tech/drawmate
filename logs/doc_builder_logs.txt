@@ -1965,3 +1965,87 @@ SUCCESS ----- Thu 06 Mar 2025 03_22_00
 
 SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T032200.drawio'
 doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 03_29_29
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+SUCCESS ----- Thu 06 Mar 2025 03_29_29
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T032929.drawio'
+doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 03_30_37
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+SUCCESS ----- Thu 06 Mar 2025 03_30_37
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T033037.drawio'
+doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 03_30_55
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+SUCCESS ----- Thu 06 Mar 2025 03_30_55
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T033055.drawio'
+doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 03_31_14
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+SUCCESS ----- Thu 06 Mar 2025 03_31_14
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T033114.drawio'
+doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 03_37_36
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+SUCCESS ----- Thu 06 Mar 2025 03_37_36
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T033736.drawio'
+doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 03_43_14
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+SUCCESS ----- Thu 06 Mar 2025 03_43_14
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T034314.drawio'
+doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 03_44_47
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+SUCCESS ----- Thu 06 Mar 2025 03_44_47
+======================================
+
+SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T034447.drawio'
+doc_builder.py | Line Number: 230
