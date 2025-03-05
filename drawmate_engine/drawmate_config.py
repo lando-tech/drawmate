@@ -99,79 +99,22 @@ class DrawmateConfig:
             dimensions["num_connections"],
         )
 
-    def get_connections_count(self) -> Optional[int]:
-        if not self.template_data:
-            return None
-
-        return len(self.template_data.get("connections-left"))
-
-    def get_rect_labels(
-        self, appliance_type: str, level: int = 0
-    ) -> Optional[list[str]] or Optional[tuple[list[str], list[str]]]:
-        """
-
-        Args:
-            appliance_type: matrix, dtp
-            level: which level on the graph to retrieve labels for
-
-        Returns:
-
-        """
-        if not self.template_data:
-            return None
-
-        if appliance_type == "matrix":
-            return self.template_data.get("connections-left"), self.template_data.get(
-                "connections-right"
-            )
-        elif appliance_type == "dtp" and level != 0:
-            if level == 1:
-                return (
-                    self.template_data["first-level-left"]["labels"]
-                    + self.template_data["first-level-right"]["labels"]
-                )
-            elif level == 2:
-                return (
-                    self.template_data["second-level-left"]["labels"]
-                    + self.template_data["second-level-right"]["labels"]
-                )
-            elif level == 3:
-                return (
-                    self.template_data["third-level-left"]["labels"]
-                    + self.template_data["third-level-right"]["labels"]
-                )
-        else:
-            return None
-
-    def get_rect_labels_as_tuple(self, level: int = 0):
-        """ """
-        if level == 0:
-            return None
-        elif level == 1:
-            return (
-                self.template_data["first-level-left"]["labels"],
-                self.template_data["first-level-right"]["labels"],
-            )
-        elif level == 2:
-            return (
-                self.template_data["second-level-left"]["labels"],
-                self.template_data["second-level-right"]["labels"],
-            )
-        elif level == 3:
-            return (
-                self.template_data["third-level-left"]["labels"],
-                self.template_data["third-level-right"]["labels"],
-            )
-
     def build_matrix_array(self) -> tuple[list, list]:
         left_side = []
         right_side = []
         levels = [
-            "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth"
+            "first",
+            "second",
+            "third",
+            "fourth",
+            "fifth",
+            "sixth",
+            "seventh",
+            "eighth",
         ]
         for level in levels:
             for key, value in self.template_data.items():
-                current_key = key.split('-')
+                current_key = key.split("-")
                 current_level = current_key[0]
                 current_side = current_key[-1]
 
@@ -181,3 +124,8 @@ class DrawmateConfig:
                     right_side.append(list(value["labels"]))
 
         return left_side, right_side
+
+    def get_matrix_connection_labels(self) -> tuple[list, list]:
+        return self.template_data.get("connections-left"), self.template_data.get(
+            "connections-right"
+        )

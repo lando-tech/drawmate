@@ -26,7 +26,9 @@ def get_timestamp():
     return formatted_timestamp
 
 
-TEMPLATE_STORAGE_PATH = f"{pf.xml_templates}builder_template__{get_timestamp()}.drawio"
+TEMPLATE_STORAGE_PATH = (
+    f"{pf.xml_template_dir}builder_template__{get_timestamp()}.drawio"
+)
 
 MX_OBJECT_ATTRIBUTES = {
     "label": "",

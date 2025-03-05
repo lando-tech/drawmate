@@ -84,3 +84,10 @@ ERROR ----- Wed 05 Mar 2025 07_15_27
 ERROR Message: 'Template file not found: /home/landotech/GitHub/drawmate/data/templates/builder-template-master.json
 '
 drawmate.py | Line Number: 460
+
+ERROR ----- Wed 05 Mar 2025 08_41_09
+======================================
+
+ERROR Message: 'Template file not found: C:/Users/aaron/GitHub/drawmate/data/templates/builder-template-master.json
+'
+drawmate.py | Line Number: 460
