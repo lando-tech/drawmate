@@ -2218,3 +2218,120 @@ ERROR ----- Thu 06 Mar 2025 09_40_13
 ERROR Message: 'Error saving template file
 Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T094013.drawio''
 doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_02_30
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_02_30
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T060230.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_36_20
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_36_20
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T063620.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_36_53
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_36_53
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T063653.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_38_31
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_38_31
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T063831.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_40_27
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_40_27
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T064027.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_42_25
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_42_25
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T064225.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_42_42
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_42_42
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T064242.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_47_25
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_47_25
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T064725.drawio''
+doc_builder.py | Line Number: 239
+
+SUCCESS ----- Fri 07 Mar 2025 06_51_26
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/Desktop/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Fri 07 Mar 2025 06_51_26
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-07T065126.drawio''
+doc_builder.py | Line Number: 239

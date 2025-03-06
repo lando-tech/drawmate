@@ -2,7 +2,16 @@ from drawmate_engine.drawmate_config import DrawmateConfig
 from drawmate_engine.matrix import TextBox
 from drawmate_engine.matrix import Matrix, Dtp, Connections, Rect
 from drawmate_engine.doc_builder import DocBuilder, MxObject
-
+from drawmate_engine.drawmate_config import MatrixDimensions
+from constants.constants import (
+    MATRIX_CONNECTIONS,
+    MATRIX_LABEL,
+    ARROW_CONNECTIONS,
+    DTP_ATTRIBUTES,
+    DTP_INPUT,
+    DTP_OUTPUT,
+    DTP_INPUT_OUTPUT_DIMS
+)
 
 class Drawmate(DocBuilder):
 
@@ -14,112 +23,22 @@ class Drawmate(DocBuilder):
         self.matrix_array = self.dc.build_matrix_array()
         self.matrix = self.create_matrix()
         self.node_dict = {}
+        self.total_height_nodes = 0
 
-    def build_graph(self):
-        # Set Graph values
-        self.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4000)
-        # Initialize the matrix
-        matrix_array = self.dc.build_matrix_array()
-        # Process nodes
-        self.node_dict = self.process_nodes(matrix_array)
-        # Create Node pointers
-        self.create_node_ptrs(self.node_dict["left_side"], left=True)
-        self.create_node_ptrs(self.node_dict["right_side"], left=False)
-        # Create Connections for Nodes
-        self.create_connections(self.node_dict["left_side"], left=True)
-        self.create_connections(self.node_dict["right_side"], left=False)
-        # Create nodes
-        self.create_nodes(self.node_dict["left_side"])
-        self.create_nodes(self.node_dict["right_side"])
-        # Create Label input/output textbox for each node
-        self.create_node_textbox(self.node_dict["left_side"])
-        self.create_node_textbox(self.node_dict["right_side"])
-        # Create label textboxes for each node
-        self.create_node_label(self.node_dict["left_side"])
-        self.create_node_label(self.node_dict["right_side"])
-        # Create the matrix object
-        self.create_mxobject(self.matrix.attributes, is_arrow=False, is_dtp=False, is_matrix=True)
-        self.create_matrix_label()
-        self.create_matrix_connections()
-        # Create final XML Document
-        self.create_xml(output_file_path=self.output_file)
-
-    def create_matrix(self) -> Matrix:
-        matrix_attrib = self.dc.get_matrix_dimensions()
-        return Matrix(
-            x=matrix_attrib.x,
-            y=matrix_attrib.y,
-            width=matrix_attrib.width,
-            height=matrix_attrib.height,
-            connections_count=matrix_attrib.num_connections,
-            matrix_label=matrix_attrib.labels,
-        )
-
-    def create_matrix_connections(self):
-        left_side, right_side = self.dc.get_matrix_connection_labels()
-        max_len = self.matrix.num_connections
-        width = 60
-        height = 40
-        left_x = int(self.matrix.attributes["x"]) + 10
-        right_x = int(self.matrix.attributes["x"]) + 140
-        y = int(self.matrix.attributes["y"]) + 70
-
-        for i in range(max_len):
-            left_text_box = TextBox(
-                x=left_x,
-                y=y,
-                width=width,
-                height=height,
-                label=left_side[i],
-                _type="text-box",
-            )
-            right_text_box = TextBox(
-                x=right_x,
-                y=y,
-                width=width,
-                height=height,
-                label=right_side[i],
-                _type="text-box",
-            )
-            self.create_mxobject(left_text_box.attributes, is_dtp=False, is_arrow=False)
-            self.create_mxobject(
-                right_text_box.attributes, is_arrow=False, is_dtp=False
-            )
-            y += 120
-
-    def create_matrix_label(self):
-        x = int(self.matrix.attributes["x"])
-        y = int(self.matrix.attributes["y"]) - 40
-        width = int(self.matrix.attributes["width"])
-        height = 80
-        m_label = self.matrix.attributes["label"]
-        print(m_label)
-        matrix_text_box = TextBox(
-            x=x,
-            y=y,
-            width=width,
-            height=height,
-            label=m_label,
-            _type="matrix",
-            style="rounded=0;whiteSpace=wrap;html=1;"
-        )
-        self.create_mxobject(matrix_text_box.attributes, is_arrow=False, is_dtp=False)
-
-    def create_mxobject(self, data: dict, is_arrow: bool, is_dtp: bool, is_matrix: bool = None):
+    def create_mxobject(self, data: dict, is_arrow: bool = False, has_label: bool = True):
         """
         Summary:
             Creates the document structure for the xml object, appending each
             node to the appropriate parent.
 
         Args:
-            is_matrix:
-            is_dtp:
             data (dict): The attributes of an instance of the Rect class or one of its children.
             is_arrow (bool): Check if the Rect is an ArrowRect.
+            has_label (bool): If a label should be added, or a blank string placed instead
         """
         # Create object node
         mx_obj = MxObject()
-        if is_dtp or is_matrix:
+        if not has_label:
             mx_obj.set_object_values("", data["type"])
         else:
             mx_obj.set_object_values(data["label"], data["type"])
@@ -149,7 +68,7 @@ class Drawmate(DocBuilder):
         else:
             # Create mxCell object
             cell = mx_obj.MxCell()
-            if is_dtp or is_matrix:
+            if not has_label:
                 cell.set_mxcell_values(value="", style=data["style"])
             else:
                 cell.set_mxcell_values(value=data["label"], style=data["style"])
@@ -191,6 +110,100 @@ class Drawmate(DocBuilder):
         target_point.set_mxpoint_target(data["target_x"], data["target_y"])
         target_elem = mx_obj.create_xml_element("mxPoint", target_point.attributes)
         mx_geo_elem.appendChild(target_elem)
+
+    def build_graph(self):
+        # Set Graph values
+        self.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4000)
+        # Initialize the matrix
+        matrix_array = self.dc.build_matrix_array()
+        # Process nodes
+        self.node_dict = self.process_nodes(matrix_array)
+        # Create Node pointers
+        self.create_node_ptrs(self.node_dict["left_side"], left=True)
+        self.create_node_ptrs(self.node_dict["right_side"], left=False)
+        # Create Connections for Nodes
+        self.create_connections(self.node_dict["left_side"], left=True)
+        self.create_connections(self.node_dict["right_side"], left=False)
+        # Create nodes
+        self.create_nodes(self.node_dict["left_side"])
+        self.create_nodes(self.node_dict["right_side"])
+        # Create Label input/output textbox for each node
+        self.create_node_in_out_textbox(self.node_dict["left_side"])
+        self.create_node_in_out_textbox(self.node_dict["right_side"])
+        # Create label textboxes for each node
+        self.create_node_label(self.node_dict["left_side"])
+        self.create_node_label(self.node_dict["right_side"])
+        # Create the matrix object
+        self.create_mxobject(self.matrix.attributes, has_label=False)
+        self.create_matrix_label()
+        self.create_matrix_connections()
+        # Create final XML Document
+        self.create_xml(output_file_path=self.output_file)
+
+    def create_matrix(self) -> Matrix:
+        matrix_attrib = self.dc.get_matrix_dimensions()
+        self.check_matrix_dimensions(matrix_attrib)
+        return Matrix(
+            x=matrix_attrib.x,
+            y=matrix_attrib.y,
+            width=matrix_attrib.width,
+            height=matrix_attrib.height,
+            connections_count=matrix_attrib.num_connections,
+            matrix_label=matrix_attrib.labels,
+        )
+
+    def create_matrix_connections(self):
+        # Left and right side labels
+        left_side, right_side = self.dc.get_matrix_connection_labels()
+        # Total number of connections
+        max_len = self.matrix.num_connections
+        # Height and Width of the textbox
+        width = MATRIX_CONNECTIONS["width"]
+        height = MATRIX_CONNECTIONS["height"]
+        # Starting x and y values
+        left_x = int(self.matrix.attributes["x"]) + MATRIX_CONNECTIONS["x_offset_left"]
+        right_x = int(self.matrix.attributes["x"]) + MATRIX_CONNECTIONS["x_offset_right"]
+        y = int(self.matrix.attributes["y"]) + MATRIX_CONNECTIONS["y_offset"]
+
+        for i in range(max_len):
+            left_text_box = TextBox(
+                x=left_x,
+                y=y,
+                width=width,
+                height=height,
+                label=left_side[i],
+                _type="text-box",
+            )
+            right_text_box = TextBox(
+                x=right_x,
+                y=y,
+                width=width,
+                height=height,
+                label=right_side[i],
+                _type="text-box",
+            )
+            self.create_mxobject(left_text_box.attributes)
+            self.create_mxobject(right_text_box.attributes)
+            y += MATRIX_CONNECTIONS["label_spacing"]
+
+    def create_matrix_label(self):
+        x = int(self.matrix.attributes["x"])
+        y = int(self.matrix.attributes["y"]) - MATRIX_LABEL["y_offset"]
+        width = int(self.matrix.attributes["width"])
+        height = MATRIX_LABEL["height"]
+        m_label = self.matrix.attributes["label"]
+        matrix_text_box = TextBox(
+            x=x,
+            y=y,
+            width=width,
+            height=height,
+            label=m_label,
+            _type="matrix",
+            style="rounded=0;whiteSpace=wrap;html=1;"
+        )
+        self.create_mxobject(matrix_text_box.attributes)
+
+
 
     def process_nodes(self, matrix_arr: tuple[list, list]) -> dict[str, list[Dtp]]:
         """
@@ -245,6 +258,7 @@ class Drawmate(DocBuilder):
                 label, l_input, r_output = row
                 y += y_spacing
                 dtp = Dtp(x, y, label, l_input, r_output)
+                self.total_height_nodes += int(dtp.attributes["height"])
                 appliance_array.append(dtp)
 
         return appliance_array
@@ -254,20 +268,28 @@ class Drawmate(DocBuilder):
             if node.attributes["label"].strip() == "":
                 continue
             else:
-                self.create_mxobject(node.attributes, is_arrow=False, is_dtp=True)
+                self.create_mxobject(node.attributes, has_label=False)
 
-    def create_node_textbox(self, dtp_array: list[Dtp]):
+    def create_node_in_out_textbox(self, dtp_array: list[Dtp]) -> None:
+        """
+        Create the textbox objects for the input and output labels for each node
+        Args:
+            dtp_array: The array of left or right side Dtp objects
+
+        Returns:
+        None
+        """
 
         for dtp in dtp_array:
             # Input attributes
-            input_x = int(dtp.attributes["x"]) + 5
-            input_y = int(dtp.attributes["y"]) + 45
+            input_x = int(dtp.attributes["x"]) + DTP_INPUT["x_offset"]
+            input_y = int(dtp.attributes["y"]) + DTP_INPUT["y_offset"]
             # Output attributes
-            output_x = int(dtp.attributes["x"]) + 120
-            output_y = int(dtp.attributes["y"]) + 45
+            output_x = int(dtp.attributes["x"]) + DTP_OUTPUT["x_offset"]
+            output_y = int(dtp.attributes["y"]) + DTP_OUTPUT["y_offset"]
             # width and height
-            width = 60
-            height = 40
+            width = DTP_INPUT_OUTPUT_DIMS["width"]
+            height = DTP_INPUT_OUTPUT_DIMS["height"]
 
             # Input
             input_textbox = TextBox(
@@ -288,10 +310,8 @@ class Drawmate(DocBuilder):
                 label=dtp.output_label,
                 _type="textbox",
             )
-            self.create_mxobject(input_textbox.attributes, is_arrow=False, is_dtp=False)
-            self.create_mxobject(
-                output_textbox.attributes, is_arrow=False, is_dtp=False
-            )
+            self.create_mxobject(input_textbox.attributes)
+            self.create_mxobject(output_textbox.attributes)
 
     def create_node_label(self, dtp_array: list[Dtp]):
 
@@ -306,7 +326,7 @@ class Drawmate(DocBuilder):
                 label=dtp.attributes["label"],
                 _type="text-box",
             )
-            self.create_mxobject(label_textbox.attributes, is_arrow=False, is_dtp=False)
+            self.create_mxobject(label_textbox.attributes)
 
     def create_node_ptrs(self, dtp_array: list[Dtp], left: bool):
         max_columns = self.matrix.num_connections
@@ -367,17 +387,15 @@ class Drawmate(DocBuilder):
 
                         arrow = connection_mgr.create_connection("", "arrow")
                         arrow_textbox = TextBox(
-                            x=int(arrow.attributes["target_x"]) - 150,
-                            y=int(arrow.attributes["target_y"]) - 40,
-                            width=80,
-                            height=60,
+                            x=int(arrow.attributes["target_x"]) - ARROW_CONNECTIONS["x_offset"],
+                            y=int(arrow.attributes["target_y"]) - ARROW_CONNECTIONS["y_offset"],
+                            width=ARROW_CONNECTIONS["width"],
+                            height=ARROW_CONNECTIONS["height"],
                             label=arrow_label,
                             _type="text-box"
                         )
-                        self.create_mxobject(
-                            arrow.attributes, is_arrow=True, is_dtp=False
-                        )
-                        self.create_mxobject(arrow_textbox.attributes, is_arrow=False, is_dtp=False)
+                        self.create_mxobject(arrow.attributes, is_arrow=True)
+                        self.create_mxobject(arrow_textbox.attributes)
                 else:
                     ptr = dtp.left_ptr
                     if ptr.attributes:
@@ -397,17 +415,39 @@ class Drawmate(DocBuilder):
 
                         arrow = connection_mgr.create_connection("", "arrow")
                         arrow_textbox = TextBox(
-                            x=int(arrow.attributes["target_x"]) - 150,
-                            y=int(arrow.attributes["target_y"]) - 40,
-                            width=80,
-                            height=60,
+                            x=int(arrow.attributes["target_x"]) - ARROW_CONNECTIONS["x_offset"],
+                            y=int(arrow.attributes["target_y"]) - ARROW_CONNECTIONS["y_offset"],
+                            width=ARROW_CONNECTIONS["width"],
+                            height=ARROW_CONNECTIONS["height"],
                             label=arrow_label,
                             _type="text-box"
                         )
-                        self.create_mxobject(
-                            arrow.attributes, is_arrow=True, is_dtp=False
-                        )
-                        self.create_mxobject(arrow_textbox.attributes, is_arrow=False, is_dtp=False)
+                        self.create_mxobject(arrow.attributes, is_arrow=True)
+                        self.create_mxobject(arrow_textbox.attributes, is_arrow=False)
+
+    @staticmethod
+    def check_matrix_dimensions(matrix_dims: MatrixDimensions):
+        """
+        Verifies the matrix dimensions being passed in are the proper size.
+        It also verifies the starting X and Y coordinates are in a proper location,
+        relative to the size of the graph.
+        Args:
+            matrix_dims (MatrixDimensions) : The dimensions returned by the config file
+
+        Returns:
+        True if the dimensions are within bounds
+        """
+        # Starts +70 on the y axis (which puts it below the matrix y) and increments that spacing by +120
+        total_height = (matrix_dims.num_connections * (DTP_ATTRIBUTES["height"] + 20)) + 70
+        if matrix_dims.height < total_height:
+            print(f"Matrix not large enough. Height = {matrix_dims.height}px")
+            print(f"Total height of appliances w/spacing = {total_height}px")
+            print("Adjusting height to compensate for the difference.")
+            difference = total_height - matrix_dims.height
+            matrix_dims.height = matrix_dims.height + difference + 50
+            print("New height of matrix: " + f"{matrix_dims.height}px")
+        else:
+            print("Matrix is large enough, no adjustments needed.")
 
     @staticmethod
     def generate_connection_number(column_index: int, counter: int, left: bool) -> str:
