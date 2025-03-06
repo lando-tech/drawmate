@@ -2205,3 +2205,16 @@ SUCCESS ----- Thu 06 Mar 2025 09_27_23
 
 SUCCESS Message: 'Storage-Template file saved: /home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T092723.drawio'
 doc_builder.py | Line Number: 230
+
+SUCCESS ----- Thu 06 Mar 2025 09_40_13
+======================================
+
+SUCCESS Message: 'Export-Template file saved: /home/landotech/GitHub/drawmate/data/output.drawio'
+doc_builder.py | Line Number: 216
+
+ERROR ----- Thu 06 Mar 2025 09_40_13
+======================================
+
+ERROR Message: 'Error saving template file
+Error message: [Errno 2] No such file or directory: '/home/landotech/GitHub/drawmate/data/xml_files/xml_templates/builder_template__2025-03-06T094013.drawio''
+doc_builder.py | Line Number: 239

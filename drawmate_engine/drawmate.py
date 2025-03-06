@@ -93,9 +93,7 @@ class Drawmate(DocBuilder):
         width = int(self.matrix.attributes["width"])
         height = 80
         m_label = self.matrix.attributes["label"]
-        formatted_label = self.format_label(m_label, delimiter=',')
         print(m_label)
-        print('\n'.join(formatted_label))
         matrix_text_box = TextBox(
             x=x,
             y=y,
