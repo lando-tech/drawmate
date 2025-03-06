@@ -23,4 +23,4 @@ if __name__ == "__main__":
 
         drawmate = Drawmate(input_file=user_input_file, output_file=user_output_file)
         drawmate.build_graph()
-        print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}")
+        print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}\n")

@@ -1,12 +1,10 @@
 """
-Summary:
+Summary: This is the matrix module, which servers as the architecture for each Node/Object
+         on the graph.
 """
 
-# import json
-from utils.pathfinder import PathFinder
+from constants.constants import DTP_ATTRIBUTES
 
-# Instance of the pathfinder class for directory navigation
-pf = PathFinder()
 
 """
 These are the different xml styles used to control the type of object being placed on the graph.
@@ -19,16 +17,11 @@ MX_GRAPH_XML_STYLES = {
     "elipse": "ellipse;whiteSpace=wrap;html=1;aspect=fixed;",
 }
 
-"""
-This value is used to set the input and output spacing on the relative
-matrix on the graph.
-"""
-INPUT_OUTPUT_SPACING_MATRIX = 100
-INPUT_OUTPUT_SPACING_APPLIANCE = 100
-
 
 class Rect:
-    """_summary_"""
+    """
+    The Rect class is the parent class for all objects on the graph.
+    """
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
 
@@ -67,7 +60,9 @@ class Rect:
 
 
 class ArrowRect:
-    """_summary_"""
+    """
+    The ArrowRect class is the base class for connections/arrows on the graph.
+    """
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["arrow"]
 
@@ -109,10 +104,9 @@ class ArrowRect:
 class Matrix(Rect):
     """
     Summary:
-    The matrix is the focal point for the diagram/template. The main role of the matrix is to
-    create all the elements that will directly or indirectly be connected to it. The matrix
-    acts as the starting point for all other elements to be drawn around it. Multiple instances
-    of the matrix may be created, and each matrix will manage its own connections.
+    The Matrix class is used to make Matrix objects on the graph. The matrix
+    is the center/focal point of the graph. All objects will be placed on the
+    graph based on the position and size of the matrix.
 
     Args:
         connections_count (int): Number of connections on the matrix.
@@ -121,6 +115,7 @@ class Matrix(Rect):
         x (int): The X coord of the top left corner of the matrix.
         y (int): The Y coord of the top left corner of the matrix.
     """
+    # The default xml style
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
     def __init__(
         self,
@@ -154,7 +149,7 @@ class Dtp(Rect):
         self, x: int, y: int, label, input_label, output_label, style=DEFAULT_STYLE
     ):
         super().__init__(
-            x=x, y=y, style=style, label=label, _type="DTP", width=160, height=90
+            x=x, y=y, style=style, label=label, _type="DTP", width=DTP_ATTRIBUTES["width"], height=DTP_ATTRIBUTES["height"]
         )
         self.left_ptr = None
         self.right_ptr = None
@@ -181,8 +176,6 @@ class TextBox(Rect):
     """
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["text-box"]
-    WIDTH = 60
-    HEIGHT = 30
 
     def __init__(
         self,
@@ -283,11 +276,11 @@ class Connections:
             self.target_y = self.source_y
 
     def create_connection(self, label: str, _type: str):
-        """_summary_
-
+        """
+        Returns an instance of the Arrow class
         Args:
-            label (str): _description_
-            _type (str): _description_
+            label (str): The label for the arrow
+            _type (str): The type descriptor
         """
         arrow = Arrow(
             target_x=self.target_x,
