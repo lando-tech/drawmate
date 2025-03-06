@@ -26,8 +26,9 @@ def get_timestamp():
     return formatted_timestamp
 
 
-BUILDER_TEMPLATE_PATH = f"{pf.xml_export_dir}builder-template.drawio"
-TEMPLATE_STORAGE_PATH = f"{pf.xml_templates}builder_template__{get_timestamp()}.drawio"
+TEMPLATE_STORAGE_PATH = (
+    f"{pf.xml_template_dir}builder_template__{get_timestamp()}.drawio"
+)
 
 MX_OBJECT_ATTRIBUTES = {
     "label": "",
@@ -375,7 +376,8 @@ class MxObject(DocBuilder):
             """_summary_
 
             Args:
-                style (str): _description_
+                style (str): The xml style for the object
+                value (str): The value will be the label on the object once drawn.
             """
             self.attributes["vertex"] = ""
             self.attributes["value"] = value
@@ -400,10 +402,10 @@ class MxObject(DocBuilder):
                 """_summary_
 
                 Args:
-                    x (int): _description_
-                    y (int): _description_
-                    width (int): _description_
-                    height (int): _description_
+                    x (int): X coordinate
+                    y (int): Y coordinate
+                    width (int): object width
+                    height (int): object height
                 """
                 self.attributes["x"] = str(x)
                 self.attributes["y"] = str(y)
@@ -411,7 +413,11 @@ class MxObject(DocBuilder):
                 self.attributes["height"] = str(height)
 
             def set_geometry_values_point(self):
-                """_summary_"""
+                """
+                Set mxGeometry point values
+                Returns: None
+
+                """
                 self.attributes["relative"] = "1"
                 self.attributes["x"] = ""
                 self.attributes["y"] = ""

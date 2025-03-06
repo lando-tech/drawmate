@@ -1,43 +1,6 @@
 import sys
-import json
-import time
 
-from drawmate_engine.drawmate import draw
-from utils.pathfinder import PathFinder
-# from utils.log_manager import LogManager
-
-pf = PathFinder()
-# lg = LogManager()
-
-
-def get_template_file(input_file):
-    try:
-        with open(input_file, "r") as new_template:
-            content = new_template.read()
-            json_content = json.loads(content)
-            return json_content
-    except FileNotFoundError as e:
-        print("File not found or incorrect path")
-
-
-def update_template(input_file) -> bool:
-    """
-    Update the contents of the template file with the user provided template.
-
-    Returns: True if file was successfully saved. False otherwise.
-
-    """
-    template_data = get_template_file(input_file)
-    json_data = json.dumps(template_data, indent=4)
-    try:
-        with open(
-            f"{pf.template_dir}builder-template-master.json", "w", encoding="utf-8"
-        ) as temp_file:
-            temp_file.write(json_data)
-            return True
-    except IOError as e:
-        print("Error updating template file. Check log files for error messages.")
-
+from drawmate_engine.drawmate import Drawmate
 
 if __name__ == "__main__":
 
@@ -58,7 +21,6 @@ if __name__ == "__main__":
             )
             print("/home/user/<output-file-path>")
 
-        if update_template(user_input_file):
-            time.sleep(3)
-            draw(user_output_file)
-            print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}")
+        drawmate = Drawmate(input_file=user_input_file, output_file=user_output_file)
+        drawmate.build_graph()
+        print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}\n")

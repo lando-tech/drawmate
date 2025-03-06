@@ -16,8 +16,8 @@ class PathFinder:
     def __init__(self):
         # Path to the data directories to export to other modules
         self.xml_export_dir = f"{self.get_project_dir()}/data/xml_files/xml_exports/"
-        self.xml_templates = f"{self.get_project_dir()}/data/xml_files/xml_templates/"
-        self.template_dir = f"{self.get_project_dir()}/data/templates/"
+        self.xml_template_dir = f"{self.get_project_dir()}/data/xml_files/xml_templates/"
+        self.json_templates = f"{self.get_project_dir()}/data/templates/"
         self.log_dir = f"{self.get_project_dir()}/logs/"
         self.FILETYPES = [
             (("xml files", "*.xml"), ("all files", "*.*")),
@@ -60,7 +60,7 @@ class PathFinder:
     def export_template(self):
         """Return the latest entry in the template_list"""
         with open(
-            f"{self.template_dir}builder-template-master.json", "r", encoding="utf-8"
+            f"{self.json_templates}builder-template-master.json", "r", encoding="utf-8"
         ) as export:
             exported_data = json.load(export)
 
@@ -70,7 +70,7 @@ class PathFinder:
         """Return a list of current templates"""
         template_list = None
         with open(
-            f"{self.template_dir}builder-template-master.json", "r", encoding="utf-8"
+            f"{self.json_templates}builder-template-master.json", "r", encoding="utf-8"
         ) as view:
             template_view = json.load(view)
 
