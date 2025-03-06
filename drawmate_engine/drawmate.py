@@ -93,6 +93,9 @@ class Drawmate(DocBuilder):
         width = int(self.matrix.attributes["width"])
         height = 80
         m_label = self.matrix.attributes["label"]
+        formatted_label = self.format_label(m_label, delimiter=',')
+        print(m_label)
+        print('\n'.join(formatted_label))
         matrix_text_box = TextBox(
             x=x,
             y=y,
@@ -100,7 +103,7 @@ class Drawmate(DocBuilder):
             height=height,
             label=m_label,
             _type="matrix",
-            style="text-box"
+            style="rounded=0;whiteSpace=wrap;html=1;"
         )
         self.create_mxobject(matrix_text_box.attributes, is_arrow=False, is_dtp=False)
 
@@ -444,3 +447,12 @@ class Drawmate(DocBuilder):
         column_index = node_index // max_per_column
         row_index = node_index % max_per_column
         return column_index, row_index
+
+    @staticmethod
+    def format_label(label: str, delimiter: str):
+        split_label = label.split()
+        for t_index, char in enumerate(split_label):
+            if char == delimiter:
+                split_label.insert(t_index, '\n')
+
+        return split_label

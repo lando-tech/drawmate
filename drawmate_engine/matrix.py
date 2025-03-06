@@ -121,7 +121,7 @@ class Matrix(Rect):
         x (int): The X coord of the top left corner of the matrix.
         y (int): The Y coord of the top left corner of the matrix.
     """
-
+    DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
     def __init__(
         self,
         connections_count: int,
@@ -130,8 +130,9 @@ class Matrix(Rect):
         height: int,
         x: int,
         y: int,
+        style = DEFAULT_STYLE
     ):
-        super().__init__(x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix")
+        super().__init__(x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix", style=style)
         self.num_connections = connections_count
 
 
