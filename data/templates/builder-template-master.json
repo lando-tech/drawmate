@@ -6,34 +6,39 @@
         "height": 4000
     },
     "matrices": {
-        "labels": "Webex EQ CODEC, CS-CODEC-EQ-NR++",
+        "labels": "Network Appliance",
         "width": 200,
-        "height": 1400,
+        "height": 400,
         "x": 1900,
         "y": 3400,
-        "num_connections": 10
+        "num_connections": 4
     },
     "first-level-left": {
         "labels": [
             [
-                "Webex EQ CODEC, CS-CODEC-EQ-NR++",
-                "HDMI",
-                "HDMI"
+                "PC-1",
+                "eth",
+                "eth"
             ],
             [
-                "Webex EQ CODEC, CS-CODEC-EQ-NR++",
-                "TEST",
-                "TEST"
+                "PC-2",
+                "eth",
+                "eth"
             ],
             [
-                "DA HD 4K Plus, 60-1607-01",
-                "TEST",
-                "TEST"
+                "PC-3",
+                "eth",
+                "eth"
             ],
             [
-                "232-ATSC 4K HDTV, 5114-001",
-                "HDMI",
-                "HDMI"
+                "PC-4",
+                "eth",
+                "eth"
+            ],
+            [
+                "",
+                "",
+                ""
             ],
             [
                 "",
@@ -46,52 +51,42 @@
                 ""
             ],
             [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "HDMI",
-                "STP"
+                "",
+                "",
+                ""
             ],
             [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "HDMI",
-                "STP"
+                "",
+                "",
+                ""
             ],
             [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "HDMI",
-                "STP"
-            ],
-            [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "HDMI",
-                "STP"
+                "",
+                "",
+                ""
             ]
         ]
     },
     "first-level-right": {
         "labels": [
             [
-                "Webex EQ CODEC, CS-CODEC-EQ-NR++",
-                "TEST",
-                "TEST"
+                "Laptop-1",
+                "eth",
+                "eth"
             ],
             [
-                "Webex EQ CODEC, CS-CODEC-EQ-NR++",
-                "TEST",
-                "TEST"
+                "Server-1",
+                "eth",
+                "eth"
             ],
             [
-                "DA HD 4K Plus, 60-1607-01",
-                "TEST",
-                "TEST"
+                "Server-2",
+                "eth",
+                "eth"
             ],
             [
-                "232-ATSC 4K HDTV, 5114-001",
-                "TEST",
-                "TEST"
-            ],
-            [
-                "Test",
-                "HDMI",
+                "",
+                "",
                 ""
             ],
             [
@@ -100,43 +95,43 @@
                 ""
             ],
             [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "STP",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "STP",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "STP",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "DTP 4K 230 Tx, 60-1271-12",
-                "STP",
-                "HDMI"
+                "",
+                "",
+                ""
+            ],
+            [
+                "",
+                "",
+                ""
             ]
         ]
     },
     "second-level-left": {
         "labels": [
             [
-                "TEST",
-                "HDMI",
-                "HDMI"
-            ],
-            [
                 "",
                 "",
                 ""
             ],
             [
-                "OneLink Bridge",
-                "STP",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
                 "",
@@ -154,24 +149,29 @@
                 ""
             ],
             [
-                "BYOD",
-                "NA",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "BYOD",
-                "NA",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "BYOD",
-                "NA",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "BYOD",
-                "NA",
-                "HDMI"
+                "",
+                "",
+                ""
+            ],
+            [
+                "",
+                "",
+                ""
             ]
         ]
     },
@@ -208,24 +208,24 @@
                 ""
             ],
             [
-                "75 UHD Samsung",
-                "QB75R-N",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "75 UHD Samsung",
-                "QB75R-N",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "75 UHD Samsung",
-                "QB75R-N",
-                "HDMI"
+                "",
+                "",
+                ""
             ],
             [
-                "75 UHD Samsung",
-                "QB75R-N",
-                "HDMI"
+                "",
+                "",
+                ""
             ]
         ]
     },
@@ -242,9 +242,9 @@
                 ""
             ],
             [
-                "Vaddio Roboshot 12E, 999-99600-100",
                 "",
-                "STP"
+                "",
+                ""
             ],
             [
                 "",
@@ -321,7 +321,7 @@
                 ""
             ],
             [
-                "TEST",
+                "",
                 "",
                 ""
             ],
@@ -446,27 +446,15 @@
         ]
     },
     "connections-left": [
-        "HDMI 1",
-        "HDMI 2",
-        "HDMI 3",
-        "HDMI 4",
-        "HDMI 5",
-        "HDMI 6",
-        "DTP 7",
-        "DTP 8",
-        "DTP 9",
-        "DTP 10"
+        "ETH-1",
+        "ETH-2",
+        "ETH-3",
+        "ETH-4"
     ],
     "connections-right": [
-        "HDMI 1",
-        "HDMI 2",
-        "HDMI 3",
-        "HDMI 4",
-        "HDMI 5a",
-        "HDMI 6a",
-        "DTP 5b",
-        "DTP 6b",
-        "DTP 7",
-        "DTP 8"
+        "ETH-5",
+        "ETH-6",
+        "ETH-7",
+        "ETH-8"
     ]
 }
