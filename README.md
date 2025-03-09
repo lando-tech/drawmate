@@ -77,6 +77,8 @@ git push origin feature/my-new-template
 - The graph can currently span up to **eight "levels"**, with each level representing a new tier of appliances or devices connected to the `Matrix`.
 - The modular design allows for an **unlimited number of levels** to be added to the graph, enabling highly complex network diagrams if needed.
 
+---
+
 ## **Examples**
 
 Below is an example of the JSON input for Drawmate. While specifying graph dimensions is optional (default values are applied if omitted), you can set custom dimensions if needed.
@@ -86,6 +88,9 @@ Below is an example of the JSON input for Drawmate. While specifying graph dimen
 - 🚫 **Signaling Gaps:** If there is a gap between appliances, pass an empty string (`""`) in the list. 
     - Example: If the `Matrix` has 4 connections but only 3 appliances, include 4 connections in the list with a blank string representing the gap.
 - **Connection/Flow:** The arrows/connection currently flow left to right, but this is also easily adjusted.
+- **Label Entries:** Label entries follow this basic structure
+  - `["Label of appliance", "input/output", "input/output"]`
+  - `"connections-left"` refers to the connections on the matrix itself
 
 ### **Usage**
 - ```python3 main.py <path/to/input.json> <path/to/output.drawio>```
@@ -104,7 +109,7 @@ Below is an example of the JSON input for Drawmate. While specifying graph dimen
         "height": 4000
     },
     "matrices": {
-        "labels": "Network Appliance",
+        "labels": "Video/Audio Codec",
         "width": 200,
         "height": 400,
         "x": 2000,
@@ -113,38 +118,38 @@ Below is an example of the JSON input for Drawmate. While specifying graph dimen
     },
     "first-level-left": {
         "labels": [
-            ["PC-1", "eth0", "eth0"],
-            ["PC-2", "eth0", "eth0"],
-            ["PC-3", "eth0", "eth0"],
-            ["PC-4", "eth0", "eth0"]
+            ["AV Appliance", "HDMI", "HDMI"],
+            ["AV Appliance", "HDMI", "HDMI"],
+            ["AV Appliance", "HDMI", "HDMI"],
+            ["AV Appliance", "HDMI", "HDMI"]
         ]
     },
     "first-level-right": {
         "labels": [
-            ["Laptop-1", "eth0", "eth0"],
+            ["AV Audio", "MIC-IN", "OUT"],
             ["", "", ""],  // 🚫 Gap between appliances
-            ["Server-1", "eth0", "eth0"],
-            ["Server-2", "eth0", "eth0"]
+            ["AV Appliance", "HDMI", "HDMI"],
+            ["AV Appliance", "HDMI", "HDMI"]
         ]
     },
     "connections-left": [
-        "ETH-1",
-        "ETH-2",
-        "ETH-3",
-        "ETH-4"
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI"
     ],
     "connections-right": [
-        "ETH-5",
-        "ETH-6",
-        "ETH-7",
-        "ETH-8"
+        "MIC",
+        "HDMI",
+        "HDMI",
+        "HDMI"
     ]
 }
 ```
 ## Output
 
-- This is a very simple implementation, with only one level of connections.
-- Here is a view of what the above JSON would output:
+- This is a very simple implementation, with only one level of connections for a basic AV Codec.
+- Here is a view of what the above JSON would output (the numbering system can easily be altered to fit specific use cases):
  
 ---
 

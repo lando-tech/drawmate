@@ -6,7 +6,7 @@
         "height": 4000
     },
     "matrices": {
-        "labels": "Network Appliance",
+        "labels": "Video/Audio Codec",
         "width": 200,
         "height": 400,
         "x": 2000,
@@ -16,33 +16,33 @@
     "first-level-left": {
         "labels": [
             [
-                "PC-1",
-                "eth0",
-                "eth0"
+                "AV Appliance",
+                "HDMI",
+                "HDMI"
             ],
             [
-                "PC-2",
-                "eth0",
-                "eth0"
+                "AV Appliance",
+                "HDMI",
+                "HDMI"
             ],
             [
-                "PC-3",
-                "eth0",
-                "eth0"
+                "AV Appliance",
+                "HDMI",
+                "HDMI"
             ],
             [
-                "PC-4",
-                "eth0",
-                "eth0"
+                "AV Appliance",
+                "HDMI",
+                "HDMI"
             ]
         ]
     },
     "first-level-right": {
         "labels": [
             [
-                "Laptop-1",
-                "eth0",
-                "eth0"
+                "AV Audio",
+                "MIC IN",
+                "OUT"
             ],
             [
                 "",
@@ -50,27 +50,27 @@
                 ""
             ],
             [
-                "Server-1",
-                "eth0",
-                "eth0"
+                "AV Appliance",
+                "HDMI",
+                "HDMI"
             ],
             [
-                "Server-2",
-                "eth0",
-                "eth0"
+                "AV Appliance",
+                "HDMI",
+                "HDMI"
             ]
         ]
     },
     "connections-left": [
-        "ETH-1",
-        "ETH-2",
-        "ETH-3",
-        "ETH-4"
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI"
     ],
     "connections-right": [
-        "ETH-1",
-        "ETH-2",
-        "ETH-3",
-        "ETH-4"
+        "MIC",
+        "HDMI",
+        "HDMI",
+        "HDMI"
     ]
 }
