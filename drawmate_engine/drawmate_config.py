@@ -110,18 +110,19 @@ class DrawmateConfig:
             "seventh",
             "eighth",
         ]
-        for level in levels:
-            for key, value in self.template_data.items():
-                current_key = key.split("-")
-                current_level = current_key[0]
-                current_side = current_key[-1]
+        if self.template_data:
+            for level in levels:
+                for key, value in self.template_data.items():
+                    current_key = key.split("-")
+                    current_level = current_key[0]
+                    current_side = current_key[-1]
 
-                if current_level == level and current_side == "left":
-                    left_side.append(list(value["labels"]))
-                elif current_level == level and current_side == "right":
-                    right_side.append(list(value["labels"]))
+                    if current_level == level and current_side == "left":
+                        left_side.append(list(value["labels"]))
+                    elif current_level == level and current_side == "right":
+                        right_side.append(list(value["labels"]))
 
-        return left_side, right_side
+            return left_side, right_side
 
     def get_matrix_connection_labels(self) -> tuple[list, list]:
         return self.template_data.get("connections-left"), self.template_data.get(

@@ -1,0 +1,76 @@
+{
+    "graph-dimensions": {
+        "dx": 4000,
+        "dy": 4000,
+        "width": 4000,
+        "height": 4000
+    },
+    "matrices": {
+        "labels": "Network Appliance",
+        "width": 200,
+        "height": 400,
+        "x": 2000,
+        "y": 2000,
+        "num_connections": 4
+    },
+    "first-level-left": {
+        "labels": [
+            [
+                "PC-1",
+                "eth0",
+                "eth0"
+            ],
+            [
+                "PC-2",
+                "eth0",
+                "eth0"
+            ],
+            [
+                "PC-3",
+                "eth0",
+                "eth0"
+            ],
+            [
+                "PC-4",
+                "eth0",
+                "eth0"
+            ]
+        ]
+    },
+    "first-level-right": {
+        "labels": [
+            [
+                "Laptop-1",
+                "eth0",
+                "eth0"
+            ],
+            [
+                "",
+                "",
+                ""
+            ],
+            [
+                "Server-1",
+                "eth0",
+                "eth0"
+            ],
+            [
+                "Server-2",
+                "eth0",
+                "eth0"
+            ]
+        ]
+    },
+    "connections-left": [
+        "ETH-1",
+        "ETH-2",
+        "ETH-3",
+        "ETH-4"
+    ],
+    "connections-right": [
+        "ETH-1",
+        "ETH-2",
+        "ETH-3",
+        "ETH-4"
+    ]
+}
