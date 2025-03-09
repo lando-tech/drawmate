@@ -51,7 +51,7 @@ class PathFinder:
         return sorted(file_paths, key=lambda x: os.path.getmtime(x))
 
     def get_xml_templates(self):
-        """Return the contents of the xml uploads dir, sorted by timestamp"""
+        """Return the contents of the xml templates dir, sorted by timestamp"""
         with os.scandir(self.xml_template_dir) as entries:
             file_paths = [entry.path for entry in entries if entry.is_file()]
 

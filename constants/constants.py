@@ -18,22 +18,22 @@ MATRIX_LABEL = {
     "y_offset": 40,
 }
 
-DTP_INPUT_OUTPUT_DIMS = {
+APPLIANCE_INPUT_OUTPUT_DIMS = {
     "width": 60,
     "height": 40,
 }
 
-DTP_ATTRIBUTES = {
+APPLIANCE_ATTRIBUTES = {
     "width": 160,
     "height": 90,
 }
 
-DTP_INPUT = {
+APPLIANCE_INPUT = {
     "y_offset": 45,
     "x_offset": 5,
 }
 
-DTP_OUTPUT = {
+APPLIANCE_OUTPUT = {
     "y_offset": 45,
     "x_offset": 120,
 }

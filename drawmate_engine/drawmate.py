@@ -1,26 +1,41 @@
+"""
+This is the main entry point for the templating engine.
+It contains the core logic for making a basic diagram.
+Use this module as a template to implement various network topologies and connection logic.
+"""
 from drawmate_engine.drawmate_config import DrawmateConfig
 from drawmate_engine.matrix import TextBox
-from drawmate_engine.matrix import Matrix, Dtp, Connections, Rect
+from drawmate_engine.matrix import Matrix, Appliance, Connections, Rect
 from drawmate_engine.doc_builder import DocBuilder, MxObject
 from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
     MATRIX_CONNECTIONS,
     MATRIX_LABEL,
     ARROW_CONNECTIONS,
-    DTP_ATTRIBUTES,
-    DTP_INPUT,
-    DTP_OUTPUT,
-    DTP_INPUT_OUTPUT_DIMS
+    APPLIANCE_ATTRIBUTES,
+    APPLIANCE_INPUT,
+    APPLIANCE_OUTPUT,
+    APPLIANCE_INPUT_OUTPUT_DIMS
 )
+
 
 class Drawmate(DocBuilder):
 
+    """
+    This class serves as a basic template to construct a generic AV/Audio/Network diagram,
+    with an instance of the Matrix class serving as the center of the infrastructure.
+    """
     def __init__(self, input_file: str, output_file: str):
         super().__init__()
+        # JSON input file
         self.input_file = input_file
+        # File to write the output
         self.output_file = output_file
+        # An instance of the DrawmateConfig class
         self.dc = DrawmateConfig(template_path=self.input_file)
+        # The multidimensional array return from the drawmate_config module
         self.matrix_array = self.dc.build_matrix_array()
+        # Create an instance of the Matrix class
         self.matrix = self.create_matrix()
         self.node_dict = {}
         self.total_height_nodes = 0
@@ -112,6 +127,11 @@ class Drawmate(DocBuilder):
         mx_geo_elem.appendChild(target_elem)
 
     def build_graph(self):
+        """
+        Dispatches each method to create the graph/xml document
+        Returns:
+        None
+        """
         # Set Graph values
         self.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4000)
         # Initialize the matrix
@@ -141,6 +161,11 @@ class Drawmate(DocBuilder):
         self.create_xml(output_file_path=self.output_file)
 
     def create_matrix(self) -> Matrix:
+        """
+        Create the matrix object
+        Returns:
+            Matrix: An instance of the Matrix class
+        """
         matrix_attrib = self.dc.get_matrix_dimensions()
         self.check_matrix_dimensions(matrix_attrib)
         return Matrix(
@@ -153,6 +178,11 @@ class Drawmate(DocBuilder):
         )
 
     def create_matrix_connections(self):
+        """
+        Create the connection labels for the matrix
+        Returns:
+        None
+        """
         # Left and right side labels
         left_side, right_side = self.dc.get_matrix_connection_labels()
         # Total number of connections
@@ -187,6 +217,11 @@ class Drawmate(DocBuilder):
             y += MATRIX_CONNECTIONS["label_spacing"]
 
     def create_matrix_label(self):
+        """
+        Create the label for the matrix
+        Returns:
+        None
+        """
         x = int(self.matrix.attributes["x"])
         y = int(self.matrix.attributes["y"]) - MATRIX_LABEL["y_offset"]
         width = int(self.matrix.attributes["width"])
@@ -203,16 +238,15 @@ class Drawmate(DocBuilder):
         )
         self.create_mxobject(matrix_text_box.attributes)
 
-
-
-    def process_nodes(self, matrix_arr: tuple[list, list]) -> dict[str, list[Dtp]]:
+    def process_nodes(self, matrix_arr: tuple[list, list]) -> dict[str, list[Appliance]]:
         """
-
+        Process the nodes and configure the x and y spacing. This method will then
+        dispatch the nodes to the create_node_array method.
         Args:
             matrix_arr: Matrix Array of left and right nodes.
 
         Returns:
-            A dictionary with a list of right and left side Dtp object arrays.
+            dict[str, list[Appliance]]: A dictionary with a list of right and left side Appliance object arrays.
         """
 
         node_dict = {}
@@ -233,11 +267,11 @@ class Drawmate(DocBuilder):
 
     def create_node_array(
         self, node_arr: list, x, start_y, x_spacing, y_spacing, left: bool
-    ) -> list[Dtp]:
+    ) -> list[Appliance]:
         """
-        Creates the Dtp nodes for the left and right sides of the matrix.
+        Creates the Appliance nodes for the left and right sides of the matrix.
         Args:
-            node_arr: The multidimensional array of objects, which will be instantiated as Dtp objects
+            node_arr: The multidimensional array of objects, which will be instantiated as Appliance objects
             x: The starting x coordinate
             start_y: The starting y coordinate (the matrix y - spacing/offset)
             x_spacing: The x spacing for each row on the grid
@@ -245,10 +279,10 @@ class Drawmate(DocBuilder):
             left: If the multidimensional array belongs to the left or right side of the grid
 
         Returns:
-                A list of Dtp objects
+                list[Appliance]: A list of Appliance objects
         """
         if not left:
-            x = x + 40
+            x += 40
         appliance_array = []
         for index, item in enumerate(node_arr):
             y = start_y
@@ -257,39 +291,47 @@ class Drawmate(DocBuilder):
             for r_index, row in enumerate(item):
                 label, l_input, r_output = row
                 y += y_spacing
-                dtp = Dtp(x, y, label, l_input, r_output)
+                dtp = Appliance(x, y, label, l_input, r_output)
                 self.total_height_nodes += int(dtp.attributes["height"])
                 appliance_array.append(dtp)
 
         return appliance_array
 
-    def create_nodes(self, dtp_array: list[Dtp]):
-        for index, node in enumerate(dtp_array):
+    def create_nodes(self, appliance_array: list[Appliance]):
+        """
+        Creates the mxobject instance for each node iteratively
+        Args:
+            appliance_array: A list of Appliance objects
+
+        Returns:
+            None
+        """
+        for index, node in enumerate(appliance_array):
             if node.attributes["label"].strip() == "":
                 continue
             else:
                 self.create_mxobject(node.attributes, has_label=False)
 
-    def create_node_in_out_textbox(self, dtp_array: list[Dtp]) -> None:
+    def create_node_in_out_textbox(self, appliance_array: list[Appliance]) -> None:
         """
         Create the textbox objects for the input and output labels for each node
         Args:
-            dtp_array: The array of left or right side Dtp objects
+            appliance_array: The array of left or right side Appliance objects
 
         Returns:
-        None
+            None
         """
 
-        for dtp in dtp_array:
+        for node in appliance_array:
             # Input attributes
-            input_x = int(dtp.attributes["x"]) + DTP_INPUT["x_offset"]
-            input_y = int(dtp.attributes["y"]) + DTP_INPUT["y_offset"]
+            input_x = int(node.attributes["x"]) + APPLIANCE_INPUT["x_offset"]
+            input_y = int(node.attributes["y"]) + APPLIANCE_INPUT["y_offset"]
             # Output attributes
-            output_x = int(dtp.attributes["x"]) + DTP_OUTPUT["x_offset"]
-            output_y = int(dtp.attributes["y"]) + DTP_OUTPUT["y_offset"]
+            output_x = int(node.attributes["x"]) + APPLIANCE_OUTPUT["x_offset"]
+            output_y = int(node.attributes["y"]) + APPLIANCE_OUTPUT["y_offset"]
             # width and height
-            width = DTP_INPUT_OUTPUT_DIMS["width"]
-            height = DTP_INPUT_OUTPUT_DIMS["height"]
+            width = APPLIANCE_INPUT_OUTPUT_DIMS["width"]
+            height = APPLIANCE_INPUT_OUTPUT_DIMS["height"]
 
             # Input
             input_textbox = TextBox(
@@ -297,7 +339,7 @@ class Drawmate(DocBuilder):
                 y=input_y,
                 width=width,
                 height=height,
-                label=dtp.input_label,
+                label=node.input_label,
                 _type="textbox",
             )
 
@@ -307,80 +349,107 @@ class Drawmate(DocBuilder):
                 y=output_y,
                 width=width,
                 height=height,
-                label=dtp.output_label,
+                label=node.output_label,
                 _type="textbox",
             )
             self.create_mxobject(input_textbox.attributes)
             self.create_mxobject(output_textbox.attributes)
 
-    def create_node_label(self, dtp_array: list[Dtp]):
+    def create_node_label(self, appliance_array: list[Appliance]):
+        """
+        Create labels for each node/appliance
+        Args:
+            appliance_array: A list of either left-side or right-side appliances/nodes
 
-        for d_index, dtp in enumerate(dtp_array):
-            if dtp.attributes["label"].strip() == "":
+        Returns:
+            None
+        """
+
+        for a_index, appliance in enumerate(appliance_array):
+            if appliance.attributes["label"].strip() == "":
                 continue
             label_textbox = Rect(
-                x=dtp.attributes["x"],
-                y=dtp.attributes["y"],
-                width=dtp.attributes["width"],
+                x=appliance.attributes["x"],
+                y=appliance.attributes["y"],
+                width=appliance.attributes["width"],
                 height=40,
-                label=dtp.attributes["label"],
+                label=appliance.attributes["label"],
                 _type="text-box",
             )
             self.create_mxobject(label_textbox.attributes)
 
-    def create_node_ptrs(self, dtp_array: list[Dtp], left: bool):
+    def create_node_ptrs(self, appliance_array: list[Appliance], left: bool):
+        """
+        Create pointers for each node to manage connections on the graph
+        Args:
+            appliance_array: The array of either left/right side appliances
+            left: if the array being passed in is on the left of the matrix
+
+        Returns:
+            None
+        """
         max_columns = self.matrix.num_connections
-        total_nodes = len(dtp_array)
-        for i, dtp in enumerate(dtp_array):
+        total_nodes = len(appliance_array)
+        for i, appliance in enumerate(appliance_array):
             col, row = self.get_corresponding_index(i, max_columns)
             next_col = col + 1
             previous_col = col - 1
             if col == 0:
                 if left:
-                    dtp.right_ptr = self.matrix
+                    appliance.right_ptr = self.matrix
                 else:
-                    dtp.left_ptr = self.matrix
+                    appliance.left_ptr = self.matrix
             else:
                 previous_node_index = (previous_col * max_columns) + row
                 if 0 <= previous_node_index < total_nodes:
                     if left:
-                        dtp.right_ptr = dtp_array[previous_node_index]
+                        appliance.right_ptr = appliance_array[previous_node_index]
                     else:
-                        dtp.left_ptr = dtp_array[previous_node_index]
+                        appliance.left_ptr = appliance_array[previous_node_index]
 
             next_node_index = (next_col * max_columns) + row
             if 0 <= next_node_index < total_nodes:
                 if left:
-                    dtp.left_ptr = dtp_array[next_node_index]
+                    appliance.left_ptr = appliance_array[next_node_index]
                 else:
-                    dtp.right_ptr = dtp_array[next_node_index]
+                    appliance.right_ptr = appliance_array[next_node_index]
 
-    def create_connections(self, dtp_array: list[Dtp], left: bool):
+    def create_connections(self, appliance_array: list[Appliance], left: bool):
+        """
+        Create connection/arrow objects for each appliance based on the left and right
+        pointers
+        Args:
+            appliance_array: The array of either left/right side appliances
+            left: if the array being passed in is on the left of the matrix
+
+        Returns:
+            None
+        """
         counter = 0
-        for dtp_index, dtp in enumerate(dtp_array):
+        for app_index, appliance in enumerate(appliance_array):
             counter += 1
             if counter > int(self.matrix.num_connections):
                 counter = 1
 
             col, row = self.get_corresponding_index(
-                dtp_index, self.matrix.num_connections
+                app_index, self.matrix.num_connections
             )
-            if dtp.attributes["label"] == "":
+            if appliance.attributes["label"] == "":
                 pass
             else:
                 if left:
-                    ptr = dtp.right_ptr
+                    ptr = appliance.right_ptr
                     if ptr.attributes:
-                        connection_mgr = Connections(dtp, ptr, col, left)
+                        connection_mgr = Connections(appliance, ptr, col, left)
                         if col == 0:
                             arrow_label = (
-                                 dtp.output_label
+                                appliance.output_label
                                 + "  "
                                 + self.generate_connection_number(col, counter, left)
                             )
                         else:
                             arrow_label = (
-                                  ptr.input_label
+                                ptr.input_label
                                 + "  "
                                 + self.generate_connection_number(col, counter, left)
                             )
@@ -397,18 +466,18 @@ class Drawmate(DocBuilder):
                         self.create_mxobject(arrow.attributes, is_arrow=True)
                         self.create_mxobject(arrow_textbox.attributes)
                 else:
-                    ptr = dtp.left_ptr
+                    ptr = appliance.left_ptr
                     if ptr.attributes:
-                        connection_mgr = Connections(ptr, dtp, col, left)
+                        connection_mgr = Connections(ptr, appliance, col, left)
                         if col == 0:
                             arrow_label = (
-                                  dtp.input_label
+                                appliance.input_label
                                 + "  "
                                 + self.generate_connection_number(col, counter, left)
                             )
                         else:
                             arrow_label = (
-                                  ptr.output_label
+                                ptr.output_label
                                 + "  "
                                 + self.generate_connection_number(col, counter, left)
                             )
@@ -435,10 +504,10 @@ class Drawmate(DocBuilder):
             matrix_dims (MatrixDimensions) : The dimensions returned by the config file
 
         Returns:
-        True if the dimensions are within bounds
+            bool: True if the dimensions are within bounds
         """
-        # Starts +70 on the y axis (which puts it below the matrix y) and increments that spacing by +120
-        total_height = (matrix_dims.num_connections * (DTP_ATTRIBUTES["height"] + 20)) + 70
+        # Starts +70 on the y-axis (which puts it below the matrix y) and increments that spacing by +120
+        total_height = (matrix_dims.num_connections * (APPLIANCE_ATTRIBUTES["height"] + 20)) + 70
         if matrix_dims.height < total_height:
             print(f"Matrix not large enough. Height = {matrix_dims.height}px")
             print(f"Total height of appliances w/spacing = {total_height}px")
@@ -451,6 +520,16 @@ class Drawmate(DocBuilder):
 
     @staticmethod
     def generate_connection_number(column_index: int, counter: int, left: bool) -> str:
+        """
+        Create a numbering system for the connections between each appliance
+        Args:
+            column_index: The current column index of the node
+            counter: The counter to track number position of the appliance
+            left: If the appliance is on the left or right of the matrix
+
+        Returns:
+        Formatted string with the correct number
+        """
         if left:
             if counter < 10 and column_index == 0:
                 return "000" + str(counter)
@@ -485,12 +564,3 @@ class Drawmate(DocBuilder):
         column_index = node_index // max_per_column
         row_index = node_index % max_per_column
         return column_index, row_index
-
-    @staticmethod
-    def format_label(label: str, delimiter: str):
-        split_label = label.split()
-        for t_index, char in enumerate(split_label):
-            if char == delimiter:
-                split_label.insert(t_index, '\n')
-
-        return split_label

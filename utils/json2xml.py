@@ -1,5 +1,5 @@
 """
-Summary:
+Summary: Convert a json input to drawio.xml format or drawio.xml to json
 """
 
 import json

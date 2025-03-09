@@ -3,7 +3,7 @@ Summary: This is the matrix module, which servers as the architecture for each N
          on the graph.
 """
 
-from constants.constants import DTP_ATTRIBUTES
+from constants.constants import APPLIANCE_ATTRIBUTES
 
 
 """
@@ -117,6 +117,7 @@ class Matrix(Rect):
     """
     # The default xml style
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
+
     def __init__(
         self,
         connections_count: int,
@@ -125,13 +126,13 @@ class Matrix(Rect):
         height: int,
         x: int,
         y: int,
-        style = DEFAULT_STYLE
+        style=DEFAULT_STYLE
     ):
         super().__init__(x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix", style=style)
         self.num_connections = connections_count
 
 
-class Dtp(Rect):
+class Appliance(Rect):
     """
     Summary: This is child class of the Rect class. It inherits the attributes dictionary.
     This class manages the attributes of the appliances that will be attached to the matrix.
@@ -149,7 +150,7 @@ class Dtp(Rect):
         self, x: int, y: int, label, input_label, output_label, style=DEFAULT_STYLE
     ):
         super().__init__(
-            x=x, y=y, style=style, label=label, _type="DTP", width=DTP_ATTRIBUTES["width"], height=DTP_ATTRIBUTES["height"]
+            x=x, y=y, style=style, label=label, _type="DTP", width=APPLIANCE_ATTRIBUTES["width"], height=APPLIANCE_ATTRIBUTES["height"]
         )
         self.left_ptr = None
         self.right_ptr = None
@@ -157,6 +158,11 @@ class Dtp(Rect):
         self.output_label = output_label
 
     def clear_label(self):
+        """
+        Reset the label as a blank string
+        Returns:
+        None
+        """
         self.attributes["label"] = ""
 
 
@@ -235,7 +241,8 @@ class Arrow(ArrowRect):
 class Connections:
     """
     Summary: Accepts an instance of a target and source rect, and manages the connections between the two objects.
-    It also servers as a dispatcher for the Arrow class and adds the instance of the Arrow class between the source and target.
+    It also servers as a dispatcher for the Arrow class
+    and adds an instance of the Arrow class between the source and target.
 
     Args:
         target_rect (Rect): An instance of a target Rect.
@@ -260,16 +267,12 @@ class Connections:
             self.source_y = self.target_y
         elif col_index == 0:
             self.source_y = int(target_rect.attributes["y"]) + (
-                # 3715
-                # 3734.47
                 (int(target_rect.attributes["height"]) // 2)
                 + self.y_offset_source
             )
             self.target_y = self.source_y
         else:
             self.source_y = int(source_rect.attributes["y"]) + (
-                # 3715
-                # 3734.47
                 (int(source_rect.attributes["height"]) // 2)
                 + self.y_offset_source
             )

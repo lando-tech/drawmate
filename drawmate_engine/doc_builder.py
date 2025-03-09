@@ -1,4 +1,4 @@
-"""Summary"""
+"""Add summary"""
 
 from xml.dom.minidom import getDOMImplementation
 from datetime import datetime
@@ -14,11 +14,12 @@ pf = PathFinder()
 log_mgr = LogManager()
 
 
-def get_timestamp():
-    """_summary_
+def get_timestamp() -> str:
+    """
+    Create a timestamp for the template file
 
     Returns:
-        _type_: _description_
+        str: A formatted timestamp
     """
     timestamp = datetime.now().replace(microsecond=0)
     formatted_timestamp = timestamp.strftime("%Y-%m-%dT%I%M%S")
@@ -265,7 +266,7 @@ class MxObject(DocBuilder):
     followed by mxCell, mxGeometry, mxPoint, and mxArray (if any). The MxObject class can be
     instantiated as much as needed to create a new object on the graph, ensuring the structure
     is accurate and consistent throughout template/diagram creation. It is crucial that only
-    one doc builder class exists. Since MxObject inherits the top level structure of the file.
+    one instance of the doc builder class exists since MxObject inherits the top level structure of the file.
     Otherwise, the object might be added to the wrong instance of a DocBuilder object, resulting
     in inaccurate xml structure.
     """
