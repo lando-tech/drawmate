@@ -12,76 +12,12 @@
 2. **Scripting Capability:** Extend functionality by scripting advanced layouts with the provided base classes.
 3. **Draw.io Compatibility:** Export diagrams in Draw.io XML format for further customization or sharing.
 
-## **Basic Overview**
-
-Drawmate's engine generates a wiremap or diagram using the `Matrix` class as the central component of the layout. The `Matrix` serves as a hub, representing a device such as:
-
-- 🛡️ **Firewall**
-- 🖥️ **Switch**
-- 🎛️ **Audio/Video Codec**
-- 🔗 **Any Centralized Appliance**
-
-## 🧠 **Entry Point: `drawmate.py`**
-
-The `drawmate.py` module `drawmate_engine/drawmate.py` is the primary entry point for Drawmate, handling most of the diagram generation logic. It serves as a **template module**, offering a foundation for contributors to create new diagram templates with minimal effort.
-
-### **How `drawmate.py` Works**
-- 🛠️ **Core Logic:** Implements the primary flow for generating wiremaps from JSON input.
-- 📑 **Template Structure:** The module follows a modular and reusable design, enabling quick adaptation for new use cases.
-- 🔄 **Customizable:** By modifying the core logic, you can easily extend Drawmate's capabilities to support different diagram types.
-
 ---
 
-### 🧬 **Creating New Templates**
-
-Interested in contributing? A great way to get started is by creating new template modules:
-
-1. **Clone the Repository:**
-```bash
-git clone https://github.com/lando-tech/drawmate.git
-```
-
-2. **Create a New Branch:** Name the branch after your new template.
-```bash
-git checkout -b feature/my-new-template
-```
-
-3. **Copy the `drawmate.py` Template:** Use the existing template as a starting point.
-```bash
-cp drawmate_engine/drawmate.py drawmate_engine/my_custom_template.py
-```
-
-4. **Modify the Logic:** Adapt the module to fit your custom template's requirements.
-- 🛠️ **Add Custom Logic:** Implement new layouts or connection strategies.
-- 📑 **Update `main.py`:** Adjust the parameter to point to your new template.
-- ✅ **Test Your Module:**
-```bash
-python main.py config/example.json output/custom_template_output.drawio
-```
-
-5. **Submit a Pull Request:** Make sure to describe the new template and its use case clearly.
-```bash
-git add .
-git commit -m "Add new template for custom diagram generation"
-git push origin feature/my-new-template
-```
-
-6. **Open a Pull Request:** Submit your changes on GitHub, providing a detailed description of your template and any special instructions.
-
-### **How It Works**
-- **Node Expansion:** Nodes span outward from the `Matrix` in both directions, forming a clear and organized network map.
-- **Connection Labeling:** Connections are automatically labeled based on the source input type provided in the JSON API.
-- **Flexible Numbering System:** The default numbering system follows organizational standards but is easily customizable for any use case.
-
-### **Scalability**
-- The graph can currently span up to **eight "levels"**, with each level representing a new tier of appliances or devices connected to the `Matrix`.
-- The modular design allows for an **unlimited number of levels** to be added to the graph, enabling highly complex network diagrams if needed.
+### **Usage**
+- ```python3 main.py <path/to/input.json> <path/to/output.drawio>```
 
 ---
-
-## **Examples**
-
-Below is an example of the JSON input for Drawmate. While specifying graph dimensions is optional (default values are applied if omitted), you can set custom dimensions if needed.
 
 ### **Key Points:**
 - 📍 **Matrix Positioning:** Set the starting `x` and `y` coordinates for the `Matrix`. All connected nodes will be placed relative to this position.
@@ -91,14 +27,8 @@ Below is an example of the JSON input for Drawmate. While specifying graph dimen
 - **Label Entries:** Label entries follow this basic structure
   - `["Label of appliance", "input/output", "input/output"]`
   - `"connections-left"` refers to the connections on the matrix itself
-
-### **Usage**
-- ```python3 main.py <path/to/input.json> <path/to/output.drawio>```
----
-
-### **Basic JSON Structure**
-- To add more levels/columns, just use the same naming convention `second-level-left`, `third-level-left` and so on.
-- **IMPORTANT:** Make sure the value of `num_connections` matches the number of appliances in each entry. 
+- **Add more levels:** To add more levels/columns, just use the same naming convention `second-level-left`, `third-level-left` and so on.
+- **IMPORTANT:** Make sure the value of `num_connections` matches the number of appliances in each entry.
 
 ```json
 {
@@ -154,6 +84,71 @@ Below is an example of the JSON input for Drawmate. While specifying graph dimen
 ---
 
 ![Basic Network Diagram](data/images/test.drawio.png)
+
+---
+
+### **Examples** ###
+To see more examples, go to "data/images/" in the project directory.
+
+---
+
+## **Basic Overview**
+
+Drawmate's engine generates a wiremap or diagram using the `Matrix` class as the central component of the layout. The `Matrix` serves as a hub, representing a device such as:
+
+- 🛡️ **Firewall**
+- 🖥️ **Switch**
+- 🎛️ **Audio/Video Codec**
+- 🔗 **Any Centralized Appliance**
+
+## 🧠 **Entry Point: `drawmate.py`**
+
+The `drawmate.py` module `drawmate_engine/drawmate.py` is the primary entry point for Drawmate, handling most of the diagram generation logic. It serves as a **template module**, offering a foundation for contributors to create new diagram templates with minimal effort.
+
+### **How `drawmate.py` Works**
+- 🛠️ **Core Logic:** Implements the primary flow for generating wiremaps from JSON input.
+- 📑 **Template Structure:** The module follows a modular and reusable design, enabling quick adaptation for new use cases.
+- 🔄 **Customizable:** By modifying the core logic, you can easily extend Drawmate's capabilities to support different diagram types.
+
+---
+
+### 🧬 **Creating New Templates**
+
+Interested in contributing? A great way to get started is by creating new template modules or checkout the Issues page:
+
+1. **Clone the Repository:**
+```bash
+git clone https://github.com/lando-tech/drawmate.git
+```
+
+2. **Create a New Branch:** Name the branch after your new template.
+```bash
+git checkout -b feature/my-new-template
+```
+
+3. **Copy the `drawmate.py` Template:** Use the existing template as a starting point.
+```bash
+cp drawmate_engine/drawmate.py drawmate_engine/my_custom_template.py
+```
+
+4. **Modify the Logic:** Adapt the module to fit your custom template's requirements.
+- 🛠️ **Add Custom Logic:** Implement new layouts or connection strategies.
+- 📑 **Update `main.py`:** Adjust the parameter to point to your new template.
+- ✅ **Test Your Module:**
+```bash
+python main.py config/example.json output/custom_template_output.drawio
+```
+
+5. **Submit a Pull Request:** Make sure to describe the new template and its use case clearly.
+```bash
+git add .
+git commit -m "Add new template for custom diagram generation"
+git push origin feature/my-new-template
+```
+
+6. **Open a Pull Request:** Submit your changes on GitHub, providing a detailed description of your template and any special instructions.
+
+---
 
 ## Author
 

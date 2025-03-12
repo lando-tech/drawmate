@@ -444,13 +444,13 @@ class Drawmate(DocBuilder):
                         if col == 0:
                             arrow_label = (
                                 appliance.output_label
-                                + "  "
+                                + " "
                                 + self.generate_connection_number(col, counter, left)
                             )
                         else:
                             arrow_label = (
-                                ptr.input_label
-                                + "  "
+                                appliance.output_label
+                                + " "
                                 + self.generate_connection_number(col, counter, left)
                             )
 
@@ -471,15 +471,15 @@ class Drawmate(DocBuilder):
                         connection_mgr = Connections(ptr, appliance, col, left)
                         if col == 0:
                             arrow_label = (
-                                appliance.input_label
-                                + "  "
-                                + self.generate_connection_number(col, counter, left)
+                                appliance.output_label
+                                + " "
+                                + self.generate_connection_number(col, counter, False)
                             )
                         else:
                             arrow_label = (
-                                ptr.output_label
-                                + "  "
-                                + self.generate_connection_number(col, counter, left)
+                                appliance.output_label
+                                + " "
+                                + self.generate_connection_number(col, counter, False)
                             )
 
                         arrow = connection_mgr.create_connection("", "arrow")
