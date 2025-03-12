@@ -170,7 +170,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-data/xml_files/xml_templates/*
+data/xml_files/xml_templates/*.drawio
 logs/drawmate_logs.txt
 logs/doc_builder_logs.txt
 data/templates/*.drawio
