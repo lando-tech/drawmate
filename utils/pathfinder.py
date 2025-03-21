@@ -16,7 +16,9 @@ class PathFinder:
     def __init__(self):
         # Path to the data directories to export to other modules
         self.xml_export_dir = f"{self.get_project_dir()}/data/xml_files/xml_exports/"
-        self.xml_template_dir = f"{self.get_project_dir()}/data/xml_files/xml_templates/"
+        self.xml_template_dir = (
+            f"{self.get_project_dir()}/data/xml_files/xml_templates/"
+        )
         self.json_templates = f"{self.get_project_dir()}/data/templates/"
         self.log_dir = f"{self.get_project_dir()}/logs/"
         self.FILETYPES = [

@@ -1,9 +1,9 @@
-
 """
 Constants for the Matrix object on the graph.
 Includes offset values for various attributes of the graph,
 as well as default style configurations
 """
+
 MATRIX_CONNECTIONS = {
     "y_offset": 70,
     "label_spacing": 120,
@@ -23,9 +23,14 @@ APPLIANCE_INPUT_OUTPUT_DIMS = {
     "height": 40,
 }
 
-APPLIANCE_ATTRIBUTES = {
+APPLIANCE_ATTRIBUTES_SC = {
     "width": 160,
     "height": 90,
+}
+
+APPLIANCE_ATTRIBUTES_MC = {
+    "width": 160,
+    "height": 180
 }
 
 APPLIANCE_INPUT = {

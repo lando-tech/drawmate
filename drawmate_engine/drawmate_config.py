@@ -1,6 +1,5 @@
 import json
 from dataclasses import dataclass
-from typing import Optional
 
 from utils.pathfinder import PathFinder
 from utils.log_manager import LogManager
@@ -35,7 +34,7 @@ class DrawmateConfig:
         self.log_mgr = LogManager()
         self.template_data = self.load_template()
 
-    def load_template(self) -> Optional[dict]:
+    def load_template(self) -> dict | None:
         try:
             with open(self.template_path, "r", encoding="utf-8") as template_file:
                 return json.load(template_file)
@@ -63,7 +62,7 @@ class DrawmateConfig:
             )
             return None
 
-    def get_graph_dimensions(self) -> Optional[GraphDimensions]:
+    def get_graph_dimensions(self) -> GraphDimensions | None:
         if not self.template_data:
             return None
         dimensions = self.template_data.get("graph-dimensions")
@@ -78,7 +77,7 @@ class DrawmateConfig:
             dimensions["height"],
         )
 
-    def get_matrix_dimensions(self) -> Optional[MatrixDimensions]:
+    def get_matrix_dimensions(self) -> MatrixDimensions | None:
 
         if not self.template_data:
             return None
@@ -97,7 +96,7 @@ class DrawmateConfig:
             dimensions["num_connections"],
         )
 
-    def build_matrix_array(self) -> tuple[list, list]:
+    def build_matrix_array(self) -> tuple[list[list], list[list]] | None:
         left_side = []
         right_side = []
         levels = [

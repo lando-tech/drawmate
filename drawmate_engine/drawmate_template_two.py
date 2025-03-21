@@ -39,7 +39,6 @@ class Drawmate(DocBuilder):
         # Create an instance of the Matrix class
         self.matrix = self.create_matrix()
         self.node_dict = {}
-        self.total_height_nodes = 0
 
     def create_mxobject(
         self, data: dict, is_arrow: bool = False, has_label: bool = True
@@ -296,11 +295,22 @@ class Drawmate(DocBuilder):
             if index > 0:
                 x = x - x_spacing if left else x + x_spacing
             for r_index, row in enumerate(item):
-                label, l_input, r_output = row
+                label = row[0]
+                l_input = row[1]
+                r_output = row[2]
+                connections_left = row[3]
+                connections_right = row[4]
                 y += y_spacing
-                dtp = Appliance(x, y, label, l_input, r_output)
-                self.total_height_nodes += int(dtp.attributes["height"])
-                appliance_array.append(dtp)
+                app = Appliance(
+                    x,
+                    y,
+                    label,
+                    l_input,
+                    r_output,
+                    connections_left=connections_left,
+                    connections_right=connections_right,
+                )
+                appliance_array.append(app)
 
         return appliance_array
 
@@ -404,8 +414,16 @@ class Drawmate(DocBuilder):
             if col == 0:
                 if left:
                     appliance.right_ptr = self.matrix
+                    if appliance.connections_left[0] == "NONE":
+                        pass
+                    else:
+                        appliance.connections_left[0] = self.matrix
                 else:
                     appliance.left_ptr = self.matrix
+                    if appliance.connections_right[0] == "NONE":
+                        pass
+                    else:
+                        appliance.connections_right[0] = self.matrix
             else:
                 previous_node_index = (previous_col * max_columns) + row
                 if 0 <= previous_node_index < total_nodes:
@@ -461,19 +479,15 @@ class Drawmate(DocBuilder):
                                 + self.generate_connection_number(col, counter, left)
                             )
 
-                        arrow = connection_mgr.create_connection("", "arrow")
-                        arrow_textbox = TextBox(
-                            x=int(arrow.attributes["target_x"])
-                            - ARROW_CONNECTIONS["x_offset"],
-                            y=int(arrow.attributes["target_y"])
-                            - ARROW_CONNECTIONS["y_offset"],
-                            width=ARROW_CONNECTIONS["width"],
-                            height=ARROW_CONNECTIONS["height"],
-                            label=arrow_label,
-                            _type="text-box",
-                        )
-                        self.create_mxobject(arrow.attributes, is_arrow=True)
-                        self.create_mxobject(arrow_textbox.attributes)
+                        self.dispatch_connections()
+                    mc_ptrs = appliance.connections_left
+                    try:
+                        if mc_ptrs[0].attributes:
+                            connection_mgr = Connections(appliance, ptr, col, left)
+                            print("Matrix was appended")
+                    except AttributeError:
+                        print("No matrix on node", appliance.attributes["label"])
+
                 else:
                     ptr = appliance.left_ptr
                     if ptr.attributes:
@@ -491,19 +505,23 @@ class Drawmate(DocBuilder):
                                 + self.generate_connection_number(col, counter, False)
                             )
 
-                        arrow = connection_mgr.create_connection("", "arrow")
-                        arrow_textbox = TextBox(
-                            x=int(arrow.attributes["target_x"])
-                            - ARROW_CONNECTIONS["x_offset"],
-                            y=int(arrow.attributes["target_y"])
-                            - ARROW_CONNECTIONS["y_offset"],
-                            width=ARROW_CONNECTIONS["width"],
-                            height=ARROW_CONNECTIONS["height"],
-                            label=arrow_label,
-                            _type="text-box",
-                        )
-                        self.create_mxobject(arrow.attributes, is_arrow=True)
-                        self.create_mxobject(arrow_textbox.attributes, is_arrow=False)
+                        self.dispatch_connections(connection_mgr, arrow_label)
+
+    def dispatch_connections(self, ptr: Rect, appliance: Rect, col: int, left: bool, conn_label: str):
+        connection_mgr = Connections(ptr, appliance, col, left)
+        arrow = connection_mgr.create_connection("", "arrow")
+        arrow_textbox = TextBox(
+            x=int(arrow.attributes["target_x"])
+              - ARROW_CONNECTIONS["x_offset"],
+            y=int(arrow.attributes["target_y"])
+              - ARROW_CONNECTIONS["y_offset"],
+            width=ARROW_CONNECTIONS["width"],
+            height=ARROW_CONNECTIONS["height"],
+            label=conn_label,
+            _type="text-box",
+        )
+        self.create_mxobject(arrow.attributes, is_arrow=True)
+        self.create_mxobject(arrow_textbox.attributes)
 
     @staticmethod
     def check_matrix_dimensions(matrix_dims: MatrixDimensions):

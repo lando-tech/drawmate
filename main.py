@@ -1,26 +1,44 @@
-import sys
+import argparse
 
-from drawmate_engine.drawmate import Drawmate
+
+def init_drawmate_mc(input_file, output_file):
+    from drawmate_engine.drawmate_template_two import Drawmate
+
+    if input_file and output_file:
+        draw = Drawmate(input_file, output_file)
+        draw.build_graph()
+        print(f"\nTemplate creation success\n\nTemplate path: {output_file}\n")
+
+
+def init_drawmate_sc(input_file, output_file):
+    from drawmate_engine.drawmate import Drawmate
+
+    if input_file and output_file:
+        draw = Drawmate(input_file, output_file)
+        draw.build_graph()
+        print(f"\nTemplate creation success\n\nTemplate path: {output_file}\n")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_file", help="Path to input file")
+    parser.add_argument("output_file", help="Path to output file")
+
+    parser.add_argument(
+        "-mc",
+        "--multiple_connections",
+        action="store_true",
+        help="If the current config file contains objects/nodes with more than one connection",
+    )
+
+    args = parser.parse_args()
+    if args.multiple_connections:
+        print("Adding multiple connections")
+        init_drawmate_mc(args.input_file, args.output_file)
+    else:
+        print("Default graph")
+        init_drawmate_sc(args.input_file, args.output_file)
+
 
 if __name__ == "__main__":
-
-    if len(sys.argv) != 3:
-        print("Usage: python script.py <input-file-path> <output-file-path>")
-    else:
-        user_input_file = sys.argv[1]
-        user_output_file = sys.argv[2]
-        if user_input_file[0] == "~":
-            print(
-                "Wildcard character detected on input path, please provide absolute path:"
-            )
-            print("/home/user/<input-file-path>")
-
-        if user_output_file[0] == "~":
-            print(
-                "Wildcard character detected on output path, please provide the absolute path:"
-            )
-            print("/home/user/<output-file-path>")
-
-        drawmate = Drawmate(input_file=user_input_file, output_file=user_output_file)
-        drawmate.build_graph()
-        print(f"\nTemplate creation success\n\nTemplate path: {user_output_file}\n")
+    main()

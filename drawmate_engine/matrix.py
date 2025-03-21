@@ -1,9 +1,9 @@
 """
-Summary: This is the matrix module, which servers as the architecture for each Node/Object
+Summary: This is the matrix module, which serves as the architecture for each Node/Object
          on the graph.
 """
 
-from constants.constants import APPLIANCE_ATTRIBUTES
+from constants.constants import APPLIANCE_ATTRIBUTES_SC
 
 
 """
@@ -115,6 +115,7 @@ class Matrix(Rect):
         x (int): The X coord of the top left corner of the matrix.
         y (int): The Y coord of the top left corner of the matrix.
     """
+
     # The default xml style
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
 
@@ -126,9 +127,17 @@ class Matrix(Rect):
         height: int,
         x: int,
         y: int,
-        style=DEFAULT_STYLE
+        style=DEFAULT_STYLE,
     ):
-        super().__init__(x=x, y=y, width=width, height=height, label=matrix_label, _type="matrix", style=style)
+        super().__init__(
+            x=x,
+            y=y,
+            width=width,
+            height=height,
+            label=matrix_label,
+            _type="matrix",
+            style=style,
+        )
         self.num_connections = connections_count
 
 
@@ -147,13 +156,29 @@ class Appliance(Rect):
 
     # Add a type argument to pass into each instance of the DTP Rect
     def __init__(
-        self, x: int, y: int, label, input_label, output_label, style=DEFAULT_STYLE
+        self,
+        x: int,
+        y: int,
+        label,
+        input_label,
+        output_label,
+        style=DEFAULT_STYLE,
+        connections_left: list = None,
+        connections_right: list = None,
     ):
         super().__init__(
-            x=x, y=y, style=style, label=label, _type="DTP", width=APPLIANCE_ATTRIBUTES["width"], height=APPLIANCE_ATTRIBUTES["height"]
+            x=x,
+            y=y,
+            style=style,
+            label=label,
+            _type="DTP",
+            width=APPLIANCE_ATTRIBUTES_SC["width"],
+            height=APPLIANCE_ATTRIBUTES_SC["height"],
         )
         self.left_ptr = None
         self.right_ptr = None
+        self.connections_left = connections_left
+        self.connections_right = connections_right
         self.input_label = input_label
         self.output_label = output_label
 
@@ -267,14 +292,12 @@ class Connections:
             self.source_y = self.target_y
         elif col_index == 0:
             self.source_y = int(target_rect.attributes["y"]) + (
-                (int(target_rect.attributes["height"]) // 2)
-                + self.y_offset_source
+                (int(target_rect.attributes["height"]) // 2) + self.y_offset_source
             )
             self.target_y = self.source_y
         else:
             self.source_y = int(source_rect.attributes["y"]) + (
-                (int(source_rect.attributes["height"]) // 2)
-                + self.y_offset_source
+                (int(source_rect.attributes["height"]) // 2) + self.y_offset_source
             )
             self.target_y = self.source_y
 

@@ -18,22 +18,30 @@
             [
                 "AV Appliance",
                 "HDMI",
-                "HDMI"
+                "HDMI",
+                ["matrix"],
+                ["NONE"]
             ],
             [
                 "",
                 "",
-                ""
+                "",
+                ["NONE"],
+                ["NONE"]
             ],
             [
                 "AV Appliance",
                 "HDMI",
-                "HDMI"
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
             ],
             [
                 "AV Appliance",
                 "HDMI",
-                "HDMI"
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
             ]
         ]
     },
@@ -42,22 +50,30 @@
             [
                 "AV Audio",
                 "MIC IN",
-                "OUT"
+                "OUT",
+                ["NONE"],
+                ["NONE"]
             ],
             [
                 "",
                 "",
-                ""
+                "",
+                ["NONE"],
+                ["NONE"]
             ],
             [
                 "AV Appliance",
                 "HDMI",
-                "HDMI"
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
             ],
             [
                 "AV Appliance",
                 "HDMI",
-                "HDMI"
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
             ]
         ]
     },
