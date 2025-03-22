@@ -17,10 +17,10 @@
         "labels": [
             [
                 "AV Appliance",
-                ["HDMI", "HDMI", "HDMI"],
-                ["HDMI", "HDMI", "HDMI"],
-                ["MATRIX", 0, 1, 2],
-                ["NONE"]
+                ["HDMI", "HDMI"],
+                ["HDMI", "HDMI"],
+                ["NONE"],
+                [0, 1]
             ],
             [
                 "",
@@ -49,9 +49,73 @@
         "labels": [
             [
                 "AV Audio",
-                ["IN", "IN", "IN"],
-                "OUT",
+                ["IN", "IN"],
+                ["OUT", "OUT"],
+                [0, 1],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
                 ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ]
+        ]
+    },
+    "second-level-left": {
+        "labels": [
+            [
+                "AV Appliance",
+                ["HDMI", "HDMI"],
+                ["HDMI", "HDMI"],
+                ["NONE"],
+                [0, 1]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ]
+        ]
+    },
+    "second-level-right": {
+        "labels": [
+            [
+                "AV Audio",
+                ["IN", "IN"],
+                ["OUT", "OUT"],
+                [0, 1],
                 ["NONE"]
             ],
             [

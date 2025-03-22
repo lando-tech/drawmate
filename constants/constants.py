@@ -26,12 +26,11 @@ APPLIANCE_INPUT_OUTPUT_DIMS = {
 APPLIANCE_ATTRIBUTES_SC = {
     "width": 160,
     "height": 90,
+    "x_spacing": 400,
+    "y_spacing": 120
 }
 
-APPLIANCE_ATTRIBUTES_MC = {
-    "width": 160,
-    "height": 180
-}
+APPLIANCE_ATTRIBUTES_MC = {"width": 160, "height": 210}
 
 APPLIANCE_INPUT = {
     "y_offset": 45,

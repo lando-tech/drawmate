@@ -168,7 +168,7 @@ class Appliance(Rect):
         output_label_array: list = None,
         left_ptr_array: list = None,
         right_ptr_array: list = None,
-        style=DEFAULT_STYLE
+        style=DEFAULT_STYLE,
     ):
         super().__init__(
             x=x,
@@ -278,32 +278,43 @@ class Connections:
     Args:
         target_rect (Rect): An instance of a target Rect.
         source_rect (Rect): An instance of a source Rect.
+        col_index   (int) : The current column index of the source/target rect
+        left        (bool): If the object is on the left or right side
+        mc          (bool): If the object has multiple connections
     """
 
     def __init__(
-        self, source_rect: Rect, target_rect: Rect, col_index: int, left: bool
+        self,
+        source_rect: Rect,
+        target_rect: Rect,
+        col_index: int,
+        left: bool,
+        mc: bool = False,
     ):
         # y offset, default is set to center connection on object
         # this offset will place the connection on the IN/OUT label instead of the center of
         # the appliance
-        self.y_offset_source = 20
-        self.y_offset_target = 20
+        if mc:
+            self.offset = -40
+        else:
+            self.offset = 20
+
         self.source_x = int(source_rect.attributes["x"])
         self.target_x = int(target_rect.attributes["x"])
 
         if (col_index == 0 and left) or left:
             self.target_y = int(source_rect.attributes["y"]) + (
-                (int(source_rect.attributes["height"]) // 2) + self.y_offset_target
+                (int(source_rect.attributes["height"]) // 2) + self.offset
             )
             self.source_y = self.target_y
         elif col_index == 0:
             self.source_y = int(target_rect.attributes["y"]) + (
-                (int(target_rect.attributes["height"]) // 2) + self.y_offset_source
+                (int(target_rect.attributes["height"]) // 2) + self.offset
             )
             self.target_y = self.source_y
         else:
             self.source_y = int(source_rect.attributes["y"]) + (
-                (int(source_rect.attributes["height"]) // 2) + self.y_offset_source
+                (int(source_rect.attributes["height"]) // 2) + self.offset
             )
             self.target_y = self.source_y
 

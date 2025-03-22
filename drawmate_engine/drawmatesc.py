@@ -302,7 +302,7 @@ class DrawmateSc(DocBuilder):
 
         return appliance_array
 
-    def create_nodes(self, appliance_array: list[Appliance]):
+    def create_nodes(self, appliance_array: list[Appliance]) -> None:
         """
         Creates the mxobject instance for each node iteratively
         Args:
@@ -360,7 +360,7 @@ class DrawmateSc(DocBuilder):
             self.create_mxobject(input_textbox.attributes)
             self.create_mxobject(output_textbox.attributes)
 
-    def create_node_label(self, appliance_array: list[Appliance]):
+    def create_node_label(self, appliance_array: list[Appliance]) -> None:
         """
         Create labels for each node/appliance
         Args:
@@ -383,7 +383,7 @@ class DrawmateSc(DocBuilder):
             )
             self.create_mxobject(label_textbox.attributes)
 
-    def create_node_ptrs(self, appliance_array: list[Appliance], left: bool):
+    def create_node_ptrs(self, appliance_array: list[Appliance], left: bool) -> None:
         """
         Create pointers for each node to manage connections on the graph
         Args:
@@ -419,7 +419,7 @@ class DrawmateSc(DocBuilder):
                 else:
                     appliance.right_ptr = appliance_array[next_node_index]
 
-    def create_connections(self, appliance_array: list[Appliance], left: bool):
+    def create_connections(self, appliance_array: list[Appliance], left: bool) -> None:
         """
         Create connection/arrow objects for each appliance based on the left and right
         pointers
