@@ -603,14 +603,14 @@ class DrawmateMc(DocBuilder):
             matrix_dims.num_connections * (APPLIANCE_ATTRIBUTES_SC["height"] + 20)
         ) + 70
         if matrix_dims.height < total_height:
-            print(f"Matrix not large enough. Height = {matrix_dims.height}px")
-            print(f"Total height of appliances w/spacing = {total_height}px")
-            print("Adjusting height to compensate for the difference.")
+            # print(f"Matrix not large enough. Height = {matrix_dims.height}px")
+            # print(f"Total height of appliances w/spacing = {total_height}px")
+            # print("Adjusting height to compensate for the difference.")
             difference = total_height - matrix_dims.height
             matrix_dims.height = matrix_dims.height + difference + 50
-            print("New height of matrix: " + f"{matrix_dims.height}px")
-        else:
-            print("Matrix is large enough, no adjustments needed.")
+            # print("New height of matrix: " + f"{matrix_dims.height}px")
+        # else:
+        #     print("Matrix is large enough, no adjustments needed.")
 
     @staticmethod
     def generate_connection_number(column_index: int, counter: int, left: bool) -> str:

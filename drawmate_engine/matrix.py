@@ -57,6 +57,8 @@ class Rect:
             "style": style,
             "type": _type,
         }
+        self.x = x
+        self.y = y
 
 
 class ArrowRect:
@@ -99,6 +101,10 @@ class ArrowRect:
             "style": style,
             "type": _type,
         }
+        self.source_x = source_x
+        self.source_y = source_y
+        self.target_x = target_x
+        self.target_y = target_y
 
 
 class Matrix(Rect):
@@ -139,6 +145,8 @@ class Matrix(Rect):
             style=style,
         )
         self.num_connections = connections_count
+        self.x = x
+        self.y = y
 
 
 class Appliance(Rect):
@@ -179,6 +187,8 @@ class Appliance(Rect):
             width=width,
             height=height,
         )
+        self.x = x
+        self.y = y
         self.left_ptr = None
         self.right_ptr = None
         self.input_label_array = input_label_array
@@ -228,6 +238,8 @@ class TextBox(Rect):
         super().__init__(
             x=x, y=y, width=width, height=height, label=label, style=style, _type=_type
         )
+        self.x = x
+        self.y = y
 
 
 class Arrow(ArrowRect):
@@ -267,6 +279,10 @@ class Arrow(ArrowRect):
             _type=_type,
             style=style,
         )
+        self.source_x = source_x
+        self.source_y = source_y
+        self.target_x = target_x
+        self.target_y = target_y
 
 
 class Connections:
