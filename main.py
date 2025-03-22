@@ -2,19 +2,19 @@ import argparse
 
 
 def init_drawmate_mc(input_file, output_file):
-    from drawmate_engine.drawmate_template_two import Drawmate
+    from drawmate_engine.drawmatemc import DrawmateMc
 
     if input_file and output_file:
-        draw = Drawmate(input_file, output_file)
+        draw = DrawmateMc(input_file, output_file)
         draw.build_graph()
         print(f"\nTemplate creation success\n\nTemplate path: {output_file}\n")
 
 
 def init_drawmate_sc(input_file, output_file):
-    from drawmate_engine.drawmate import Drawmate
+    from drawmate_engine.drawmatesc import DrawmateSc
 
     if input_file and output_file:
-        draw = Drawmate(input_file, output_file)
+        draw = DrawmateSc(input_file, output_file)
         draw.build_graph()
         print(f"\nTemplate creation success\n\nTemplate path: {output_file}\n")
 

@@ -162,9 +162,13 @@ class Appliance(Rect):
         label,
         input_label,
         output_label,
-        style=DEFAULT_STYLE,
-        connections_left: list = None,
-        connections_right: list = None,
+        width: int = APPLIANCE_ATTRIBUTES_SC["width"],
+        height: int = APPLIANCE_ATTRIBUTES_SC["height"],
+        input_label_array: list = None,
+        output_label_array: list = None,
+        left_ptr_array: list = None,
+        right_ptr_array: list = None,
+        style=DEFAULT_STYLE
     ):
         super().__init__(
             x=x,
@@ -172,13 +176,15 @@ class Appliance(Rect):
             style=style,
             label=label,
             _type="DTP",
-            width=APPLIANCE_ATTRIBUTES_SC["width"],
-            height=APPLIANCE_ATTRIBUTES_SC["height"],
+            width=width,
+            height=height,
         )
         self.left_ptr = None
         self.right_ptr = None
-        self.connections_left = connections_left
-        self.connections_right = connections_right
+        self.input_label_array = input_label_array
+        self.output_label_array = output_label_array
+        self.left_ptr_array = left_ptr_array
+        self.right_ptr_array = right_ptr_array
         self.input_label = input_label
         self.output_label = output_label
 

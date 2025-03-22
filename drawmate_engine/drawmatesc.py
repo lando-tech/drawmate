@@ -20,7 +20,7 @@ from constants.constants import (
 )
 
 
-class Drawmate(DocBuilder):
+class DrawmateSc(DocBuilder):
     """
     This class serves as a basic template to construct a generic AV/Audio/Network diagram,
     with an instance of the Matrix class serving as the center of the infrastructure.
