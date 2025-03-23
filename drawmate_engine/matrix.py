@@ -363,23 +363,21 @@ class ConnectionTest:
     and adds an instance of the Arrow class between the source and target.
 
     Args:
-        target_rect (Rect): An instance of a target Rect.
-        source_rect (Rect): An instance of a source Rect.
+        target_rect (Appliance | Matrix): An instance of a target Rect.
+        source_rect (Appliance | Matrix): An instance of a source Rect.
         column   (int) : The current column index of the source/target rect
     """
 
     def __init__(
         self,
-        source_rect: Appliance,
+        source_rect: Appliance | Matrix,
         target_rect: Appliance | Matrix,
         column: int,
-        row: int,
         left: bool = False
     ):
         self.source_rect = source_rect
         self.target_rect = target_rect
         self.column = column
-        self.row = row
         self.left = left
         self.source_x = 0
         self.source_y = 0
@@ -396,7 +394,6 @@ class ConnectionTest:
         #     self.offset = -40
         # else:
         self.offset = 20
-        zero_index_right_offset = 60
 
         self.source_x = int(self.source_rect.x)
         self.target_x = int(self.target_rect.x)
