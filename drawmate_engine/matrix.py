@@ -174,6 +174,8 @@ class Appliance(Rect):
         height: int = APPLIANCE_ATTRIBUTES_SC["height"],
         input_label_array: list = None,
         output_label_array: list = None,
+        mc_left: bool = False,
+        mc_right: bool = False,
         left_ptr_array: list = None,
         right_ptr_array: list = None,
         style=DEFAULT_STYLE,
@@ -193,6 +195,8 @@ class Appliance(Rect):
         self.right_ptr = None
         self.input_label_array = input_label_array
         self.output_label_array = output_label_array
+        self.mc_left = mc_left
+        self.mc_right = mc_right
         self.left_ptr_array = left_ptr_array
         self.right_ptr_array = right_ptr_array
         self.input_label = input_label
@@ -331,6 +335,84 @@ class Connections:
         else:
             self.source_y = int(source_rect.attributes["y"]) + (
                 (int(source_rect.attributes["height"]) // 2) + self.offset
+            )
+            self.target_y = self.source_y
+
+    def create_connection(self, label: str, _type: str):
+        """
+        Returns an instance of the Arrow class
+        Args:
+            label (str): The label for the arrow
+            _type (str): The type descriptor
+        """
+        arrow = Arrow(
+            target_x=self.target_x,
+            target_y=self.target_y,
+            source_x=self.source_x,
+            source_y=self.source_y,
+            _type=_type,
+            label=label,
+        )
+        return arrow
+
+
+class ConnectionTest:
+    """
+    Summary: Accepts an instance of a target and source rect, and manages the connections between the two objects.
+    It also servers as a dispatcher for the Arrow class
+    and adds an instance of the Arrow class between the source and target.
+
+    Args:
+        target_rect (Rect): An instance of a target Rect.
+        source_rect (Rect): An instance of a source Rect.
+        col_index   (int) : The current column index of the source/target rect
+        left        (bool): If the object is on the left or right side
+    """
+
+    def __init__(
+        self,
+        source_rect: Appliance,
+        target_rect: Appliance | Matrix,
+        col_index: int,
+        left: bool,
+        mc: bool = False
+    ):
+        self.source_rect = source_rect
+        self.target_rect = target_rect
+        self.col_index = col_index
+        self.left = left
+        self.source_x = 0
+        self.source_y = 0
+        self.target_x = 0
+        self.target_y = 0
+        self.offset = 0
+
+    def add_x_y_spacing(self, mc: bool = False):
+        # y offset, default is set to center connection on object
+        # this offset will place the connection on the IN/OUT label instead of the center of
+        # the appliance
+
+        if mc:
+            self.offset = -40
+        else:
+            self.offset = 20
+
+        self.source_x = int(self.source_rect.x)
+        self.target_x = int(self.target_rect.x)
+
+        if (self.col_index == 0 and self.left) or self.left:
+            self.target_y = int(self.source_rect.y) + (
+                    (int(self.source_rect.attributes["height"]) // 2) + self.offset
+            )
+            self.source_y = self.target_y
+        elif self.col_index == 0 and not self.left:
+            self.source_y = int(self.target_rect.y) + (
+                    (int(self.target_rect.attributes["height"]) // 2) + self.offset
+            )
+            self.target_y = self.source_y
+        else:
+            self.source_y = int(self.source_rect.y) + (
+                    (int(self.source_rect.attributes["height"]) // 2) + self.offset
             )
             self.target_y = self.source_y
 

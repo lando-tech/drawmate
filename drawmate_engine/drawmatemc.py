@@ -6,18 +6,18 @@ Use this module as a template to implement various network topologies and connec
 
 from drawmate_engine.drawmate_config import DrawmateConfig
 from drawmate_engine.matrix import TextBox
-from drawmate_engine.matrix import Matrix, Appliance, Connections, Rect
+from drawmate_engine.matrix import Matrix, Appliance, ConnectionTest, Rect
 from drawmate_engine.doc_builder import DocBuilder, MxObject
 from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
     MATRIX_CONNECTIONS,
     MATRIX_LABEL,
-    ARROW_CONNECTIONS,
+    # ARROW_CONNECTIONS,
     APPLIANCE_ATTRIBUTES_SC,
     APPLIANCE_ATTRIBUTES_MC,
     APPLIANCE_INPUT,
     APPLIANCE_OUTPUT,
-    APPLIANCE_INPUT_OUTPUT_DIMS,
+    APPLIANCE_INPUT_OUTPUT_DIMS, ARROW_CONNECTIONS,
 )
 
 
@@ -40,6 +40,7 @@ class DrawmateMc(DocBuilder):
         # Create an instance of the Matrix class
         self.matrix = self.create_matrix()
         self.node_dict = {}
+        self.connections_array: list[ConnectionTest] = []
 
     def create_mxobject(
         self, data: dict, is_arrow: bool = False, has_label: bool = True
@@ -145,8 +146,9 @@ class DrawmateMc(DocBuilder):
         self.create_node_ptrs(self.node_dict["left_side"], left=True)
         self.create_node_ptrs(self.node_dict["right_side"], left=False)
         # Create Connections for Nodes
-        self.create_connections(self.node_dict["left_side"], left=True)
-        self.create_connections(self.node_dict["right_side"], left=False)
+        self.create_connections()
+        # self.create_connections(self.node_dict["left_side"], left=True)
+        # self.create_connections(self.node_dict["right_side"], left=False)
         # Create nodes
         self.create_nodes(self.node_dict["left_side"])
         self.create_nodes(self.node_dict["right_side"])
@@ -318,7 +320,17 @@ class DrawmateMc(DocBuilder):
                     y += y_spacing
                     width = APPLIANCE_ATTRIBUTES_SC["width"]
                     height = APPLIANCE_ATTRIBUTES_SC["height"]
+                    mc_left = False
+                    mc_right = False
                 else:
+                    if len(connections_left) > 1:
+                        mc_left = True
+                    else:
+                        mc_left = False
+                    if len(connections_right) > 1:
+                        mc_right = True
+                    else:
+                        mc_right = False
                     y += y_spacing
                     width = APPLIANCE_ATTRIBUTES_MC["width"]
                     height = APPLIANCE_ATTRIBUTES_MC["height"]
@@ -335,6 +347,8 @@ class DrawmateMc(DocBuilder):
                     output_label_array=output_label_array,
                     left_ptr_array=connections_left,
                     right_ptr_array=connections_right,
+                    mc_left=mc_left,
+                    mc_right=mc_right
                 )
                 appliance_array.append(app)
 
@@ -463,128 +477,67 @@ class DrawmateMc(DocBuilder):
             if col == 0:
                 if left:
                     appliance.right_ptr = self.matrix
+                    self.append_connection(appliance, appliance.right_ptr, left, col)
                 else:
                     appliance.left_ptr = self.matrix
+                    self.append_connection(appliance, appliance.left_ptr, False, col)
             else:
                 previous_node_index = (previous_col * max_columns) + row
                 if 0 <= previous_node_index < total_nodes:
                     if left:
                         appliance.right_ptr = appliance_array[previous_node_index]
+                        self.append_connection(appliance, appliance.right_ptr, left, col)
                     else:
                         appliance.left_ptr = appliance_array[previous_node_index]
+                        self.append_connection(appliance, appliance.left_ptr, False, col)
 
             next_node_index = (next_col * max_columns) + row
             if 0 <= next_node_index < total_nodes:
                 if left:
                     appliance.left_ptr = appliance_array[next_node_index]
+                    self.append_connection(appliance, appliance.right_ptr, left, col)
                 else:
                     appliance.right_ptr = appliance_array[next_node_index]
+                    self.append_connection(appliance, appliance.left_ptr, False, col)
 
-    def process_mc(self, appliance: Appliance, left: bool = True):
-        pass
+    def append_connection(
+        self,
+        source_rect: Appliance,
+        target_rect: Appliance | Matrix,
+        left: bool,
+        col_index: int,
+    ):
+        connection = ConnectionTest(
+            source_rect=source_rect,
+            target_rect=target_rect,
+            left=left,
+            col_index=col_index,
+        )
+        self.connections_array.append(connection)
 
-    def create_connections(self, appliance_array: list[Appliance], left: bool):
-        """
-        Create connection/arrow objects for each appliance based on the left and right
-        pointers
-        Args:
-            appliance_array: The array of either left/right side appliances
-            left: if the array being passed in is on the left of the matrix
-
-        Returns:
-            None
-        """
+    def create_connections(self):
         counter = 0
-        for app_index, appliance in enumerate(appliance_array):
+        for index, conn in enumerate(self.connections_array):
             counter += 1
+            if conn.source_rect.attributes["label"].strip() == "" or conn.target_rect.attributes["label"].strip() == "":
+                continue
             if counter > int(self.matrix.num_connections):
                 counter = 1
-
-            col, row = self.get_corresponding_index(
-                app_index, self.matrix.num_connections
-            )
-            if appliance.attributes["label"] == "":
-                pass
+            if conn.left and conn.source_rect.mc_left:
+                mc = True
+            elif not conn.left and conn.source_rect.mc_right:
+                mc = True
             else:
-                if left:
-                    ptr = appliance.right_ptr
-                    if ptr.attributes:
-                        # if col == 0:
-                        if appliance.output_label:
-                            arrow_label = (
-                                appliance.output_label
-                                + " "
-                                + self.generate_connection_number(
-                                    col, counter, left
-                                )
-                            )
-                            self.dispatch_connections(
-                                appliance, ptr, col, left, arrow_label
-                            )
-                        elif appliance.output_label_array:
-                            num_connections = len(appliance.right_ptr_array)
-                            num_offset = 0
-                            for i in range(num_connections):
-                                arrow_label = (
-                                    appliance.output_label_array[i]
-                                    + " "
-                                    + self.generate_connection_number(
-                                        col, counter + num_offset, left
-                                    )
-                                )
-                                self.dispatch_connections(appliance, ptr, col, left, arrow_label, True)
-                                num_offset += 1
+                mc = False
 
-                else:
-                    ptr = appliance.left_ptr
-                    if ptr.attributes:
-                        # if col == 0:
-                        if appliance.output_label:
-                            arrow_label = (
-                                appliance.output_label
-                                + " "
-                                + self.generate_connection_number(
-                                    col, counter, False
-                                )
-                            )
-                            self.dispatch_connections(
-                                ptr, appliance, col, False, arrow_label
-                            )
-                        elif appliance.output_label_array:
-                            num_connections = len(appliance.left_ptr_array)
-                            num_offset = 0
-                            for i in range(num_connections):
-                                arrow_label = (
-                                    appliance.output_label_array[i]
-                                    + " "
-                                    + self.generate_connection_number(
-                                        col, counter + num_offset, left
-                                    )
-                                )
-                                self.dispatch_connections(ptr, appliance, col, False, arrow_label, True)
-                                num_offset += 1
-
-    def dispatch_connections(
-        self,
-        ptr: Rect,
-        appliance: Appliance,
-        col: int,
-        left: bool,
-        conn_label: str,
-        mc: bool = False
-    ):
-        connection_mgr = Connections(ptr, appliance, col, left, mc)
-        arrow = connection_mgr.create_connection("", "arrow")
-        arrow_textbox = TextBox(
-            x=int(arrow.attributes["target_x"]) - ARROW_CONNECTIONS["x_offset"],
-            y=int(arrow.attributes["target_y"]) - ARROW_CONNECTIONS["y_offset"],
-            width=ARROW_CONNECTIONS["width"],
-            height=ARROW_CONNECTIONS["height"],
-            label=conn_label,
-            _type="text-box",
-        )
-        self.create_mxobject(arrow.attributes, is_arrow=True)
-        self.create_mxobject(arrow_textbox.attributes)
+            conn.add_x_y_spacing(mc=mc)
+            label = (
+                " "
+                + " "
+                + self.generate_connection_number(conn.col_index, counter, conn.left)
+            )
+            arrow = conn.create_connection(label, _type="arrow")
+            self.create_mxobject(arrow.attributes, is_arrow=True)
 
     @staticmethod
     def check_matrix_dimensions(matrix_dims: MatrixDimensions):

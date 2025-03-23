@@ -27,7 +27,7 @@ APPLIANCE_ATTRIBUTES_SC = {
     "width": 160,
     "height": 90,
     "x_spacing": 400,
-    "y_spacing": 120
+    "y_spacing": 120,
 }
 
 APPLIANCE_ATTRIBUTES_MC = {"width": 160, "height": 210}
