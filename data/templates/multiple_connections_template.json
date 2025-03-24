@@ -48,7 +48,7 @@
                 ["HDMI", "HDMI"],
                 ["HDMI", "HDMI"],
                 ["NONE"],
-                [0, 1]
+                [4, 5]
             ],
             [
                 "",
@@ -79,8 +79,8 @@
                 "AV Appliance",
                 ["HDMI", "HDMI"],
                 ["HDMI", "HDMI"],
-                ["NONE"],
-                [0, 1]
+                [0, 1],
+                ["NONE"]
             ],
             [
                 "",
@@ -107,8 +107,8 @@
                 "AV Appliance",
                 ["HDMI", "HDMI"],
                 ["HDMI", "HDMI"],
-                ["NONE"],
-                [0, 1]
+                [4, 5],
+                ["NONE"]
             ],
             [
                 "",
@@ -139,7 +139,7 @@
                 "AV Appliance",
                 ["HDMI", "HDMI"],
                 ["HDMI", "HDMI"],
-                ["NONE"],
+                [0, 1],
                 [0, 1]
             ],
             [
@@ -165,10 +165,10 @@
             ],
             [
                 "AV Appliance",
-                ["HDMI", "HDMI"],
-                ["HDMI", "HDMI"],
+                "HDMI",
+                "HDMI",
                 ["NONE"],
-                [0, 1]
+                ["NONE"]
             ],
             [
                 "",
@@ -200,7 +200,7 @@
                 ["IN", "IN"],
                 ["OUT", "OUT"],
                 [0, 1],
-                ["NONE"]
+                [0, 1]
             ],
             [
                 "",
@@ -227,7 +227,7 @@
                 "AV Audio",
                 ["IN", "IN"],
                 ["OUT", "OUT"],
-                [0, 1],
+                [4, 5],
                 ["NONE"]
             ],
             [

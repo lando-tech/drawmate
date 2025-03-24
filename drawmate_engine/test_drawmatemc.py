@@ -528,18 +528,14 @@ class DrawmateMc(DocBuilder):
                         label_indexes = [0]
 
                 else:
-                    if conn.left and conn.source_rect.mc_left:
+                    if conn.left and (
+                        conn.source_rect.mc_left or conn.target_rect.mc_left
+                    ):
                         mc = True
                         label_indexes = conn.source_rect.left_ptr_array
-                    elif conn.left and conn.source_rect.mc_right:
+                    elif conn.source_rect.mc_right or conn.target_rect.mc_right:
                         mc = True
                         label_indexes = conn.source_rect.right_ptr_array
-                    elif conn.source_rect.mc_right:
-                        mc = True
-                        label_indexes = conn.source_rect.right_ptr_array
-                    elif conn.source_rect.mc_left:
-                        mc = True
-                        label_indexes = conn.source_rect.left_ptr_array
                     else:
                         mc = False
                         label_indexes = [0]
@@ -556,7 +552,7 @@ class DrawmateMc(DocBuilder):
                 label_indexes = [0]
 
             for offset_index, connection_index in enumerate(label_indexes):
-                conn.add_x_y_spacing(self.matrix.y, mc, connection_index)
+                conn.add_x_y_spacing(mc, connection_index)
 
                 if (
                     conn.source_rect.attributes["label"].strip() == ""
