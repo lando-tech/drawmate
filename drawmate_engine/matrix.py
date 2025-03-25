@@ -379,6 +379,12 @@ class ConnectionTest:
         self.target_rect = target_rect
         self.column = column
         self.left = left
+        self.source_center = int(self.source_rect.y) + (
+            int(self.source_rect.attributes["height"]) // 2
+        )
+        self.target_center = int(self.target_rect.y) + (
+            int(self.target_rect.attributes["height"]) // 2
+        )
         self.source_x = 0
         self.source_y = 0
         self.target_x = 0
@@ -386,13 +392,31 @@ class ConnectionTest:
         self.offset = 0
 
     def add_x_y_spacing(
-        self, matrix_y: int, mc: bool = False, connection_index: int = 0
+        self,
+        matrix_y: int,
+        mc: bool = False,
+        connection_index: int = 0,
+        row_span: bool = False,
     ):
+        """
+        Adds the appropriate spacing for each arrow/connections based on the source
+        and target attributes. If mc is passed to this function as True, it will then
+        dispatch the add_x_y_spacing_mc function which handles the spacing of a
+        multi-connection node.
+        Args:
+            matrix_y          (int): The Y coordinate of an instance of the Matrix class
+            mc               (bool): If the Node has more than one connection per side
+            connection_index  (int): The connection index representing the position of the placement on the graph
+            row_span      (bool): If the current target rect spans multiple rows
+
+        Returns:
+
+        """
         # y offset, default is set to center connection on object
         # this offset will place the connection on the IN/OUT label instead of the center of
         # the appliance
 
-        if mc:
+        if mc or row_span:
             self.add_x_y_spacing_mc(matrix_y, connection_index)
         else:
             self.offset = 20
@@ -400,40 +424,39 @@ class ConnectionTest:
             self.source_x = int(self.source_rect.x)
             self.target_x = int(self.target_rect.x)
 
-            if (self.column == 0 and self.left) or self.left:
-                self.target_y = int(self.source_rect.y) + (
-                    (int(self.source_rect.attributes["height"]) // 2) + self.offset
-                )
+            if self.left:
+                self.target_y = self.source_center + self.offset
                 self.source_y = self.target_y
-            elif not self.left and self.column == 0:
-                self.target_y = int(self.target_rect.y) + (
-                    (int(self.target_rect.attributes["height"]) // 2) + self.offset
-                )
+            elif self.column == 0:
+                self.target_y = self.target_center + self.offset
                 self.source_y = self.target_y
             else:
-                self.source_y = int(self.source_rect.y) + (
-                    (int(self.source_rect.attributes["height"]) // 2) + self.offset
-                )
+                self.source_y = self.target_center + self.offset
                 self.target_y = self.source_y
 
-    def add_x_y_spacing_mc(self, matrix_y: int, connection_index: int = 0):
+    def add_x_y_spacing_mc(self, matrix_y: int, connection_index: int):
+        """
+
+        Args:
+            matrix_y (int): The Y coordinate of an instance of the Matrix class
+            connection_index: The connection index representing the position of the placement on the graph
+
+        Returns:
+
+        """
         self.source_x = int(self.source_rect.x)
         self.target_x = int(self.target_rect.x)
         mc_offset = 50
+        connection_y = (
+            (int(matrix_y) + MATRIX_CONNECTIONS["height"])
+            + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
+            + mc_offset
+        )
         if self.left:
-            self.target_y = (
-                (int(matrix_y) + MATRIX_CONNECTIONS["height"])
-                + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
-                + mc_offset
-            )
+            self.target_y = connection_y
             self.source_y = self.target_y
-
         else:
-            self.source_y = (
-                (int(matrix_y) + MATRIX_CONNECTIONS.get("height"))
-                + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
-                + mc_offset
-            )
+            self.source_y = connection_y
             self.target_y = self.source_y
 
     def create_connection(self, label: str, _type: str):

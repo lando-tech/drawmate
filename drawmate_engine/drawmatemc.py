@@ -364,6 +364,8 @@ class DrawmateMc(DocBuilder):
         for index, node in enumerate(appliance_array):
             if node.attributes["label"].strip() == "":
                 continue
+            if node.attributes["label"].strip() == "__SPAN__":
+                continue
             else:
                 self.create_mxobject(node.attributes, has_label=False)
 
@@ -378,7 +380,8 @@ class DrawmateMc(DocBuilder):
         """
 
         for node in appliance_array:
-            spacing = int(node.attributes["height"]) / 2 + 15
+            label_buffer = 15
+            spacing = int(node.attributes["height"]) / 2 + label_buffer
             # Input attributes
             input_x = int(node.attributes["x"]) + APPLIANCE_INPUT["x_offset"]
             input_y = int(node.attributes["y"]) + APPLIANCE_INPUT["y_offset"]
@@ -446,6 +449,8 @@ class DrawmateMc(DocBuilder):
         for a_index, appliance in enumerate(appliance_array):
             if appliance.attributes["label"].strip() == "":
                 continue
+            if appliance.attributes["label"].strip() == "__SPAN__":
+                continue
             label_textbox = Rect(
                 x=appliance.attributes["x"],
                 y=appliance.attributes["y"],
@@ -484,20 +489,24 @@ class DrawmateMc(DocBuilder):
                 if 0 <= previous_node_index < total_nodes:
                     if left:
                         appliance.right_ptr = appliance_array[previous_node_index]
+                        self.append_connection(
+                            appliance, appliance.right_ptr, previous_col, True
+                        )
                     else:
                         appliance.left_ptr = appliance_array[previous_node_index]
+                        # self.append_connection(
+                        #     appliance.left_ptr, appliance, col - 1, False
+                        # )
 
             next_node_index = (next_col * max_rows) + row
             if 0 <= next_node_index < total_nodes:
                 if left:
-                    appliance.right_ptr = appliance_array[next_node_index]
-                    self.append_connection(
-                        appliance.right_ptr, appliance, col + 1, True
-                    )
+                    appliance.left_ptr = appliance_array[next_node_index]
+
                 else:
                     appliance.right_ptr = appliance_array[next_node_index]
                     self.append_connection(
-                        appliance, appliance.right_ptr, col + 1, False
+                        appliance, appliance.right_ptr, next_col, False
                     )
 
     def append_connection(
@@ -516,53 +525,50 @@ class DrawmateMc(DocBuilder):
         self.connections_array.append(connection)
 
     def create_connections(self):
+
+        pos_counter = -1
+        row_span = False
         for index, conn in enumerate(self.connections_array):
+            pos_counter += 1
+            if pos_counter > self.matrix.num_connections:
+                pos_counter = 1
 
-            if isinstance(conn.source_rect, Appliance):
-                if isinstance(conn.target_rect, Matrix):
-                    if conn.left and conn.source_rect.mc_right:
-                        mc = True
-                        label_indexes = conn.source_rect.right_ptr_array
-                    else:
-                        mc = False
-                        label_indexes = [0]
-
-                else:
-                    if conn.left and conn.source_rect.mc_left:
-                        mc = True
-                        label_indexes = conn.source_rect.left_ptr_array
-                    elif conn.left and conn.source_rect.mc_right:
-                        mc = True
-                        label_indexes = conn.source_rect.right_ptr_array
-                    elif conn.source_rect.mc_right:
-                        mc = True
-                        label_indexes = conn.source_rect.right_ptr_array
-                    elif conn.source_rect.mc_left:
-                        mc = True
-                        label_indexes = conn.source_rect.left_ptr_array
-                    else:
-                        mc = False
-                        label_indexes = [0]
-
-            elif isinstance(conn.source_rect, Matrix):
+            if isinstance(conn.source_rect, Matrix):
                 if conn.target_rect.mc_left:
                     mc = True
                     label_indexes = conn.target_rect.left_ptr_array
                 else:
                     mc = False
-                    label_indexes = [0]
+                    label_indexes = [pos_counter]
             else:
-                mc = False
-                label_indexes = [0]
+                if conn.source_rect.mc_right:
+                    mc = True
+                    label_indexes = conn.source_rect.right_ptr_array
+                elif conn.source_rect.mc_left:
+                    mc = True
+                    label_indexes = conn.source_rect.left_ptr_array
+                else:
+                    if (
+                        conn.target_rect.attributes["label"] == "__SPAN__"
+                        or conn.source_rect.attributes["label"] == "__SPAN__"
+                    ):
+                        row_span = True
+                    else:
+                        row_span = False
+                    mc = False
+                    label_indexes = [pos_counter]
 
             for offset_index, connection_index in enumerate(label_indexes):
-                conn.add_x_y_spacing(self.matrix.y, mc, connection_index)
+                conn.add_x_y_spacing(self.matrix.y, mc, connection_index, row_span)
 
                 if (
                     conn.source_rect.attributes["label"].strip() == ""
                     or conn.target_rect.attributes["label"].strip() == ""
                 ):
                     pass
+                elif conn.target_rect.attributes["label"] == "__SPAN__":
+                    arrow = conn.create_connection("", _type="arrow")
+                    self.create_mxobject(arrow.attributes, is_arrow=True)
                 else:
                     arrow = conn.create_connection("", _type="arrow")
                     self.create_mxobject(arrow.attributes, is_arrow=True)
