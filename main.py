@@ -36,7 +36,7 @@ def main():
         print("\nAdding multiple connections")
         init_drawmate_mc(args.input_file, args.output_file)
     else:
-        print("Default graph")
+        print("\nDefault graph")
         init_drawmate_sc(args.input_file, args.output_file)
 
 
