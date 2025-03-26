@@ -5,8 +5,12 @@ Use this module as a template to implement various network topologies and connec
 """
 
 from drawmate_engine.drawmate_config import DrawmateConfig
-from drawmate_engine.matrix import TextBox
-from drawmate_engine.matrix import Matrix, Appliance, ConnectionTest, Rect
+
+from graph_objects.rect import Rect
+from graph_objects.matrix import Matrix
+from graph_objects.appliance import Appliance, ApplianceMetadata
+from graph_objects.connections import Connection
+from graph_objects.text_box import TextBox
 from drawmate_engine.doc_builder import DocBuilder, MxObject
 from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
@@ -40,7 +44,7 @@ class DrawmateMc(DocBuilder):
         # Create an instance of the Matrix class
         self.matrix = self.create_matrix()
         self.node_dict = {}
-        self.connections_array: list[ConnectionTest] = []
+        self.connections_array: list[Connection] = []
 
     def create_mxobject(
         self, data: dict, is_arrow: bool = False, has_label: bool = True
@@ -265,19 +269,20 @@ class DrawmateMc(DocBuilder):
         left_nodes = matrix_arr[0]
         right_nodes = matrix_arr[1]
         node_dict["left_side"] = self.create_node_array(
-            left_nodes, left_x, start_y, x_spacing, y_spacing, True
+            left_nodes, left_x, start_y, x_spacing, y_spacing, True, True
         )
         node_dict["right_side"] = self.create_node_array(
-            right_nodes, right_x, start_y, x_spacing, y_spacing, False
+            right_nodes, right_x, start_y, x_spacing, y_spacing, False, True
         )
         return node_dict
 
     def create_node_array(
-        self, node_arr: list, x, start_y, x_spacing, y_spacing, left: bool
+        self, node_arr: list, x, start_y, x_spacing, y_spacing, left: bool, debug: bool = False
     ) -> list[Appliance]:
         """
         Creates the Appliance nodes for the left and right sides of the matrix.
         Args:
+            debug : if debug print statements are needed
             node_arr: The multidimensional array of objects, which will be instantiated as Appliance objects
             x: The starting x coordinate
             start_y: The starting y coordinate (the matrix y - spacing/offset)
@@ -290,50 +295,71 @@ class DrawmateMc(DocBuilder):
         """
         if not left:
             x += 40
+
+        # Array of Appliance objects
         appliance_array = []
+        # Max number of appliances per row on the graph
+        max_per_column = self.matrix.num_connections
+
+        # Get the side of the matrix the node is to be placed
+        side = "left" if left else "right"
+        column_index = 0
         for index, item in enumerate(node_arr):
+            # Set starting y coordinate
             y = start_y
             if index > 0:
                 x = x - x_spacing if left else x + x_spacing
+
+            # Iterate through sublist of Node data
             for r_index, row in enumerate(item):
+
+                meta = ApplianceMetadata(__SIDE__=side)
+                meta.__ROW_INDEX__ = self.get_corresponding_index(r_index, max_per_column)
+                meta.__COLUMN_INDEX__ = column_index
+                if meta.__ROW_INDEX__ == max_per_column - 1:
+                    column_index += 1
+
                 label = row[0]
+                if label == "__SPAN__":
+                    meta.__SPANNING_NODE__ = True
+                else:
+                    meta.__SPANNING_NODE__ = False
 
                 l_input = row[1]
-                if isinstance(l_input, list):
-                    input_label_array = l_input
-                    l_input = None
-                else:
-                    input_label_array = None
-
                 r_output = row[2]
+
+                if isinstance(l_input, list):
+                    meta.__INPUT_LABELS__ = l_input
+                    l_input = None
+
                 if isinstance(r_output, list):
-                    output_label_array = r_output
+                    meta.__OUTPUT_LABELS__ = r_output
                     r_output = None
-                else:
-                    output_label_array = None
 
                 connections_left = row[3]
                 connections_right = row[4]
+                meta.__CONNECTION_INDEXES_LEFT__ = connections_left
+                meta.__CONNECTION_INDEXES_RIGHT__ = connections_right
+
                 if connections_left[0] == "NONE" and connections_right[0] == "NONE":
                     y += y_spacing
                     width = APPLIANCE_ATTRIBUTES_SC["width"]
                     height = APPLIANCE_ATTRIBUTES_SC["height"]
-                    mc_left = False
-                    mc_right = False
                 else:
                     if len(connections_left) > 1:
-                        mc_left = True
+                        meta.__MULTI_CONNECTION_LEFT__ = True
                     else:
-                        mc_left = False
+                        meta.__MULTI_CONNECTION_LEFT__ = False
                     if len(connections_right) > 1:
-                        mc_right = True
+                        meta.__MULTI_CONNECTION_RIGHT__ = True
                     else:
-                        mc_right = False
+                        meta.__MULTI_CONNECTION_RIGHT__ = False
+
                     y += y_spacing
                     width = APPLIANCE_ATTRIBUTES_MC["width"]
                     height = APPLIANCE_ATTRIBUTES_MC["height"]
 
-                app = Appliance(
+                appliance_node = Appliance(
                     x=x,
                     y=y,
                     label=label,
@@ -341,14 +367,22 @@ class DrawmateMc(DocBuilder):
                     output_label=r_output,
                     width=width,
                     height=height,
-                    input_label_array=input_label_array,
-                    output_label_array=output_label_array,
-                    left_ptr_array=connections_left,
-                    right_ptr_array=connections_right,
-                    mc_left=mc_left,
-                    mc_right=mc_right,
+                    meta=meta
                 )
-                appliance_array.append(app)
+
+                if debug:
+                    print("\n")
+                    print(f"\tLabel         : {appliance_node.attributes.get('label')}\n"
+                          f"\tSide          : {appliance_node.meta.__SIDE__}\n"
+                          f"\tSpanning Node : {appliance_node.meta.__SPANNING_NODE__}\n"
+                          f"\tMulti-Left    : {appliance_node.meta.__MULTI_CONNECTION_LEFT__}\n"
+                          f"\tMulti-Right   : {appliance_node.meta.__MULTI_CONNECTION_RIGHT__}\n"
+                          f"\tColumn Index  : {appliance_node.meta.__COLUMN_INDEX__}\n"
+                          f"\tRow Index     : {appliance_node.meta.__ROW_INDEX__}\n"
+                          f"\tInput Labels  : {appliance_node.meta.__INPUT_LABELS__}\n"
+                          f"\tOutput Labels : {appliance_node.meta.__OUTPUT_LABELS__}\n")
+
+                appliance_array.append(appliance_node)
 
         return appliance_array
 
@@ -369,7 +403,7 @@ class DrawmateMc(DocBuilder):
             else:
                 self.create_mxobject(node.attributes, has_label=False)
 
-    def create_node_in_out_textbox(self, appliance_array: list[Appliance]) -> None:
+    def create_node_in_out_textbox(self, appliance_array: list[Appliance], debug: bool = False) -> None:
         """
         Create the textbox objects for the input and output labels for each node
         Args:
@@ -383,52 +417,44 @@ class DrawmateMc(DocBuilder):
             label_buffer = 15
             spacing = int(node.attributes["height"]) / 2 + label_buffer
             # Input attributes
-            input_x = int(node.attributes["x"]) + APPLIANCE_INPUT["x_offset"]
-            input_y = int(node.attributes["y"]) + APPLIANCE_INPUT["y_offset"]
+            input_x = int(node.x) + APPLIANCE_INPUT["x_offset"]
+            input_y = int(node.y) + APPLIANCE_INPUT["y_offset"]
             # Output attributes
-            output_x = int(node.attributes["x"]) + APPLIANCE_OUTPUT["x_offset"]
-            output_y = int(node.attributes["y"]) + APPLIANCE_OUTPUT["y_offset"]
+            output_x = int(node.x) + APPLIANCE_OUTPUT["x_offset"]
+            output_y = int(node.y) + APPLIANCE_OUTPUT["y_offset"]
             # width and height
             width = APPLIANCE_INPUT_OUTPUT_DIMS["width"]
             height = APPLIANCE_INPUT_OUTPUT_DIMS["height"]
 
+            if node.meta.__SPANNING_NODE__:
+                continue
             # If a single label, meaning a single in/out connection
-            if node.input_label:
+            elif node.input_label and node.output_label:
                 self.dispatch_in_out_textbox(
                     input_x, input_y, width, height, node.input_label
                 )
-            if node.output_label:
                 self.dispatch_in_out_textbox(
                     output_x, output_y, width, height, node.output_label
                 )
 
-            if node.input_label_array and node.output_label_array:
+            elif len(node.meta.__INPUT_LABELS__) > 1 and len(node.meta.__OUTPUT_LABELS__) > 1:
 
-                for in_index, in_item in enumerate(node.input_label_array):
+                for index, item in enumerate(node.meta.__INPUT_LABELS__):
+
+                    input_label = item
+                    output_label = node.meta.__OUTPUT_LABELS__[index]
+
                     self.dispatch_in_out_textbox(
-                        input_x, input_y, width, height, in_item
+                        input_x, input_y, width, height, input_label
                     )
+                    self.dispatch_in_out_textbox(
+                        output_x, output_y, width, height, output_label
+                    )
+
                     input_y += spacing
-
-                for out_index, out_item in enumerate(node.output_label_array):
-                    self.dispatch_in_out_textbox(
-                        output_x, output_y, width, height, out_item
-                    )
                     output_y += spacing
-
-            elif node.input_label_array:
-                for in_index, in_item in enumerate(node.input_label_array):
-                    self.dispatch_in_out_textbox(
-                        input_x, input_y, width, height, in_item
-                    )
-                    input_y += spacing
-
-            elif node.output_label_array:
-                for out_index, out_item in enumerate(node.output_label_array):
-                    self.dispatch_in_out_textbox(
-                        output_x, output_y, width, height, out_item
-                    )
-                    output_y += spacing
+            else:
+                pass
 
     def dispatch_in_out_textbox(self, x, y, width, height, label):
         text_box = TextBox(
@@ -474,104 +500,78 @@ class DrawmateMc(DocBuilder):
         max_rows = self.matrix.num_connections
         total_nodes = len(appliance_array)
         for i, appliance in enumerate(appliance_array):
-            col, row = self.get_corresponding_index(i, max_rows)
+            col, row = appliance.meta.__COLUMN_INDEX__, appliance.meta.__ROW_INDEX__
             next_col = col + 1
             previous_col = col - 1
             if col == 0:
                 if left:
                     appliance.right_ptr = self.matrix
-                    self.append_connection(appliance, appliance.right_ptr, col, True)
+                    self.append_connection(appliance, appliance.right_ptr)
                 else:
                     appliance.left_ptr = self.matrix
-                    self.append_connection(appliance.left_ptr, appliance, col, False)
+                    self.append_connection(appliance.left_ptr, appliance)
             else:
                 previous_node_index = (previous_col * max_rows) + row
                 if 0 <= previous_node_index < total_nodes:
                     if left:
                         appliance.right_ptr = appliance_array[previous_node_index]
                         self.append_connection(
-                            appliance, appliance.right_ptr, previous_col, True
+                            appliance, appliance.right_ptr
                         )
                     else:
                         appliance.left_ptr = appliance_array[previous_node_index]
-                        # self.append_connection(
-                        #     appliance.left_ptr, appliance, col - 1, False
-                        # )
+                        self.append_connection(
+                            appliance.left_ptr, appliance
+                        )
 
-            next_node_index = (next_col * max_rows) + row
-            if 0 <= next_node_index < total_nodes:
-                if left:
-                    appliance.left_ptr = appliance_array[next_node_index]
-
-                else:
-                    appliance.right_ptr = appliance_array[next_node_index]
-                    self.append_connection(
-                        appliance, appliance.right_ptr, next_col, False
-                    )
+                next_node_index = (next_col * max_rows) + row
+                if 0 <= next_node_index < total_nodes:
+                    if left:
+                        appliance.left_ptr = appliance_array[next_node_index]
+                    else:
+                        appliance.right_ptr = appliance_array[next_node_index]
 
     def append_connection(
         self,
-        source_rect: Appliance | Matrix,
-        target_rect: Appliance | Matrix,
-        col_index: int,
-        left_side: bool = False,
+        src_node: Appliance | Matrix,
+        tgt_node: Appliance | Matrix,
     ):
-        connection = ConnectionTest(
-            source_rect=source_rect,
-            target_rect=target_rect,
-            column=col_index,
-            left=left_side,
+        connection = Connection(
+            src_node=src_node,
+            tgt_node=tgt_node,
         )
         self.connections_array.append(connection)
 
     def create_connections(self):
 
-        pos_counter = -1
-        row_span = False
         for index, conn in enumerate(self.connections_array):
-            pos_counter += 1
-            if pos_counter > self.matrix.num_connections:
-                pos_counter = 1
-
-            if isinstance(conn.source_rect, Matrix):
-                if conn.target_rect.mc_left:
-                    mc = True
-                    label_indexes = conn.target_rect.left_ptr_array
+            if isinstance(conn.src_node, Matrix):
+                if conn.tgt_node.meta.__MULTI_CONNECTION_LEFT__:
+                    for node in conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__:
+                        arrow = conn.create_connection_mc(self.matrix.y, node)
+                        self.create_mxobject(arrow.attributes, is_arrow=True)
                 else:
-                    mc = False
-                    label_indexes = [pos_counter]
-            else:
-                if conn.source_rect.mc_right:
-                    mc = True
-                    label_indexes = conn.source_rect.right_ptr_array
-                elif conn.source_rect.mc_left:
-                    mc = True
-                    label_indexes = conn.source_rect.left_ptr_array
-                else:
-                    if (
-                        conn.target_rect.attributes["label"] == "__SPAN__"
-                        or conn.source_rect.attributes["label"] == "__SPAN__"
-                    ):
-                        row_span = True
+                    arrow = conn.create_connection_sc()
+                    self.create_mxobject(arrow.attributes, is_arrow=True)
+            elif isinstance(conn.src_node, Appliance):
+                if conn.src_node.meta.__SPANNING_NODE__:
+                    continue
+                if conn.src_node.meta.__SIDE__ == "left":
+                    if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
+                        for node in conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__:
+                            arrow = conn.create_connection_mc(self.matrix.y, node)
+                            self.create_mxobject(arrow.attributes, is_arrow=True)
                     else:
-                        row_span = False
-                    mc = False
-                    label_indexes = [pos_counter]
-
-            for offset_index, connection_index in enumerate(label_indexes):
-                conn.add_x_y_spacing(self.matrix.y, mc, connection_index, row_span)
-
-                if (
-                    conn.source_rect.attributes["label"].strip() == ""
-                    or conn.target_rect.attributes["label"].strip() == ""
-                ):
-                    pass
-                elif conn.target_rect.attributes["label"] == "__SPAN__":
-                    arrow = conn.create_connection("", _type="arrow")
-                    self.create_mxobject(arrow.attributes, is_arrow=True)
+                        arrow = conn.create_connection_sc()
+                        self.create_mxobject(arrow.attributes, is_arrow=True)
                 else:
-                    arrow = conn.create_connection("", _type="arrow")
-                    self.create_mxobject(arrow.attributes, is_arrow=True)
+                    if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
+                        for node in conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__:
+                            arrow = conn.create_connection_mc(self.matrix.y, node)
+                            self.create_mxobject(arrow.attributes, is_arrow=True)
+                    else:
+                        arrow = conn.create_connection_sc()
+                        self.create_mxobject(arrow.attributes, is_arrow=True)
 
     @staticmethod
     def check_matrix_dimensions(matrix_dims: MatrixDimensions):
@@ -631,7 +631,7 @@ class DrawmateMc(DocBuilder):
                 return "1" + str(column_index) + "0" + str(counter)
 
     @staticmethod
-    def get_corresponding_index(node_index: int, max_per_column: int) -> (int, int):
+    def get_corresponding_index(node_index: int, max_per_column: int) -> int:
         """
         Given a node index and the max nodes per column,
         return the (column index, row index) for the node.
@@ -642,6 +642,5 @@ class DrawmateMc(DocBuilder):
         Returns:
             column_index: int, row_index: int
         """
-        column_index = node_index // max_per_column
         row_index = node_index % max_per_column
-        return column_index, row_index
+        return row_index

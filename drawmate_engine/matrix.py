@@ -4,6 +4,8 @@ Summary: This is the matrix module, which serves as the architecture for each No
 """
 
 from constants.constants import APPLIANCE_ATTRIBUTES_SC, MATRIX_CONNECTIONS
+from dataclasses import dataclass, field
+from typing import Optional, List
 
 
 """
@@ -36,7 +38,7 @@ class Rect:
         style=DEFAULT_STYLE,
     ):
         """
-        Summary: The parent class for all graph rects. Used to pass the attributes dictionary
+        Summary: The parent class for all graph graph_objects. Used to pass the attributes dictionary
         to all children.
 
         Args:
@@ -210,6 +212,79 @@ class Appliance(Rect):
         """
         self.attributes["label"] = ""
 
+@dataclass
+class ApplianceMetadata:
+    __SIDE__: str
+    __ROW_INDEX__: Optional[int] = None
+    __COLUMN_INDEX__: Optional[int] = None
+    __MULTI_CONNECTION_LEFT__: bool = False
+    __MULTI_CONNECTION_RIGHT__: bool = False
+    __SPANNING_NODE__: bool = False
+    __CONNECTION_INDEXES_LEFT__: List[int] = field(default_factory=list)
+    __CONNECTION_INDEXES_RIGHT__: List[int] = field(default_factory=list)
+    __LABELS_LEFT__: List[str] = field(default_factory=list)
+    __LABEL_RIGHT__: List[str] = field(default_factory=list)
+
+
+@dataclass
+class Bounds:
+    x: int
+    y: int
+    width: int
+    height: int
+
+
+class ApplianceTest(Rect):
+    """
+    Summary: This is child class of the Rect class. It inherits the attributes dictionary.
+    This class manages the attributes of the appliances that will be attached to the matrix.
+
+    Args:
+        x (int): The X coord for the rect.
+        y (int): The Y coord for the rect.
+        style (str, optional): xml style for the graph element. Defaults to DEFAULT_STYLE.
+    """
+
+    DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
+
+    # Add a type argument to pass into each instance of the DTP Rect
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        label,
+        input_label,
+        output_label,
+        meta: ApplianceMetadata,
+        width: int = APPLIANCE_ATTRIBUTES_SC["width"],
+        height: int = APPLIANCE_ATTRIBUTES_SC["height"],
+        style=DEFAULT_STYLE,
+    ):
+        super().__init__(
+            x=x,
+            y=y,
+            style=style,
+            label=label,
+            _type="DTP",
+            width=width,
+            height=height,
+        )
+        self.x = x
+        self.y = y
+        self.left_ptr = None
+        self.right_ptr = None
+        self.input_label = input_label
+        self.output_label = output_label
+        self.meta = meta
+
+    def clear_label(self):
+        """
+        Reset the label as a blank string
+        Returns:
+        None
+        """
+        self.attributes["label"] = ""
+
 
 class TextBox(Rect):
     """
@@ -363,15 +438,15 @@ class ConnectionTest:
     and adds an instance of the Arrow class between the source and target.
 
     Args:
-        target_rect (Appliance | Matrix): An instance of a target Rect.
-        source_rect (Appliance | Matrix): An instance of a source Rect.
+        target_rect (ApplianceTest | Matrix): An instance of a target Rect.
+        source_rect (ApplianceTest | Matrix): An instance of a source Rect.
         column   (int) : The current column index of the source/target rect
     """
 
     def __init__(
         self,
-        source_rect: Appliance | Matrix,
-        target_rect: Appliance | Matrix,
+        source_rect: ApplianceTest | Matrix,
+        target_rect: ApplianceTest | Matrix,
         column: int,
         left: bool = False,
     ):
