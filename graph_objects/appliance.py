@@ -6,6 +6,7 @@ from typing import Optional, List
 
 @dataclass
 class ApplianceMetadata:
+    __ID__: str
     __SIDE__: str
     __ROW_INDEX__: Optional[int] = None
     __COLUMN_INDEX__: Optional[int] = None

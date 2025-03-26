@@ -81,6 +81,7 @@ class Connection:
         """
         self.source_x = int(self.src_node.x)
         self.target_x = int(self.tgt_node.x)
+        threshold = 220
         mc_offset = 50
 
         if isinstance(self.src_node, Matrix):
@@ -97,7 +98,20 @@ class Connection:
                     + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
                     + mc_offset
             )
-            if self.src_node.meta.__SIDE__ == "left":
+
+            if connection_y - self.src_node.y > threshold:
+                # print("\n")
+                # print(f"\tConnection Y: {connection_y}\n"
+                #       f"\tSource Y    : {self.src_node.y}\n"
+                #       f"\tSource Node : {self.src_node.attributes.get('label')}\n"
+                #       f"\tSource Column: {self.src_node.meta.__COLUMN_INDEX__}\n"
+                #       f"\tSource Row   : {self.src_node.meta.__ROW_INDEX__}\n"
+                #       f"\tTarget Y    : {self.tgt_node.y}\n"
+                #       f"\tTarget Node : {self.tgt_node.attributes.get('label')}\n")
+                self.source_y = self.src_node.y + mc_offset
+                self.target_y = connection_y
+
+            elif self.src_node.meta.__SIDE__ == "left":
                 self.target_y = connection_y
                 self.source_y = self.target_y
             else:

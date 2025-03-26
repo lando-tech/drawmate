@@ -290,7 +290,7 @@ class MxObject(DocBuilder):
         # Append the object to the root element of the xml file
         self.root.appendChild(self.mx_object)
 
-    def set_object_values(self, label: str, _type: str):
+    def set_object_values(self, label: str, _type: str, __id__: str = None):
         """
         Summary: Sets the attributes for the object element.
         Each element contains a minimum of three values by default,
@@ -298,13 +298,17 @@ class MxObject(DocBuilder):
         label is required.
 
         Args:
+            __id__ (str): Optional ID to track various metadata about objects on the graph
             label (str): The label for the object that will appear on the graph
             _type (str): The type descriptor, see more in the README for specific naming conventions
         """
         # Set attributes for mxObject
         self.attributes["label"] = label
         self.attributes["type"] = _type
-        self.attributes["id"] = str(self.__id__)
+        if __id__:
+            self.attributes["id"] = __id__
+        else:
+            self.attributes["id"] = str(self.__id__)
         self.id_array.append(self.attributes["id"])
 
         # Iteratively set the attributes for the xml element

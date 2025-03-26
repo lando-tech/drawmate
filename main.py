@@ -33,7 +33,7 @@ def main():
 
     args = parser.parse_args()
     if args.multiple_connections:
-        print("Adding multiple connections")
+        print("\nAdding multiple connections")
         init_drawmate_mc(args.input_file, args.output_file)
     else:
         print("Default graph")

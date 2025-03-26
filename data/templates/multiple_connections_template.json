@@ -17,15 +17,15 @@
         "labels": [
            [
                 "AV Appliance",
-                ["HDMI", "HDMI"],
-                ["HDMI", "HDMI"],
+                "HDMI",
+                "HDMI",
                 ["NONE"],
-                [0, 4]
+                ["NONE"]
            ],
             [
-                "__SPAN__",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -47,8 +47,8 @@
                 "AV Appliance",
                 ["HDMI", "HDMI"],
                 ["HDMI", "HDMI"],
-                [4, 5],
-                [4, 5]
+                [5],
+                [5]
             ],
             [
                 "__SPAN__",
@@ -77,13 +77,13 @@
         "labels": [
             [
                 "AV Appliance",
-                ["HDMI", "HDMI"],
-                ["HDMI", "HDMI"],
-                [0, 1],
-                [0, 1]
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
             ],
             [
-                "__SPAN__",
+                "",
                 "",
                 "",
                 ["NONE"],
@@ -143,7 +143,7 @@
                 [0, 1]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -164,9 +164,9 @@
                 ["NONE"]
             ],
             [
-                "AV Appliance",
-                "HDMI",
-                "HDMI",
+                "",
+                "",
+                "",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -197,9 +197,9 @@
         "labels": [
             [
                 "AV Audio",
-                ["IN", "IN"],
-                ["OUT", "OUT"],
-                [0, 1],
+                "IN",
+                "OUT",
+                ["NONE"],
                 ["NONE"]
             ],
             [

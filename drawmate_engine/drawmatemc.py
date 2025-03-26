@@ -11,7 +11,7 @@ from graph_objects.matrix import Matrix
 from graph_objects.appliance import Appliance, ApplianceMetadata
 from graph_objects.connections import Connection
 from graph_objects.text_box import TextBox
-from drawmate_engine.doc_builder import DocBuilder, MxObject
+from drawmate_engine.doc_builder import DocBuilder, MxObject, generate_id
 from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
     MATRIX_CONNECTIONS,
@@ -269,10 +269,10 @@ class DrawmateMc(DocBuilder):
         left_nodes = matrix_arr[0]
         right_nodes = matrix_arr[1]
         node_dict["left_side"] = self.create_node_array(
-            left_nodes, left_x, start_y, x_spacing, y_spacing, True, True
+            left_nodes, left_x, start_y, x_spacing, y_spacing, True,
         )
         node_dict["right_side"] = self.create_node_array(
-            right_nodes, right_x, start_y, x_spacing, y_spacing, False, True
+            right_nodes, right_x, start_y, x_spacing, y_spacing, False,
         )
         return node_dict
 
@@ -313,9 +313,11 @@ class DrawmateMc(DocBuilder):
             # Iterate through sublist of Node data
             for r_index, row in enumerate(item):
 
-                meta = ApplianceMetadata(__SIDE__=side)
+                __ID__ = generate_id()
+                meta = ApplianceMetadata(__SIDE__=side, __ID__=str(__ID__))
                 meta.__ROW_INDEX__ = self.get_corresponding_index(r_index, max_per_column)
                 meta.__COLUMN_INDEX__ = column_index
+
                 if meta.__ROW_INDEX__ == max_per_column - 1:
                     column_index += 1
 
@@ -346,11 +348,11 @@ class DrawmateMc(DocBuilder):
                     width = APPLIANCE_ATTRIBUTES_SC["width"]
                     height = APPLIANCE_ATTRIBUTES_SC["height"]
                 else:
-                    if len(connections_left) > 1:
+                    if connections_left[0] != "NONE":
                         meta.__MULTI_CONNECTION_LEFT__ = True
                     else:
                         meta.__MULTI_CONNECTION_LEFT__ = False
-                    if len(connections_right) > 1:
+                    if connections_right[0] != "NONE":
                         meta.__MULTI_CONNECTION_RIGHT__ = True
                     else:
                         meta.__MULTI_CONNECTION_RIGHT__ = False
@@ -371,16 +373,7 @@ class DrawmateMc(DocBuilder):
                 )
 
                 if debug:
-                    print("\n")
-                    print(f"\tLabel         : {appliance_node.attributes.get('label')}\n"
-                          f"\tSide          : {appliance_node.meta.__SIDE__}\n"
-                          f"\tSpanning Node : {appliance_node.meta.__SPANNING_NODE__}\n"
-                          f"\tMulti-Left    : {appliance_node.meta.__MULTI_CONNECTION_LEFT__}\n"
-                          f"\tMulti-Right   : {appliance_node.meta.__MULTI_CONNECTION_RIGHT__}\n"
-                          f"\tColumn Index  : {appliance_node.meta.__COLUMN_INDEX__}\n"
-                          f"\tRow Index     : {appliance_node.meta.__ROW_INDEX__}\n"
-                          f"\tInput Labels  : {appliance_node.meta.__INPUT_LABELS__}\n"
-                          f"\tOutput Labels : {appliance_node.meta.__OUTPUT_LABELS__}\n")
+                    self.debug_print(appliance_node)
 
                 appliance_array.append(appliance_node)
 
@@ -542,10 +535,19 @@ class DrawmateMc(DocBuilder):
         )
         self.connections_array.append(connection)
 
-    def create_connections(self):
+    def create_connections(self) -> None:
+        """
+        Iterates through self.connections_array and creates arrows/connections
+        between each object on the graph.
+        Returns:
+
+        """
 
         for index, conn in enumerate(self.connections_array):
+
             if isinstance(conn.src_node, Matrix):
+                if conn .tgt_node.meta.__SPANNING_NODE__ or conn.tgt_node.attributes.get('label').strip() == "":
+                    continue
                 if conn.tgt_node.meta.__MULTI_CONNECTION_LEFT__:
                     for node in conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__:
                         arrow = conn.create_connection_mc(self.matrix.y, node)
@@ -553,8 +555,10 @@ class DrawmateMc(DocBuilder):
                 else:
                     arrow = conn.create_connection_sc()
                     self.create_mxobject(arrow.attributes, is_arrow=True)
+
             elif isinstance(conn.src_node, Appliance):
-                if conn.src_node.meta.__SPANNING_NODE__:
+
+                if conn.src_node.meta.__SPANNING_NODE__ or conn.src_node.attributes.get('label').strip() == "":
                     continue
                 if conn.src_node.meta.__SIDE__ == "left":
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
@@ -644,3 +648,16 @@ class DrawmateMc(DocBuilder):
         """
         row_index = node_index % max_per_column
         return row_index
+
+    @staticmethod
+    def debug_print(appliance_node: Appliance):
+        print("\n")
+        print(f"\tLabel         : {appliance_node.attributes.get('label')}\n"
+              f"\tSide          : {appliance_node.meta.__SIDE__}\n"
+              f"\tSpanning Node : {appliance_node.meta.__SPANNING_NODE__}\n"
+              f"\tMulti-Left    : {appliance_node.meta.__MULTI_CONNECTION_LEFT__}\n"
+              f"\tMulti-Right   : {appliance_node.meta.__MULTI_CONNECTION_RIGHT__}\n"
+              f"\tColumn Index  : {appliance_node.meta.__COLUMN_INDEX__}\n"
+              f"\tRow Index     : {appliance_node.meta.__ROW_INDEX__}\n"
+              f"\tInput Labels  : {appliance_node.meta.__INPUT_LABELS__}\n"
+              f"\tOutput Labels : {appliance_node.meta.__OUTPUT_LABELS__}\n")
