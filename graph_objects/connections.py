@@ -1,24 +1,87 @@
-from graph_objects.appliance import Appliance
+from graph_objects.appliance import ApplianceSc, ApplianceMc
 from graph_objects.matrix import Matrix
 from graph_objects.arrow import Arrow
 from constants.constants import MATRIX_CONNECTIONS
 
 
-class Connection:
+class ConnectionsSc:
     """
     Summary: Accepts an instance of a target and source rect, and manages the connections between the two objects.
     It also servers as a dispatcher for the Arrow class
     and adds an instance of the Arrow class between the source and target.
 
     Args:
-        tgt_node (Appliance | Matrix): An instance of a target Rect.
+        target_rect (Rect): An instance of a target Rect.
+        source_rect (Rect): An instance of a source Rect.
+        col_index   (int) : The current column index of the source/target rect
+        left        (bool): If the object is on the left or right side
+        mc          (bool): If the object has multiple connections
+    """
+
+    def __init__(
+        self,
+        source_rect: ApplianceSc | Matrix,
+        target_rect: ApplianceSc | Matrix,
+        col_index: int,
+        left: bool,
+        mc: bool = False,
+    ):
+        # y offset, default is set to center connection on object
+        # this offset will place the connection on the IN/OUT label instead of the center of
+        # the appliance
+        self.src_center = source_rect.y + (int(source_rect.attributes.get("height")) // 2)
+        self.tgt_center = target_rect.y + ( int(target_rect.attributes.get("height")) // 2 )
+        if mc:
+            self.offset = -40
+        else:
+            self.offset = 20
+
+        self.source_x = int(source_rect.attributes["x"])
+        self.target_x = int(target_rect.attributes["x"])
+
+        if (col_index == 0 and left) or left:
+            self.target_y = self.src_center + self.offset
+            self.source_y = self.target_y
+        elif col_index == 0:
+            self.source_y = self.tgt_center + self.offset
+            self.target_y = self.source_y
+        else:
+            self.source_y = self.src_center + self.offset
+            self.target_y = self.source_y
+
+    def create_connection(self, label: str, _type: str):
+        """
+        Returns an instance of the Arrow class
+        Args:
+            label (str): The label for the arrow
+            _type (str): The type descriptor
+        """
+        arrow = Arrow(
+            target_x=self.target_x,
+            target_y=self.target_y,
+            source_x=self.source_x,
+            source_y=self.source_y,
+            _type=_type,
+            label=label,
+        )
+        return arrow
+
+
+class ConnectionMc:
+    """
+    Summary: Accepts an instance of a target and source rect, and manages the connections between the two objects.
+    It also servers as a dispatcher for the Arrow class
+    and adds an instance of the Arrow class between the source and target.
+
+    Args:
+        tgt_node (ApplianceMc | Matrix): An instance of a target Rect.
         src_node (Appliance | Matrix): An instance of a source Rect.
     """
 
     def __init__(
         self,
-        src_node: Appliance | Matrix,
-        tgt_node: Appliance | Matrix,
+        src_node: ApplianceMc | Matrix,
+        tgt_node: ApplianceMc | Matrix,
     ):
         self.src_node = src_node
         self.tgt_node = tgt_node
