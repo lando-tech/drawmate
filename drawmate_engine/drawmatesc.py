@@ -5,8 +5,11 @@ Use this module as a template to implement various network topologies and connec
 """
 
 from drawmate_engine.drawmate_config import DrawmateConfig
-from drawmate_engine.matrix import TextBox
-from drawmate_engine.matrix import Matrix, Appliance, Connections, Rect
+from graph_objects.rect import Rect
+from graph_objects.matrix import Matrix
+from graph_objects.appliance import ApplianceSc
+from graph_objects.connections import ConnectionsSc
+from graph_objects.text_box import TextBox
 from drawmate_engine.doc_builder import DocBuilder, MxObject
 from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
@@ -244,7 +247,7 @@ class DrawmateSc(DocBuilder):
 
     def process_nodes(
         self, matrix_arr: tuple[list, list]
-    ) -> dict[str, list[Appliance]]:
+    ) -> dict[str, list[ApplianceSc]]:
         """
         Process the nodes and configure the x and y spacing. This method will then
         dispatch the nodes to the create_node_array method.
@@ -252,7 +255,7 @@ class DrawmateSc(DocBuilder):
             matrix_arr: Matrix Array of left and right nodes.
 
         Returns:
-            dict[str, list[Appliance]]: A dictionary with a list of right and left side Appliance object arrays.
+            dict[str, list[ApplianceSc]]: A dictionary with a list of right and left side Appliance object arrays.
         """
 
         node_dict = {}
@@ -273,7 +276,7 @@ class DrawmateSc(DocBuilder):
 
     def create_node_array(
         self, node_arr: list, x, start_y, x_spacing, y_spacing, left: bool
-    ) -> list[Appliance]:
+    ) -> list[ApplianceSc]:
         """
         Creates the Appliance nodes for the left and right sides of the matrix.
         Args:
@@ -285,7 +288,7 @@ class DrawmateSc(DocBuilder):
             left: If the multidimensional array belongs to the left or right side of the grid
 
         Returns:
-                list[Appliance]: A list of Appliance objects
+                list[ApplianceSc]: A list of Appliance objects
         """
         if not left:
             x += 40
@@ -297,12 +300,12 @@ class DrawmateSc(DocBuilder):
             for r_index, row in enumerate(item):
                 label, l_input, r_output = row
                 y += y_spacing
-                app = Appliance(x, y, label, l_input, r_output)
+                app = ApplianceSc(x, y, label, l_input, r_output)
                 appliance_array.append(app)
 
         return appliance_array
 
-    def create_nodes(self, appliance_array: list[Appliance]) -> None:
+    def create_nodes(self, appliance_array: list[ApplianceSc]) -> None:
         """
         Creates the mxobject instance for each node iteratively
         Args:
@@ -317,7 +320,7 @@ class DrawmateSc(DocBuilder):
             else:
                 self.create_mxobject(node.attributes, has_label=False)
 
-    def create_node_in_out_textbox(self, appliance_array: list[Appliance]) -> None:
+    def create_node_in_out_textbox(self, appliance_array: list[ApplianceSc]) -> None:
         """
         Create the textbox objects for the input and output labels for each node
         Args:
@@ -360,7 +363,7 @@ class DrawmateSc(DocBuilder):
             self.create_mxobject(input_textbox.attributes)
             self.create_mxobject(output_textbox.attributes)
 
-    def create_node_label(self, appliance_array: list[Appliance]) -> None:
+    def create_node_label(self, appliance_array: list[ApplianceSc]) -> None:
         """
         Create labels for each node/appliance
         Args:
@@ -383,7 +386,7 @@ class DrawmateSc(DocBuilder):
             )
             self.create_mxobject(label_textbox.attributes)
 
-    def create_node_ptrs(self, appliance_array: list[Appliance], left: bool) -> None:
+    def create_node_ptrs(self, appliance_array: list[ApplianceSc], left: bool) -> None:
         """
         Create pointers for each node to manage connections on the graph
         Args:
@@ -419,7 +422,7 @@ class DrawmateSc(DocBuilder):
                 else:
                     appliance.right_ptr = appliance_array[next_node_index]
 
-    def create_connections(self, appliance_array: list[Appliance], left: bool) -> None:
+    def create_connections(self, appliance_array: list[ApplianceSc], left: bool) -> None:
         """
         Create connection/arrow objects for each appliance based on the left and right
         pointers
@@ -445,7 +448,7 @@ class DrawmateSc(DocBuilder):
                 if left:
                     ptr = appliance.right_ptr
                     if ptr.attributes:
-                        connection_mgr = Connections(appliance, ptr, col, left)
+                        connection_mgr = ConnectionsSc(appliance, ptr, col, left)
                         if col == 0:
                             arrow_label = (
                                 appliance.output_label
@@ -475,7 +478,7 @@ class DrawmateSc(DocBuilder):
                 else:
                     ptr = appliance.left_ptr
                     if ptr.attributes:
-                        connection_mgr = Connections(ptr, appliance, col, left)
+                        connection_mgr = ConnectionsSc(ptr, appliance, col, left)
                         if col == 0:
                             arrow_label = (
                                 appliance.output_label

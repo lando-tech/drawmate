@@ -8,8 +8,8 @@ from drawmate_engine.drawmate_config import DrawmateConfig
 
 from graph_objects.rect import Rect
 from graph_objects.matrix import Matrix
-from graph_objects.appliance import Appliance, ApplianceMetadata
-from graph_objects.connections import Connection
+from graph_objects.appliance import ApplianceMc, ApplianceMetadata
+from graph_objects.connections import ConnectionMc
 from graph_objects.text_box import TextBox
 from drawmate_engine.doc_builder import DocBuilder, MxObject, generate_id
 from drawmate_engine.drawmate_config import MatrixDimensions
@@ -44,10 +44,10 @@ class DrawmateMc(DocBuilder):
         # Create an instance of the Matrix class
         self.matrix = self.create_matrix()
         self.node_dict = {}
-        self.connections_array: list[Connection] = []
+        self.connections_array: list[ConnectionMc] = []
 
     def create_mxobject(
-        self, data: dict, is_arrow: bool = False, has_label: bool = True
+        self, data: dict, __id__: str, is_arrow: bool = False, has_label: bool = True,
     ):
         """
         Summary:
@@ -55,6 +55,7 @@ class DrawmateMc(DocBuilder):
             node to the appropriate parent.
 
         Args:
+            __id__: ID of the graph object
             data (dict): The attributes of an instance of the Rect class or one of its children.
             is_arrow (bool): Check if the Rect is an ArrowRect.
             has_label (bool): If a label should be added, or a blank string placed instead
@@ -65,11 +66,12 @@ class DrawmateMc(DocBuilder):
             mx_obj.set_object_values("", data["type"])
         else:
             mx_obj.set_object_values(data["label"], data["type"])
+
         # If the rect being passed in is an arrow, adjust methods accordingly
         if is_arrow:
             # Create mxCell object
             cell = mx_obj.MxCell()
-            cell.set_mxcell_values_point(data["style"], data["label"])
+            cell.set_mxcell_values_point(data["style"], data["label"], __id__)
 
             # Append mxCell to mxObject
             cell_elem = mx_obj.create_xml_element("mxCell", cell.attributes)
@@ -92,9 +94,9 @@ class DrawmateMc(DocBuilder):
             # Create mxCell object
             cell = mx_obj.MxCell()
             if not has_label:
-                cell.set_mxcell_values(value="", style=data["style"])
+                cell.set_mxcell_values(value="", style=data["style"], __id__=__id__)
             else:
-                cell.set_mxcell_values(value=data["label"], style=data["style"])
+                cell.set_mxcell_values(value=data["label"], style=data["style"], __id__=__id__)
             # Append mxCell to mxObject
             cell_elem = mx_obj.create_xml_element("mxCell", cell.attributes)
             mx_obj.mx_object.appendChild(cell_elem)
@@ -161,7 +163,7 @@ class DrawmateMc(DocBuilder):
         self.create_node_label(self.node_dict["left_side"])
         self.create_node_label(self.node_dict["right_side"])
         # Create the matrix object
-        self.create_mxobject(self.matrix.attributes, has_label=False)
+        self.create_mxobject(self.matrix.attributes, has_label=False, __id__=str(generate_id()))
         self.create_matrix_label()
         self.create_matrix_connections()
         # Create final XML Document
@@ -221,8 +223,8 @@ class DrawmateMc(DocBuilder):
                 label=right_side[i],
                 _type="text-box",
             )
-            self.create_mxobject(left_text_box.attributes)
-            self.create_mxobject(right_text_box.attributes)
+            self.create_mxobject(left_text_box.attributes, str(generate_id()))
+            self.create_mxobject(right_text_box.attributes, str(generate_id()))
             y += MATRIX_CONNECTIONS["label_spacing"]
 
     def create_matrix_label(self):
@@ -245,11 +247,11 @@ class DrawmateMc(DocBuilder):
             _type="matrix",
             style="rounded=0;whiteSpace=wrap;html=1;",
         )
-        self.create_mxobject(matrix_text_box.attributes)
+        self.create_mxobject(matrix_text_box.attributes, str(generate_id()))
 
     def process_nodes(
         self, matrix_arr: tuple[list, list]
-    ) -> dict[str, list[Appliance]]:
+    ) -> dict[str, list[ApplianceMc]]:
         """
         Process the nodes and configure the x and y spacing. This method will then
         dispatch the nodes to the create_node_array method.
@@ -257,7 +259,7 @@ class DrawmateMc(DocBuilder):
             matrix_arr: Matrix Array of left and right nodes.
 
         Returns:
-            dict[str, list[Appliance]]: A dictionary with a list of right and left side Appliance object arrays.
+            dict[str, list[ApplianceMc]]: A dictionary with a list of right and left side Appliance object arrays.
         """
 
         node_dict = {}
@@ -278,7 +280,7 @@ class DrawmateMc(DocBuilder):
 
     def create_node_array(
         self, node_arr: list, x, start_y, x_spacing, y_spacing, left: bool, debug: bool = False
-    ) -> list[Appliance]:
+    ) -> list[ApplianceMc]:
         """
         Creates the Appliance nodes for the left and right sides of the matrix.
         Args:
@@ -291,7 +293,7 @@ class DrawmateMc(DocBuilder):
             left: If the multidimensional array belongs to the left or right side of the grid
 
         Returns:
-                list[Appliance]: A list of Appliance objects
+                list[ApplianceMc]: A list of Appliance objects
         """
         if not left:
             x += 40
@@ -361,7 +363,7 @@ class DrawmateMc(DocBuilder):
                     width = APPLIANCE_ATTRIBUTES_MC["width"]
                     height = APPLIANCE_ATTRIBUTES_MC["height"]
 
-                appliance_node = Appliance(
+                appliance_node = ApplianceMc(
                     x=x,
                     y=y,
                     label=label,
@@ -379,7 +381,7 @@ class DrawmateMc(DocBuilder):
 
         return appliance_array
 
-    def create_nodes(self, appliance_array: list[Appliance]):
+    def create_nodes(self, appliance_array: list[ApplianceMc]):
         """
         Creates the mxobject instance for each node iteratively
         Args:
@@ -394,9 +396,9 @@ class DrawmateMc(DocBuilder):
             if node.attributes["label"].strip() == "__SPAN__":
                 continue
             else:
-                self.create_mxobject(node.attributes, has_label=False)
+                self.create_mxobject(node.attributes, has_label=False, __id__=node.meta.__ID__)
 
-    def create_node_in_out_textbox(self, appliance_array: list[Appliance], debug: bool = False) -> None:
+    def create_node_in_out_textbox(self, appliance_array: list[ApplianceMc]) -> None:
         """
         Create the textbox objects for the input and output labels for each node
         Args:
@@ -453,9 +455,9 @@ class DrawmateMc(DocBuilder):
         text_box = TextBox(
             x=x, y=y, width=width, height=height, label=label, _type="textbox"
         )
-        self.create_mxobject(text_box.attributes)
+        self.create_mxobject(text_box.attributes, str(generate_id()))
 
-    def create_node_label(self, appliance_array: list[Appliance]):
+    def create_node_label(self, appliance_array: list[ApplianceMc]):
         """
         Create labels for each node/appliance
         Args:
@@ -478,9 +480,9 @@ class DrawmateMc(DocBuilder):
                 label=appliance.attributes["label"],
                 _type="text-box",
             )
-            self.create_mxobject(label_textbox.attributes)
+            self.create_mxobject(label_textbox.attributes, str(generate_id()))
 
-    def create_node_ptrs(self, appliance_array: list[Appliance], left: bool):
+    def create_node_ptrs(self, appliance_array: list[ApplianceMc], left: bool):
         """
         Create pointers for each node to manage connections on the graph
         Args:
@@ -526,10 +528,10 @@ class DrawmateMc(DocBuilder):
 
     def append_connection(
         self,
-        src_node: Appliance | Matrix,
-        tgt_node: Appliance | Matrix,
+        src_node: ApplianceMc | Matrix,
+        tgt_node: ApplianceMc | Matrix,
     ):
-        connection = Connection(
+        connection = ConnectionMc(
             src_node=src_node,
             tgt_node=tgt_node,
         )
@@ -551,12 +553,12 @@ class DrawmateMc(DocBuilder):
                 if conn.tgt_node.meta.__MULTI_CONNECTION_LEFT__:
                     for node in conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__:
                         arrow = conn.create_connection_mc(self.matrix.y, node)
-                        self.create_mxobject(arrow.attributes, is_arrow=True)
+                        self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                 else:
                     arrow = conn.create_connection_sc()
-                    self.create_mxobject(arrow.attributes, is_arrow=True)
+                    self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
 
-            elif isinstance(conn.src_node, Appliance):
+            elif isinstance(conn.src_node, ApplianceMc):
 
                 if conn.src_node.meta.__SPANNING_NODE__ or conn.src_node.attributes.get('label').strip() == "":
                     continue
@@ -564,18 +566,18 @@ class DrawmateMc(DocBuilder):
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
                         for node in conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__:
                             arrow = conn.create_connection_mc(self.matrix.y, node)
-                            self.create_mxobject(arrow.attributes, is_arrow=True)
+                            self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                     else:
                         arrow = conn.create_connection_sc()
-                        self.create_mxobject(arrow.attributes, is_arrow=True)
+                        self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                 else:
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
                         for node in conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__:
                             arrow = conn.create_connection_mc(self.matrix.y, node)
-                            self.create_mxobject(arrow.attributes, is_arrow=True)
+                            self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                     else:
                         arrow = conn.create_connection_sc()
-                        self.create_mxobject(arrow.attributes, is_arrow=True)
+                        self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
 
     @staticmethod
     def check_matrix_dimensions(matrix_dims: MatrixDimensions):
@@ -650,7 +652,7 @@ class DrawmateMc(DocBuilder):
         return row_index
 
     @staticmethod
-    def debug_print(appliance_node: Appliance):
+    def debug_print(appliance_node: ApplianceMc):
         print("\n")
         print(f"\tLabel         : {appliance_node.attributes.get('label')}\n"
               f"\tSide          : {appliance_node.meta.__SIDE__}\n"

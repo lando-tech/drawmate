@@ -151,7 +151,7 @@ class Matrix(Rect):
         self.y = y
 
 
-class Appliance(Rect):
+class ApplianceSc(Rect):
     """
     Summary: This is child class of the Rect class. It inherits the attributes dictionary.
     This class manages the attributes of the appliances that will be attached to the matrix.
@@ -364,7 +364,7 @@ class Arrow(ArrowRect):
         self.target_y = target_y
 
 
-class Connections:
+class ConnectionsSc:
     """
     Summary: Accepts an instance of a target and source rect, and manages the connections between the two objects.
     It also servers as a dispatcher for the Arrow class
@@ -389,6 +389,8 @@ class Connections:
         # y offset, default is set to center connection on object
         # this offset will place the connection on the IN/OUT label instead of the center of
         # the appliance
+        self.src_center = source_rect.y + (int(source_rect.attributes.get("height")) // 2)
+        self.tgt_center = target_rect.y + ( int(target_rect.attributes.get("height")) // 2 )
         if mc:
             self.offset = -40
         else:
@@ -398,19 +400,13 @@ class Connections:
         self.target_x = int(target_rect.attributes["x"])
 
         if (col_index == 0 and left) or left:
-            self.target_y = int(source_rect.attributes["y"]) + (
-                (int(source_rect.attributes["height"]) // 2) + self.offset
-            )
+            self.target_y = self.src_center + self.offset
             self.source_y = self.target_y
         elif col_index == 0:
-            self.source_y = int(target_rect.attributes["y"]) + (
-                (int(target_rect.attributes["height"]) // 2) + self.offset
-            )
+            self.source_y = self.tgt_center + self.offset
             self.target_y = self.source_y
         else:
-            self.source_y = int(source_rect.attributes["y"]) + (
-                (int(source_rect.attributes["height"]) // 2) + self.offset
-            )
+            self.source_y = self.src_center + self.offset
             self.target_y = self.source_y
 
     def create_connection(self, label: str, _type: str):
