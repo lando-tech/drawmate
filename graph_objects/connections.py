@@ -1,7 +1,7 @@
 from graph_objects.appliance import ApplianceSc, ApplianceMc
 from graph_objects.matrix import Matrix
 from graph_objects.arrow import Arrow
-from constants.constants import MATRIX_CONNECTIONS
+from constants.constants import MATRIX_CONNECTIONS, APPLIANCE_ATTRIBUTES_MC, APPLIANCE_INPUT
 
 
 class ConnectionsSc:
@@ -132,10 +132,11 @@ class ConnectionMc:
 
         return self.create_arrow_instance(label="", _type="arrow")
 
-    def create_connection_mc(self, matrix_y: int, connection_index: int) -> Arrow:
+    def create_connection_mc(self, matrix_y: int, connection_index: int, pos_index: int) -> Arrow | list[Arrow]:
         """
 
         Args:
+            pos_index:
             connection_index:
             matrix_y (int): The Y coordinate of an instance of the Matrix class
 
@@ -144,7 +145,7 @@ class ConnectionMc:
         """
         self.source_x = int(self.src_node.x)
         self.target_x = int(self.tgt_node.x)
-        threshold = 220
+        threshold = 175
         mc_offset = 50
 
         if isinstance(self.src_node, Matrix):
@@ -155,26 +156,28 @@ class ConnectionMc:
             )
             self.source_y = connection_y
             self.target_y = self.source_y
-        else:
+        elif isinstance(self.src_node, ApplianceMc):
             connection_y = (
                     (int(matrix_y) + MATRIX_CONNECTIONS["height"])
                     + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
                     + mc_offset
             )
 
-            if connection_y - self.src_node.y > threshold:
-                # print("\n")
-                # print(f"\tConnection Y: {connection_y}\n"
-                #       f"\tSource Y    : {self.src_node.y}\n"
-                #       f"\tSource Node : {self.src_node.attributes.get('label')}\n"
-                #       f"\tSource Column: {self.src_node.meta.__COLUMN_INDEX__}\n"
-                #       f"\tSource Row   : {self.src_node.meta.__ROW_INDEX__}\n"
-                #       f"\tTarget Y    : {self.tgt_node.y}\n"
-                #       f"\tTarget Node : {self.tgt_node.attributes.get('label')}\n")
+            if connection_index != self.src_node.meta.__LABEL_INDEXES__[pos_index]:
+                print("\n")
+                print(f"\tLabel Index  : {self.src_node.meta.__LABEL_INDEXES__[pos_index]}")
+                print(f"\tConnection Index: {connection_index}")
+                print(f"\tConnection Y : {connection_y}\n"
+                      f"\tSource Y     : {self.src_node.y}\n"
+                      f"\tSource Node  : {self.src_node.attributes.get('label')}\n"
+                      f"\tSource Column: {self.src_node.meta.__COLUMN_INDEX__}\n"
+                      f"\tSource Row   : {self.src_node.meta.__ROW_INDEX__}\n"
+                      f"\tTarget Y     : {self.tgt_node.y}\n"
+                      f"\tTarget Node  : {self.tgt_node.attributes.get('label')}\n")
                 self.source_y = self.src_node.y + mc_offset
                 self.target_y = connection_y
 
-            elif self.src_node.meta.__SIDE__ == "left":
+            if self.src_node.meta.__SIDE__ == "left":
                 self.target_y = connection_y
                 self.source_y = self.target_y
             else:
@@ -199,3 +202,7 @@ class ConnectionMc:
             label=label,
         )
         return arrow
+
+    @staticmethod
+    def get_x_coord_midpoint(src_x, tgt_x):
+        return src_x // tgt_x

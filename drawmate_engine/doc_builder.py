@@ -385,19 +385,20 @@ class MxObject(DocBuilder):
                     self.attributes["y"] = str(y)
                     self.attributes["as"] = "targetPoint"
 
-                class MxArray:
-                    """_summary_"""
+            class MxArray:
+                """_summary_"""
 
-                    def __init__(self) -> None:
-                        self.attributes = MX_ARRAY_ATTRIBUTES
+                def __init__(self) -> None:
+                    self.attributes = MX_ARRAY_ATTRIBUTES
+                    self.mx_points = []
 
-                    def set_array_values(self, as_relative: str):
-                        """_summary_
+                def set_array_values(self, as_relative: str):
+                    """_summary_
 
-                        Args:
-                            as_relative (str): _description_
-                        """
-                        self.attributes["as"] = as_relative
+                    Args:
+                        as_relative (str): _description_
+                    """
+                    self.attributes["as"] = as_relative
 
 
 def create_document(x: int, y: int, width: int, height: int) -> DocBuilder:

@@ -47,7 +47,7 @@ class DrawmateMc(DocBuilder):
         self.connections_array: list[ConnectionMc] = []
 
     def create_mxobject(
-        self, data: dict, __id__: str, is_arrow: bool = False, has_label: bool = True,
+        self, data: dict, __id__: str, is_arrow: bool = False, has_label: bool = True, is_mxarray: bool = False
     ):
         """
         Summary:
@@ -55,6 +55,7 @@ class DrawmateMc(DocBuilder):
             node to the appropriate parent.
 
         Args:
+            is_mxarray (bool): is the object has more than one mxpoint/arrow
             __id__: ID of the graph object
             data (dict): The attributes of an instance of the Rect class or one of its children.
             is_arrow (bool): Check if the Rect is an ArrowRect.
@@ -89,6 +90,8 @@ class DrawmateMc(DocBuilder):
             self.create_mxpoint(
                 mx_geo=geo, mx_geo_elem=geo_elem, mx_obj=mx_obj, data=data
             )
+        elif is_mxarray:
+            self.create_mxarray()
 
         else:
             # Create mxCell object
@@ -135,6 +138,10 @@ class DrawmateMc(DocBuilder):
         target_point.set_mxpoint_target(data["target_x"], data["target_y"])
         target_elem = mx_obj.create_xml_element("mxPoint", target_point.attributes)
         mx_geo_elem.appendChild(target_elem)
+
+    def create_mxarray(self, gx_geo, mx_geo_elem, mx_obj, data: dict, mx_points: list):
+        pass
+
 
     def build_graph(self):
         """
@@ -319,6 +326,8 @@ class DrawmateMc(DocBuilder):
                 meta = ApplianceMetadata(__SIDE__=side, __ID__=str(__ID__))
                 meta.__ROW_INDEX__ = self.get_corresponding_index(r_index, max_per_column)
                 meta.__COLUMN_INDEX__ = column_index
+                # meta.__LABEL_INDEXES__.append(meta.__ROW_INDEX__)
+                # meta.__LABEL_INDEXES__.append(meta.__ROW_INDEX__ + 1)
 
                 if meta.__ROW_INDEX__ == max_per_column - 1:
                     column_index += 1
@@ -334,6 +343,9 @@ class DrawmateMc(DocBuilder):
 
                 if isinstance(l_input, list):
                     meta.__INPUT_LABELS__ = l_input
+                    if len(meta.__INPUT_LABELS__) > 0:
+                        for i in range(len(meta.__INPUT_LABELS__)):
+                            meta.__LABEL_INDEXES__.append(meta.__ROW_INDEX__ + i)
                     l_input = None
 
                 if isinstance(r_output, list):
@@ -551,8 +563,8 @@ class DrawmateMc(DocBuilder):
                 if conn .tgt_node.meta.__SPANNING_NODE__ or conn.tgt_node.attributes.get('label').strip() == "":
                     continue
                 if conn.tgt_node.meta.__MULTI_CONNECTION_LEFT__:
-                    for node in conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__:
-                        arrow = conn.create_connection_mc(self.matrix.y, node)
+                    for i, node in enumerate(conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__):
+                        arrow = conn.create_connection_mc(self.matrix.y, node, i)
                         self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                 else:
                     arrow = conn.create_connection_sc()
@@ -564,16 +576,16 @@ class DrawmateMc(DocBuilder):
                     continue
                 if conn.src_node.meta.__SIDE__ == "left":
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
-                        for node in conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__:
-                            arrow = conn.create_connection_mc(self.matrix.y, node)
+                        for i, node in enumerate(conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__):
+                            arrow = conn.create_connection_mc(self.matrix.y, node, i)
                             self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                     else:
                         arrow = conn.create_connection_sc()
                         self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                 else:
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
-                        for node in conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__:
-                            arrow = conn.create_connection_mc(self.matrix.y, node)
+                        for i, node in enumerate(conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__):
+                            arrow = conn.create_connection_mc(self.matrix.y, node, i)
                             self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                     else:
                         arrow = conn.create_connection_sc()

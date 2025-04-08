@@ -15,6 +15,7 @@ class ApplianceMetadata:
     __SPANNING_NODE__: bool = False
     __CONNECTION_INDEXES_LEFT__: List[int] = field(default_factory=list)
     __CONNECTION_INDEXES_RIGHT__: List[int] = field(default_factory=list)
+    __LABEL_INDEXES__: List[int] = field(default_factory=list)
     __INPUT_LABELS__: List[str] = field(default_factory=list)
     __OUTPUT_LABELS__: List[str] = field(default_factory=list)
 
