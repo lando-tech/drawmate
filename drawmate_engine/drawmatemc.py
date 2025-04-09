@@ -3,7 +3,7 @@ This is the main entry point for the templating engine.
 It contains the core logic for making a basic diagram.
 Use this module as a template to implement various network topologies and connection logic.
 """
-
+from drawmate_engine.archive.matrix import Arrow
 from drawmate_engine.drawmate_config import DrawmateConfig
 
 from graph_objects.rect import Rect
@@ -159,7 +159,7 @@ class DrawmateMc(DocBuilder):
         self.create_node_ptrs(self.node_dict["left_side"], left=True)
         self.create_node_ptrs(self.node_dict["right_side"], left=False)
         # Create Connections for Nodes
-        self.create_connections()
+        arrow_arr = self.create_arrow_array()
         # Create nodes
         self.create_nodes(self.node_dict["left_side"])
         self.create_nodes(self.node_dict["right_side"])
@@ -549,14 +549,14 @@ class DrawmateMc(DocBuilder):
         )
         self.connections_array.append(connection)
 
-    def create_connections(self) -> None:
+    def create_arrow_array(self) -> list[Arrow]:
         """
         Iterates through self.connections_array and creates arrows/connections
         between each object on the graph.
         Returns:
 
         """
-
+        arrow_array = []
         for index, conn in enumerate(self.connections_array):
 
             if isinstance(conn.src_node, Matrix):
@@ -565,9 +565,16 @@ class DrawmateMc(DocBuilder):
                 if conn.tgt_node.meta.__MULTI_CONNECTION_LEFT__:
                     for i, node in enumerate(conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__):
                         arrow = conn.create_connection_mc(self.matrix.y, node, i)
-                        self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+                        if isinstance(arrow, tuple):
+                            self.create_mxobject(arrow[0].attributes, is_arrow=True, __id__=str(generate_id()))
+                            self.create_mxobject(arrow[1].attributes, is_arrow=True, __id__=str(generate_id()))
+                            self.create_mxobject(arrow[2].attributes, is_arrow=True, __id__=str(generate_id()))
+                        else:
+                            arrow_array.append(arrow)
+                            self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                 else:
                     arrow = conn.create_connection_sc()
+                    arrow_array.append(arrow)
                     self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
 
             elif isinstance(conn.src_node, ApplianceMc):
@@ -578,18 +585,33 @@ class DrawmateMc(DocBuilder):
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
                         for i, node in enumerate(conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__):
                             arrow = conn.create_connection_mc(self.matrix.y, node, i)
-                            self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+                            if isinstance(arrow, tuple):
+                                self.create_mxobject(arrow[0].attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(arrow[1].attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(arrow[2].attributes, is_arrow=True, __id__=str(generate_id()))
+                            else:
+                                arrow_array.append(arrow)
+                                self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                     else:
                         arrow = conn.create_connection_sc()
+                        arrow_array.append(arrow)
                         self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                 else:
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
                         for i, node in enumerate(conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__):
                             arrow = conn.create_connection_mc(self.matrix.y, node, i)
-                            self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+                            if isinstance(arrow, tuple):
+                                self.create_mxobject(arrow[0].attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(arrow[1].attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(arrow[2].attributes, is_arrow=True, __id__=str(generate_id()))
+                            else:
+                                arrow_array.append(arrow)
+                                self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
                     else:
                         arrow = conn.create_connection_sc()
+                        arrow_array.append(arrow)
                         self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+        return arrow_array
 
     @staticmethod
     def check_matrix_dimensions(matrix_dims: MatrixDimensions):
