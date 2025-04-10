@@ -1,7 +1,7 @@
 from graph_objects.appliance import ApplianceSc, ApplianceMc
 from graph_objects.matrix import Matrix
-from graph_objects.arrow import Arrow, ArrowMeta, ArrowWaypoint
-from constants.constants import MATRIX_CONNECTIONS
+from graph_objects.arrow import Arrow, ArrowMeta
+from constants.constants import MATRIX_CONNECTIONS, MX_GRAPH_XML_STYLES, APPLIANCE_ATTRIBUTES_MC
 
 
 class ConnectionsSc:
@@ -139,7 +139,7 @@ class ConnectionMc:
 
     def create_connection_mc(
         self, matrix_y: int, connection_index: int, pos_index: int
-    ) -> Arrow | tuple[ArrowWaypoint, ArrowWaypoint, ArrowWaypoint]:
+    ) -> Arrow | tuple[Arrow, Arrow, Arrow]:
         """
 
         Args:
@@ -155,6 +155,23 @@ class ConnectionMc:
         mc_offset = 50
 
         if isinstance(self.src_node, Matrix):
+
+            if connection_index != self.tgt_node.meta.__LABEL_INDEXES__[pos_index]:
+                connection_y = (
+                    (int(matrix_y) + MATRIX_CONNECTIONS["height"])
+                    + (MATRIX_CONNECTIONS["label_spacing"] * self.tgt_node.meta.__LABEL_INDEXES__[pos_index])
+                    + mc_offset
+                )
+
+                mc_offset = (
+                    (MATRIX_CONNECTIONS["height"] + MATRIX_CONNECTIONS["label_spacing"] * connection_index)
+                    + mc_offset
+                )
+
+                return self.create_arrow_waypoints(
+                    connection_index, pos_index, connection_y, mc_offset
+                )
+
             connection_y = (
                 (int(matrix_y) + MATRIX_CONNECTIONS["height"])
                 + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
@@ -202,7 +219,7 @@ class ConnectionMc:
 
     def create_arrow_waypoints(
         self, connection_index, pos_index, connection_y, mc_offset
-    ) -> tuple[ArrowWaypoint, ArrowWaypoint, ArrowWaypoint] | None:
+    ) -> tuple[Arrow, Arrow, Arrow] | None:
         """
         Generates and returns waypoints for drawing arrows between source and target nodes.
 
@@ -225,34 +242,57 @@ class ConnectionMc:
                 the midpoint, vertical, and final part of the connection.
         """
         meta = ArrowMeta(self.src_node.meta.__ID__, self.tgt_node.meta.__ID__)
-        print(f"Source ID: {self.src_node.meta.__ID__} | Target ID: {self.tgt_node.meta.__ID__}")
+        # print(f"Source ID: {self.src_node.meta.__ID__} | Target ID: {self.tgt_node.meta.__ID__}")
         midpoint = self.get_x_coord_midpoint(self.tgt_node.x, self.src_node.x)
         midpoint_waypoints = {
-            "x": self.src_node.x,
-            "y": self.src_node.y + mc_offset
+            "source_x": self.src_node.x,
+            "source_y": self.src_node.y + mc_offset,
+            "target_x": self.src_node.x + midpoint,
+            "target_y": self.src_node.y + mc_offset,
         }
         vertical_waypoints = {
-            "x": self.src_node.x + midpoint,
-            "y": connection_y,
+            "source_x": self.src_node.x + midpoint,
+            "source_y": self.src_node.y + mc_offset,
+            "target_x": self.src_node.x + midpoint,
+            "target_y": connection_y,
         }
         final_point_waypoints = {
-            "x": self.tgt_node.x,
-            "y": connection_y,
+            "source_x": self.src_node.x + midpoint,
+            "source_y": connection_y,
+            "target_x": self.tgt_node.x,
+            "target_y": connection_y,
         }
         midpoint_arrow = self.create_arrow_break(
-            midpoint_waypoints["x"],
-            midpoint_waypoints["y"],
+            midpoint_waypoints["source_x"],
+            midpoint_waypoints["source_y"],
+            midpoint_waypoints["target_x"],
+            midpoint_waypoints["target_y"],
+            style=MX_GRAPH_XML_STYLES["hidden_arrow"],
+            _type="arrow",
             meta=meta,
+            label=""
         )
         vertical_arrow = self.create_arrow_break(
-            vertical_waypoints["x"],
-            vertical_waypoints["y"],
+            vertical_waypoints["source_x"],
+            vertical_waypoints["source_y"],
+            vertical_waypoints["target_x"],
+            vertical_waypoints["target_y"],
+            style=MX_GRAPH_XML_STYLES["hidden_arrow_end"],
+            _type="arrow",
+            meta=meta,
+            label=""
         )
         final_arrow = self.create_arrow_break(
-            final_point_waypoints["x"],
-            final_point_waypoints["y"],
+            final_point_waypoints["source_x"],
+            final_point_waypoints["source_y"],
+            final_point_waypoints["target_x"],
+            final_point_waypoints["target_y"],
+            style=MX_GRAPH_XML_STYLES["hidden_arrow_start"],
+            _type="arrow",
+            meta=meta,
+            label=""
         )
-        self.debug_print(connection_index, pos_index, connection_y)
+        # self.debug_print(connection_index, pos_index, connection_y)
         return midpoint_arrow, vertical_arrow, final_arrow
 
     def debug_print(self, connection_index, pos_index, connection_y):
@@ -275,11 +315,16 @@ class ConnectionMc:
         print("\t=======================================")
 
     @staticmethod
-    def create_arrow_break(x, y, meta=None) -> ArrowWaypoint:
-        waypoint = ArrowWaypoint(
-            x=x,
-            y=y,
+    def create_arrow_break(src_x, src_y, tgt_x, tgt_y, style, meta=None, _type="", label="") -> Arrow:
+        waypoint = Arrow(
+            source_x=src_x,
+            source_y=src_y,
+            target_x=tgt_x,
+            target_y=tgt_y,
             meta=meta,
+            _type=_type,
+            label=label,
+            style=style,
         )
         return waypoint
 

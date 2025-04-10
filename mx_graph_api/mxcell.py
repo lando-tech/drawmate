@@ -32,8 +32,10 @@ class MxCell(DocBuilder):
         self.attributes["vertex"] = "1"
         if __id__:
             self.attributes["id"] = __id__
+            # print("Using Node ID")
         else:
             self.attributes["id"] = str(generate_id())
+            # print("Generating Node ID")
 
     def set_mxcell_values_point(
             self,
@@ -52,7 +54,7 @@ class MxCell(DocBuilder):
             style (str): The xml style for the object
             value (str): The value will be the label on the object once drawn.
         """
-        self.attributes["vertex"] = "1"
+        self.attributes["vertex"] = ""
         self.attributes["value"] = value
         self.attributes["style"] = style
         self.attributes["edge"] = "1"

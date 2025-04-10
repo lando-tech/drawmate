@@ -16,7 +16,6 @@ from drawmate_engine.doc_builder import DocBuilder, generate_id
 from mx_graph_api.mxcell import MxCell
 from mx_graph_api.mxgeometry import MxGeometry
 from mx_graph_api.mxpoint import MxPoint
-from mx_graph_api.mxarray import MxArray
 from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
     MATRIX_CONNECTIONS,
@@ -26,7 +25,6 @@ from constants.constants import (
     APPLIANCE_INPUT,
     APPLIANCE_OUTPUT,
     APPLIANCE_INPUT_OUTPUT_DIMS,
-    MX_GRAPH_XML_STYLES
 )
 
 
@@ -99,32 +97,10 @@ class DrawmateMc(DocBuilder):
             )
             self.root.appendChild(cell_elem)
         elif is_mxarray:
-            cell = MxCell()
-            cell.set_mxcell_values_point(
-                MX_GRAPH_XML_STYLES["arrow4"],
-                "",
-                __id__,
-                src_id=mx_points[0].meta.source_id,
-                tgt_id=mx_points[0].meta.target_id,
-            )
-
-            # Append mxCell to mxObject
-            cell_elem = cell.create_xml_element("mxCell", cell.attributes)
-            cell.mxcell_object.appendChild(cell_elem)
-
-            # Create mxGeometry object
-            geo = MxGeometry()
-            geo.set_geometry_values_point()
-            geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
-
-            # Append mxGeometry to mxCell
-            cell_elem.appendChild(geo_elem)
-
             # Create mxarray
             self.create_mxarray(
-                mx_geo_elem=geo_elem, mx_obj=cell, mx_points=mx_points
+                mx_points=mx_points
             )
-            self.root.appendChild(cell_elem)
 
         else:
             # Create mxCell object
@@ -171,21 +147,47 @@ class DrawmateMc(DocBuilder):
         mx_geo_elem.appendChild(target_elem)
 
     def create_mxarray(
-        self,
-        mx_geo_elem,
-        mx_obj,
-        mx_points: tuple,
+        self, mx_points
     ):
-        mx_array = MxArray()
-        mx_array.set_array_values(as_points="points")
-        mx_array_elem = mx_obj.create_xml_element("mxArray", mx_array.attributes)
-        mx_geo_elem.appendChild(mx_array_elem)
 
         for waypoint in mx_points:
-            wp = MxPoint()
-            wp.set_waypoint_x_y(waypoint.attributes["x"], waypoint.attributes["y"])
-            waypoint_elem = mx_obj.create_xml_element("mxPoint", wp.waypoint_attributes)
-            mx_array_elem.appendChild(waypoint_elem)
+            cell = MxCell()
+            # src_id = mx_points[0].meta.source_id
+            # tgt_id = mx_points[0].meta.target_id
+            cell.set_mxcell_values_point(
+                waypoint.attributes["style"],
+                "",
+                str(generate_id()),
+                src_id="",
+                tgt_id="",
+            )
+
+            # Append mxCell to mxObject
+            cell_elem = cell.create_xml_element("mxCell", cell.attributes)
+            cell.mxcell_object.appendChild(cell_elem)
+
+            # Create mxGeometry object
+            geo = MxGeometry()
+            geo.set_geometry_values_point()
+            geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
+
+            # Append mxGeometry to mxCell
+            cell_elem.appendChild(geo_elem)
+
+            source_point = MxPoint()
+            target_point = MxPoint()
+            source_point.set_mxpoint_source(waypoint.source_x, waypoint.source_y)
+            target_point.set_mxpoint_target(waypoint.target_x, waypoint.target_y)
+            source_point_elem = cell.create_xml_element(
+                "mxPoint", source_point.attributes
+            )
+            target_point_elem = cell.create_xml_element(
+                "mxPoint", target_point.attributes
+            )
+            geo_elem.appendChild(source_point_elem)
+            geo_elem.appendChild(target_point_elem)
+
+            self.root.appendChild(cell_elem)
 
     def build_graph(self):
         """
@@ -215,7 +217,7 @@ class DrawmateMc(DocBuilder):
         self.create_node_label(self.node_dict["right_side"])
         # Create the matrix object
         self.create_mxobject(
-            self.matrix.attributes, has_label=False, __id__=str(generate_id())
+            self.matrix.attributes, has_label=False, __id__=self.matrix.meta.__ID__
         )
         self.create_matrix_label()
         self.create_matrix_connections()
@@ -668,7 +670,6 @@ class DrawmateMc(DocBuilder):
                                 is_arrow=True,
                                 __id__=str(generate_id()),
                             )
-                        # self.arrow_array.append(arrow)
                 else:
                     arrow = conn.create_connection_sc()
                     self.create_mxobject(
@@ -703,7 +704,6 @@ class DrawmateMc(DocBuilder):
                                     is_arrow=True,
                                     __id__=str(generate_id()),
                                 )
-                            # self.arrow_array.append(arrow)
                     else:
                         arrow = conn.create_connection_sc()
                         if isinstance(arrow, tuple):
@@ -720,7 +720,6 @@ class DrawmateMc(DocBuilder):
                                 is_arrow=True,
                                 __id__=str(generate_id()),
                             )
-                        # self.arrow_array.append(arrow)
                 else:
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
                         for i, node in enumerate(
@@ -741,7 +740,6 @@ class DrawmateMc(DocBuilder):
                                     is_arrow=True,
                                     __id__=str(generate_id()),
                                 )
-                            # self.arrow_array.append(arrow)
                     else:
                         arrow = conn.create_connection_sc()
                         if isinstance(arrow, tuple):
@@ -758,7 +756,6 @@ class DrawmateMc(DocBuilder):
                                 is_arrow=True,
                                 __id__=str(generate_id()),
                             )
-                        # self.arrow_array.append(arrow)
 
     def draw_arrows(self):
         for arrow in self.arrow_array:

@@ -41,7 +41,6 @@ class ApplianceSc(Rect):
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
 
-    # Add a type argument to pass into each instance of the DTP Rect
     def __init__(
         self,
         x: int,
@@ -109,7 +108,6 @@ class ApplianceMc(Rect):
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
 
-    # Add a type argument to pass into each instance of the DTP Rect
     def __init__(
         self,
         x: int,
