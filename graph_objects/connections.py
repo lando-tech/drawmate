@@ -1,7 +1,7 @@
 from graph_objects.appliance import ApplianceSc, ApplianceMc
 from graph_objects.matrix import Matrix
-from graph_objects.arrow import Arrow
-from constants.constants import MATRIX_CONNECTIONS, APPLIANCE_ATTRIBUTES_MC, APPLIANCE_INPUT
+from graph_objects.arrow import Arrow, ArrowMeta, ArrowWaypoint
+from constants.constants import MATRIX_CONNECTIONS
 
 
 class ConnectionsSc:
@@ -29,8 +29,12 @@ class ConnectionsSc:
         # y offset, default is set to center connection on object
         # this offset will place the connection on the IN/OUT label instead of the center of
         # the appliance
-        self.src_center = source_rect.y + (int(source_rect.attributes.get("height")) // 2)
-        self.tgt_center = target_rect.y + ( int(target_rect.attributes.get("height")) // 2 )
+        self.src_center = source_rect.y + (
+            int(source_rect.attributes.get("height")) // 2
+        )
+        self.tgt_center = target_rect.y + (
+            int(target_rect.attributes.get("height")) // 2
+        )
         if mc:
             self.offset = -40
         else:
@@ -86,10 +90,10 @@ class ConnectionMc:
         self.src_node = src_node
         self.tgt_node = tgt_node
         self.source_center = int(self.src_node.y) + (
-                int(self.src_node.attributes["height"]) // 2
+            int(self.src_node.attributes["height"]) // 2
         )
         self.target_center = int(self.tgt_node.y) + (
-                int(self.tgt_node.attributes["height"]) // 2
+            int(self.tgt_node.attributes["height"]) // 2
         )
         self.mx_points: list = []
         self.source_x = 0
@@ -121,7 +125,7 @@ class ConnectionMc:
         if isinstance(self.src_node, Matrix):
             self.target_y = self.target_center + self.offset
             self.source_y = self.target_y
-        elif self.src_node.meta.__SIDE__ == 'left':
+        elif self.src_node.meta.__SIDE__ == "left":
             self.target_y = self.source_center + self.offset
             self.source_y = self.target_y
         elif self.src_node.meta.__COLUMN_INDEX__ == 0:
@@ -134,7 +138,8 @@ class ConnectionMc:
         return self.create_arrow_instance(label="", _type="arrow")
 
     def create_connection_mc(
-            self, matrix_y: int, connection_index: int, pos_index: int) -> Arrow | tuple[Arrow, Arrow, Arrow]:
+        self, matrix_y: int, connection_index: int, pos_index: int
+    ) -> Arrow | tuple[ArrowWaypoint, ArrowWaypoint, ArrowWaypoint]:
         """
 
         Args:
@@ -147,73 +152,27 @@ class ConnectionMc:
         """
         self.source_x = int(self.src_node.x)
         self.target_x = int(self.tgt_node.x)
-        threshold = 175
         mc_offset = 50
 
         if isinstance(self.src_node, Matrix):
             connection_y = (
-                    (int(matrix_y) + MATRIX_CONNECTIONS["height"])
-                    + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
-                    + mc_offset
+                (int(matrix_y) + MATRIX_CONNECTIONS["height"])
+                + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
+                + mc_offset
             )
             self.source_y = connection_y
             self.target_y = self.source_y
         elif isinstance(self.src_node, ApplianceMc):
             connection_y = (
-                    (int(matrix_y) + MATRIX_CONNECTIONS["height"])
-                    + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
-                    + mc_offset
+                (int(matrix_y) + MATRIX_CONNECTIONS["height"])
+                + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
+                + mc_offset
             )
-
             if connection_index != self.src_node.meta.__LABEL_INDEXES__[pos_index]:
-                waypoints = ()
                 mc_offset = 65
-                midpoint = self.get_x_coord_midpoint(self.tgt_node.x, self.src_node.x)
-                midpoint_waypoints = {
-                    "source_y": self.src_node.y + mc_offset,
-                    "source_x": self.src_node.x,
-                    "target_y": self.src_node.y + mc_offset,
-                    "target_x": self.src_node.x + midpoint,
-                }
-                midpoint_arrow = self.create_arrow_break(
-                    midpoint_waypoints["target_x"],
-                    midpoint_waypoints["target_y"],
-                    midpoint_waypoints["source_x"],
-                    midpoint_waypoints["source_y"],
-                    _type="arrow",
-                    label="",
+                return self.create_arrow_waypoints(
+                    connection_index, pos_index, connection_y, mc_offset
                 )
-                vertical_waypoints = {
-                    "source_y": self.src_node.y + mc_offset,
-                    "source_x": self.src_node.x + midpoint,
-                    "target_y": connection_y,
-                    "target_x": self.src_node.x + midpoint,
-                }
-                vertical_arrow = self.create_arrow_break(
-                    vertical_waypoints["target_x"],
-                    vertical_waypoints["target_y"],
-                    vertical_waypoints["source_x"],
-                    vertical_waypoints["source_y"],
-                    _type="arrow",
-                    label=""
-                )
-                final_point_waypoints = {
-                    "source_y": connection_y,
-                    "source_x": self.src_node.x + midpoint,
-                    "target_y": connection_y,
-                    "target_x": self.tgt_node.x,
-                }
-                final_arrow = self.create_arrow_break(
-                    final_point_waypoints["target_x"],
-                    final_point_waypoints["target_y"],
-                    final_point_waypoints["source_x"],
-                    final_point_waypoints["source_y"],
-                    _type="arrow",
-                    label=""
-                )
-                self.debug_print(connection_index, pos_index, connection_y)
-                # return midpoint_arrow
-                return midpoint_arrow, vertical_arrow, final_arrow
 
             elif self.src_node.meta.__SIDE__ == "left":
                 self.target_y = connection_y
@@ -223,12 +182,6 @@ class ConnectionMc:
                 self.target_y = self.source_y
 
         return self.create_arrow_instance("", _type="arrow")
-
-    def create_midpoint(self, mc_offset):
-        self.source_y = self.src_node.y + mc_offset
-        self.target_y = self.source_y
-        midpoint = self.get_x_coord_midpoint(self.tgt_node.x, self.src_node.x)
-        self.target_x = self.source_x + midpoint
 
     def create_arrow_instance(self, label: str, _type: str):
         """
@@ -246,6 +199,61 @@ class ConnectionMc:
             label=label,
         )
         return arrow
+
+    def create_arrow_waypoints(
+        self, connection_index, pos_index, connection_y, mc_offset
+    ) -> tuple[ArrowWaypoint, ArrowWaypoint, ArrowWaypoint] | None:
+        """
+        Generates and returns waypoints for drawing arrows between source and target nodes.
+
+        The function calculates the midpoint and vertical points between
+        the source and target nodes and constructs corresponding waypoints
+        for arrows. Three different arrow paths are created: midpoint, vertical,
+        and final connection. Each is defined using source and target coordinates
+        and is generated via an internal arrow creation method. Debugging
+        functionality is included to print relevant connection data.
+
+        Args:
+            connection_index (int): The index of the current connection for debug purposes.
+            pos_index (int): The position index to identify where the arrow connects.
+            connection_y (float): The vertical coordinate for the connection point on the target node.
+            mc_offset (float): The offset added or applied to the y-coordinates of source node to
+                define the connection path.
+
+        Returns:
+            tuple: A tuple containing three waypoint arrows, representing
+                the midpoint, vertical, and final part of the connection.
+        """
+        meta = ArrowMeta(self.src_node.meta.__ID__, self.tgt_node.meta.__ID__)
+        print(f"Source ID: {self.src_node.meta.__ID__} | Target ID: {self.tgt_node.meta.__ID__}")
+        midpoint = self.get_x_coord_midpoint(self.tgt_node.x, self.src_node.x)
+        midpoint_waypoints = {
+            "x": self.src_node.x,
+            "y": self.src_node.y + mc_offset
+        }
+        vertical_waypoints = {
+            "x": self.src_node.x + midpoint,
+            "y": connection_y,
+        }
+        final_point_waypoints = {
+            "x": self.tgt_node.x,
+            "y": connection_y,
+        }
+        midpoint_arrow = self.create_arrow_break(
+            midpoint_waypoints["x"],
+            midpoint_waypoints["y"],
+            meta=meta,
+        )
+        vertical_arrow = self.create_arrow_break(
+            vertical_waypoints["x"],
+            vertical_waypoints["y"],
+        )
+        final_arrow = self.create_arrow_break(
+            final_point_waypoints["x"],
+            final_point_waypoints["y"],
+        )
+        self.debug_print(connection_index, pos_index, connection_y)
+        return midpoint_arrow, vertical_arrow, final_arrow
 
     def debug_print(self, connection_index, pos_index, connection_y):
         print("\n")
@@ -267,23 +275,13 @@ class ConnectionMc:
         print("\t=======================================")
 
     @staticmethod
-    def create_arrow_break(tgt_x, tgt_y, src_x, src_y, _type, label):
-        arrow = Arrow(
-            target_x=tgt_x,
-            target_y=tgt_y,
-            source_x=src_x,
-            source_y=src_y,
-            _type=_type,
-            label=label
+    def create_arrow_break(x, y, meta=None) -> ArrowWaypoint:
+        waypoint = ArrowWaypoint(
+            x=x,
+            y=y,
+            meta=meta,
         )
-        return arrow
-
-    @staticmethod
-    def process_pos_index(connection_index, pos_index):
-        if connection_index == pos_index:
-            return True
-        else:
-            return False
+        return waypoint
 
     @staticmethod
     def get_x_coord_midpoint(src_x, tgt_x):

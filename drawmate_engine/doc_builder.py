@@ -8,7 +8,12 @@ import random
 # See the pathfinder.py for specific uses.
 from utils.pathfinder import PathFinder
 from utils.log_manager import LogManager
-from constants.constants import MX_OBJECT_ATTRIBUTES,TOP_LEVEL_MX_CELL, MX_ARRAY_ATTRIBUTES, MX_GRAPH_MODEL_ATTRIBUTES
+from constants.constants import (
+    MX_OBJECT_ATTRIBUTES,
+    TOP_LEVEL_MX_CELL,
+    MX_ARRAY_ATTRIBUTES,
+    MX_GRAPH_MODEL_ATTRIBUTES,
+)
 
 # Instance of the pathfinder class for directory navigation
 pf = PathFinder()
@@ -284,7 +289,14 @@ class MxObject(DocBuilder):
             else:
                 self.attributes["id"] = str(generate_id())
 
-        def set_mxcell_values_point(self, style: str, value: str, __id__: str = None, src_id: str = None, tgt_id: str = None):
+        def set_mxcell_values_point(
+            self,
+            style: str,
+            value: str,
+            __id__: str = None,
+            src_id: str = None,
+            tgt_id: str = None,
+        ):
             """_summary_
 
             Args:
@@ -294,7 +306,7 @@ class MxObject(DocBuilder):
                 style (str): The xml style for the object
                 value (str): The value will be the label on the object once drawn.
             """
-            self.attributes["vertex"] = ""
+            self.attributes["vertex"] = "1"
             self.attributes["value"] = value
             self.attributes["style"] = style
             self.attributes["edge"] = "1"
@@ -310,7 +322,7 @@ class MxObject(DocBuilder):
                 self.attributes["source"] = ""
 
             if tgt_id:
-                self.attributes["target"] = ""
+                self.attributes["target"] = str(tgt_id)
             else:
                 self.attributes["target"] = ""
 
@@ -385,6 +397,14 @@ class MxObject(DocBuilder):
                     self.attributes["y"] = str(y)
                     self.attributes["as"] = "targetPoint"
 
+                def set_waypoint_source(self, x: int, y: int):
+                    self.attributes["x"] = str(x)
+                    self.attributes["y"] = str(y)
+
+                def set_waypoint_target(self, x: int, y: int):
+                    self.attributes["x"] = str(x)
+                    self.attributes["y"] = str(y)
+
             class MxArray:
                 """_summary_"""
 
@@ -392,13 +412,23 @@ class MxObject(DocBuilder):
                     self.attributes = MX_ARRAY_ATTRIBUTES
                     self.mx_points = []
 
-                def set_array_values(self, as_relative: str):
-                    """_summary_
+                def set_array_values(
+                    self, as_relative: str = None, as_points: str = None
+                ):
+                    """
+                    Sets the value of the 'as' key in the attributes dictionary based on the provided arguments.
+
+                    If the `as_points` argument is provided, its value is assigned to the 'as' key
+                    in the attributes. Otherwise, the `as_relative` argument is used.
 
                     Args:
-                        as_relative (str): _description_
+                        as_relative (str): The value to set for the 'as' key if `as_points` is not provided.
+                        as_points (str): The value to set for the 'as' key, which takes priority over `as_relative`.
                     """
-                    self.attributes["as"] = as_relative
+                    if as_points:
+                        self.attributes["as"] = as_points
+                    else:
+                        self.attributes["as"] = as_relative
 
 
 def create_document(x: int, y: int, width: int, height: int) -> DocBuilder:

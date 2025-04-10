@@ -212,6 +212,7 @@ class ApplianceSc(Rect):
         """
         self.attributes["label"] = ""
 
+
 @dataclass
 class ApplianceMetadata:
     __SIDE__: str
@@ -389,8 +390,12 @@ class ConnectionsSc:
         # y offset, default is set to center connection on object
         # this offset will place the connection on the IN/OUT label instead of the center of
         # the appliance
-        self.src_center = source_rect.y + (int(source_rect.attributes.get("height")) // 2)
-        self.tgt_center = target_rect.y + ( int(target_rect.attributes.get("height")) // 2 )
+        self.src_center = source_rect.y + (
+            int(source_rect.attributes.get("height")) // 2
+        )
+        self.tgt_center = target_rect.y + (
+            int(target_rect.attributes.get("height")) // 2
+        )
         if mc:
             self.offset = -40
         else:

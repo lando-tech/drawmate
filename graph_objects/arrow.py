@@ -1,10 +1,17 @@
 from graph_objects.rect import ArrowRect
 from constants.constants import MX_GRAPH_XML_STYLES
+from dataclasses import dataclass
+
+
+@dataclass
+class ArrowMeta:
+    source_id: str
+    target_id: str
 
 
 class Arrow(ArrowRect):
     """
-    Summary: This class is a child of the ArrowRect class and inherits the attributes dictionary.
+    Summary: This class is a child of the ArrowRect class and inherits the attributes' dictionary.
     It is used to manage each arrow/connection and its attributes.
 
     Args:
@@ -27,6 +34,7 @@ class Arrow(ArrowRect):
         source_y: int,
         label: str,
         _type: str,
+        meta = None,
         style=DEFAULT_STYLE,
     ):
 
@@ -43,3 +51,16 @@ class Arrow(ArrowRect):
         self.source_y = source_y
         self.target_x = target_x
         self.target_y = target_y
+        self.meta = meta
+
+
+class ArrowWaypoint:
+    def __init__(self, x: int, y: int, meta=None, style="edgeStyle=none;html=1"):
+        self.x = x
+        self.y = y
+        self.meta = meta
+        self.style = style
+        self.attributes = {
+            "x": f"{x}",
+            "y": f"{y}",
+        }

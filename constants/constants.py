@@ -57,6 +57,8 @@ MX_GRAPH_XML_STYLES = {
     "rect": "rounded=0;whiteSpace=wrap;html=1;",
     "arrow": "edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;exitX=1;entryY=0.5;entryDx=0;entryDy=0;",
     "arrow2": "edgeStyle=loopEdgeStyle;orthogonalloop=0;rounded=0;jettySize=auto;html=1",
+    "arrow3": "edgeStyle=none;html=1",
+    "arrow4": "edgeStyle=none;html=1;exitX=1;exitY=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;",
     "elipse": "ellipse;whiteSpace=wrap;html=1;aspect=fixed;",
 }
 

@@ -1,5 +1,10 @@
 from constants.constants import MX_GRAPH_XML_STYLES
 from graph_objects.rect import Rect
+from dataclasses import dataclass
+
+@dataclass
+class MatrixMeta:
+    __ID__: str
 
 
 class Matrix(Rect):
@@ -28,6 +33,7 @@ class Matrix(Rect):
         height: int,
         x: int,
         y: int,
+        meta=None,
         style=DEFAULT_STYLE,
     ):
         super().__init__(
@@ -42,3 +48,4 @@ class Matrix(Rect):
         self.num_connections = connections_count
         self.x = x
         self.y = y
+        self.meta = meta

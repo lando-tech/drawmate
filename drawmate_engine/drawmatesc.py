@@ -422,7 +422,9 @@ class DrawmateSc(DocBuilder):
                 else:
                     appliance.right_ptr = appliance_array[next_node_index]
 
-    def create_connections(self, appliance_array: list[ApplianceSc], left: bool) -> None:
+    def create_connections(
+        self, appliance_array: list[ApplianceSc], left: bool
+    ) -> None:
         """
         Create connection/arrow objects for each appliance based on the left and right
         pointers

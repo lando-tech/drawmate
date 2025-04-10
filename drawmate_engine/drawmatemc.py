@@ -3,25 +3,30 @@ This is the main entry point for the templating engine.
 It contains the core logic for making a basic diagram.
 Use this module as a template to implement various network topologies and connection logic.
 """
+
 from drawmate_engine.archive.matrix import Arrow
 from drawmate_engine.drawmate_config import DrawmateConfig
 
 from graph_objects.rect import Rect
-from graph_objects.matrix import Matrix
+from graph_objects.matrix import Matrix, MatrixMeta
 from graph_objects.appliance import ApplianceMc, ApplianceMetadata
 from graph_objects.connections import ConnectionMc
 from graph_objects.text_box import TextBox
-from drawmate_engine.doc_builder import DocBuilder, MxObject, generate_id
+from drawmate_engine.doc_builder import DocBuilder, generate_id
+from mx_graph_api.mxcell import MxCell
+from mx_graph_api.mxgeometry import MxGeometry
+from mx_graph_api.mxpoint import MxPoint
+from mx_graph_api.mxarray import MxArray
 from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
     MATRIX_CONNECTIONS,
     MATRIX_LABEL,
-    # ARROW_CONNECTIONS,
     APPLIANCE_ATTRIBUTES_SC,
     APPLIANCE_ATTRIBUTES_MC,
     APPLIANCE_INPUT,
     APPLIANCE_OUTPUT,
     APPLIANCE_INPUT_OUTPUT_DIMS,
+    MX_GRAPH_XML_STYLES
 )
 
 
@@ -45,9 +50,16 @@ class DrawmateMc(DocBuilder):
         self.matrix = self.create_matrix()
         self.node_dict = {}
         self.connections_array: list[ConnectionMc] = []
+        self.arrow_array = []
 
     def create_mxobject(
-        self, data: dict, __id__: str, is_arrow: bool = False, has_label: bool = True, is_mxarray: bool = False
+        self,
+        data: dict = None,
+        __id__: str = "",
+        is_arrow: bool = False,
+        has_label: bool = True,
+        is_mxarray: bool = False,
+        mx_points: tuple= None,
     ):
         """
         Summary:
@@ -55,93 +67,125 @@ class DrawmateMc(DocBuilder):
             node to the appropriate parent.
 
         Args:
+            mx_points:
             is_mxarray (bool): is the object has more than one mxpoint/arrow
             __id__: ID of the graph object
             data (dict): The attributes of an instance of the Rect class or one of its children.
             is_arrow (bool): Check if the Rect is an ArrowRect.
             has_label (bool): If a label should be added, or a blank string placed instead
         """
-        # Create object node
-        mx_obj = MxObject()
-        if not has_label:
-            mx_obj.set_object_values("", data["type"])
-        else:
-            mx_obj.set_object_values(data["label"], data["type"])
 
         # If the rect being passed in is an arrow, adjust methods accordingly
         if is_arrow:
             # Create mxCell object
-            cell = mx_obj.MxCell()
+            cell = MxCell()
             cell.set_mxcell_values_point(data["style"], data["label"], __id__)
 
             # Append mxCell to mxObject
-            cell_elem = mx_obj.create_xml_element("mxCell", cell.attributes)
-            mx_obj.mx_object.appendChild(cell_elem)
+            cell_elem = cell.create_xml_element("mxCell", cell.attributes)
+            cell.mxcell_object.appendChild(cell_elem)
 
             # Create mxGeometry object
-            geo = cell.MxGeometry()
+            geo = MxGeometry()
             geo.set_geometry_values_point()
-            geo_elem = mx_obj.create_xml_element("mxGeometry", geo.attributes)
+            geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
 
             # Append mxGeometry to mxCell
             cell_elem.appendChild(geo_elem)
 
             # Call to the create_mxpoint function
             self.create_mxpoint(
-                mx_geo=geo, mx_geo_elem=geo_elem, mx_obj=mx_obj, data=data
+                mx_geo_elem=geo_elem, mxcell_obj=cell, data=data
             )
+            self.root.appendChild(cell_elem)
         elif is_mxarray:
-            self.create_mxarray()
+            cell = MxCell()
+            cell.set_mxcell_values_point(
+                MX_GRAPH_XML_STYLES["arrow4"],
+                "",
+                __id__,
+                src_id=mx_points[0].meta.source_id,
+                tgt_id=mx_points[0].meta.target_id,
+            )
+
+            # Append mxCell to mxObject
+            cell_elem = cell.create_xml_element("mxCell", cell.attributes)
+            cell.mxcell_object.appendChild(cell_elem)
+
+            # Create mxGeometry object
+            geo = MxGeometry()
+            geo.set_geometry_values_point()
+            geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
+
+            # Append mxGeometry to mxCell
+            cell_elem.appendChild(geo_elem)
+
+            # Create mxarray
+            self.create_mxarray(
+                mx_geo_elem=geo_elem, mx_obj=cell, mx_points=mx_points
+            )
+            self.root.appendChild(cell_elem)
 
         else:
             # Create mxCell object
-            cell = mx_obj.MxCell()
+            cell = MxCell()
             if not has_label:
                 cell.set_mxcell_values(value="", style=data["style"], __id__=__id__)
             else:
-                cell.set_mxcell_values(value=data["label"], style=data["style"], __id__=__id__)
+                cell.set_mxcell_values(
+                    value=data["label"], style=data["style"], __id__=__id__
+                )
             # Append mxCell to mxObject
-            cell_elem = mx_obj.create_xml_element("mxCell", cell.attributes)
-            mx_obj.mx_object.appendChild(cell_elem)
+            cell_elem = cell.create_xml_element("mxCell", cell.attributes)
+            cell.mxcell_object.appendChild(cell_elem)
 
             # Create mxGeometry object
-            geo = cell.MxGeometry()
+            geo = MxGeometry()
             geo.set_geometry_values(data["x"], data["y"], data["width"], data["height"])
 
             # Append mxGeometry to mxCell
-            geo_elem = mx_obj.create_xml_element("mxGeometry", geo.attributes)
+            geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
             cell_elem.appendChild(geo_elem)
+            self.root.appendChild(cell_elem)
 
-        # Get root element of xml
-        # Append mxObject to root
-        self.root.appendChild(mx_obj.mx_object)
-
-    def create_mxpoint(self, mx_geo, mx_geo_elem, mx_obj, data: dict):
+    def create_mxpoint(self, mx_geo_elem, mxcell_obj, data: dict):
         """
         Summary:
             Creates the xml structure for, and instantiates the mxPoint object.
 
         Args:
-            mx_geo (mxGeometry): An instance of the mxGeometry class.
             mx_geo_elem (mxGeometryElement): An instance of the mxGeometry xml element.
-            mx_obj (mxObject): An instance of the mxObject class.
+            mxcell_obj (mxObject): An instance of the mxObject class.
             data (dict): An attribute dictionary from the instance of the Arrow class.
         """
         # Set source mxPoint element
-        source_point = mx_geo.MxPoint()
+        source_point = MxPoint()
         source_point.set_mxpoint_source(data["source_x"], data["source_y"])
-        source_element = mx_obj.create_xml_element("mxPoint", source_point.attributes)
+        source_element = mxcell_obj.create_xml_element("mxPoint", source_point.attributes)
         mx_geo_elem.appendChild(source_element)
 
         # Set target mxPoint element
-        target_point = mx_geo.MxPoint()
+        target_point = MxPoint()
         target_point.set_mxpoint_target(data["target_x"], data["target_y"])
-        target_elem = mx_obj.create_xml_element("mxPoint", target_point.attributes)
+        target_elem = mxcell_obj.create_xml_element("mxPoint", target_point.attributes)
         mx_geo_elem.appendChild(target_elem)
 
-    def create_mxarray(self, gx_geo, mx_geo_elem, mx_obj, data: dict, mx_points: list):
-        pass
+    def create_mxarray(
+        self,
+        mx_geo_elem,
+        mx_obj,
+        mx_points: tuple,
+    ):
+        mx_array = MxArray()
+        mx_array.set_array_values(as_points="points")
+        mx_array_elem = mx_obj.create_xml_element("mxArray", mx_array.attributes)
+        mx_geo_elem.appendChild(mx_array_elem)
 
+        for waypoint in mx_points:
+            wp = MxPoint()
+            wp.set_waypoint_x_y(waypoint.attributes["x"], waypoint.attributes["y"])
+            waypoint_elem = mx_obj.create_xml_element("mxPoint", wp.waypoint_attributes)
+            mx_array_elem.appendChild(waypoint_elem)
 
     def build_graph(self):
         """
@@ -159,7 +203,7 @@ class DrawmateMc(DocBuilder):
         self.create_node_ptrs(self.node_dict["left_side"], left=True)
         self.create_node_ptrs(self.node_dict["right_side"], left=False)
         # Create Connections for Nodes
-        arrow_arr = self.create_arrow_array()
+        self.create_arrows()
         # Create nodes
         self.create_nodes(self.node_dict["left_side"])
         self.create_nodes(self.node_dict["right_side"])
@@ -170,7 +214,9 @@ class DrawmateMc(DocBuilder):
         self.create_node_label(self.node_dict["left_side"])
         self.create_node_label(self.node_dict["right_side"])
         # Create the matrix object
-        self.create_mxobject(self.matrix.attributes, has_label=False, __id__=str(generate_id()))
+        self.create_mxobject(
+            self.matrix.attributes, has_label=False, __id__=str(generate_id())
+        )
         self.create_matrix_label()
         self.create_matrix_connections()
         # Create final XML Document
@@ -182,6 +228,7 @@ class DrawmateMc(DocBuilder):
         Returns:
             Matrix: An instance of the Matrix class
         """
+        meta = MatrixMeta(__ID__=str(generate_id()))
         matrix_attrib = self.dc.get_matrix_dimensions()
         self.check_matrix_dimensions(matrix_attrib)
         return Matrix(
@@ -191,6 +238,7 @@ class DrawmateMc(DocBuilder):
             height=matrix_attrib.height,
             connections_count=matrix_attrib.num_connections,
             matrix_label=matrix_attrib.labels,
+            meta=meta,
         )
 
     def create_matrix_connections(self):
@@ -278,15 +326,32 @@ class DrawmateMc(DocBuilder):
         left_nodes = matrix_arr[0]
         right_nodes = matrix_arr[1]
         node_dict["left_side"] = self.create_node_array(
-            left_nodes, left_x, start_y, x_spacing, y_spacing, True,
+            left_nodes,
+            left_x,
+            start_y,
+            x_spacing,
+            y_spacing,
+            True,
         )
         node_dict["right_side"] = self.create_node_array(
-            right_nodes, right_x, start_y, x_spacing, y_spacing, False,
+            right_nodes,
+            right_x,
+            start_y,
+            x_spacing,
+            y_spacing,
+            False,
         )
         return node_dict
 
     def create_node_array(
-        self, node_arr: list, x, start_y, x_spacing, y_spacing, left: bool, debug: bool = False
+        self,
+        node_arr: list,
+        x,
+        start_y,
+        x_spacing,
+        y_spacing,
+        left: bool,
+        debug: bool = False,
     ) -> list[ApplianceMc]:
         """
         Creates the Appliance nodes for the left and right sides of the matrix.
@@ -324,10 +389,10 @@ class DrawmateMc(DocBuilder):
 
                 __ID__ = generate_id()
                 meta = ApplianceMetadata(__SIDE__=side, __ID__=str(__ID__))
-                meta.__ROW_INDEX__ = self.get_corresponding_index(r_index, max_per_column)
+                meta.__ROW_INDEX__ = self.get_corresponding_index(
+                    r_index, max_per_column
+                )
                 meta.__COLUMN_INDEX__ = column_index
-                # meta.__LABEL_INDEXES__.append(meta.__ROW_INDEX__)
-                # meta.__LABEL_INDEXES__.append(meta.__ROW_INDEX__ + 1)
 
                 if meta.__ROW_INDEX__ == max_per_column - 1:
                     column_index += 1
@@ -383,7 +448,7 @@ class DrawmateMc(DocBuilder):
                     output_label=r_output,
                     width=width,
                     height=height,
-                    meta=meta
+                    meta=meta,
                 )
 
                 if debug:
@@ -408,7 +473,9 @@ class DrawmateMc(DocBuilder):
             if node.attributes["label"].strip() == "__SPAN__":
                 continue
             else:
-                self.create_mxobject(node.attributes, has_label=False, __id__=node.meta.__ID__)
+                self.create_mxobject(
+                    node.attributes, has_label=False, __id__=str(node.meta.__ID__)
+                )
 
     def create_node_in_out_textbox(self, appliance_array: list[ApplianceMc]) -> None:
         """
@@ -444,7 +511,10 @@ class DrawmateMc(DocBuilder):
                     output_x, output_y, width, height, node.output_label
                 )
 
-            elif len(node.meta.__INPUT_LABELS__) > 1 and len(node.meta.__OUTPUT_LABELS__) > 1:
+            elif (
+                len(node.meta.__INPUT_LABELS__) > 1
+                and len(node.meta.__OUTPUT_LABELS__) > 1
+            ):
 
                 for index, item in enumerate(node.meta.__INPUT_LABELS__):
 
@@ -522,14 +592,10 @@ class DrawmateMc(DocBuilder):
                 if 0 <= previous_node_index < total_nodes:
                     if left:
                         appliance.right_ptr = appliance_array[previous_node_index]
-                        self.append_connection(
-                            appliance, appliance.right_ptr
-                        )
+                        self.append_connection(appliance, appliance.right_ptr)
                     else:
                         appliance.left_ptr = appliance_array[previous_node_index]
-                        self.append_connection(
-                            appliance.left_ptr, appliance
-                        )
+                        self.append_connection(appliance.left_ptr, appliance)
 
                 next_node_index = (next_col * max_rows) + row
                 if 0 <= next_node_index < total_nodes:
@@ -543,75 +609,173 @@ class DrawmateMc(DocBuilder):
         src_node: ApplianceMc | Matrix,
         tgt_node: ApplianceMc | Matrix,
     ):
+        """
+        Appends a connection between two nodes to the connections array.
+
+        This method creates a new `ConnectionMc` object using the provided source and
+        target nodes and adds it to the `connections_array`.
+
+        Args:
+            src_node: The source node for the connection. Can be an instance of
+                `ApplianceMc` or `Matrix`.
+            tgt_node: The target node for the connection. Can be an instance of
+                `ApplianceMc` or `Matrix`.
+        """
         connection = ConnectionMc(
             src_node=src_node,
             tgt_node=tgt_node,
         )
         self.connections_array.append(connection)
 
-    def create_arrow_array(self) -> list[Arrow]:
+    def create_arrows(self) -> None:
         """
-        Iterates through self.connections_array and creates arrows/connections
-        between each object on the graph.
+        Generates an array of Arrow objects based on the connections defined in the
+        instance's `connections_array`. The method processes each connection, checks
+        certain conditions, and creates the corresponding arrow(s). The output array
+        may consist of individual Arrow objects or tuples containing multiple Arrows.
+
         Returns:
+            list[Arrow] | list[Arrow, tuple[Arrow, Arrow, Arrow]]: An array of Arrow
+            objects or a list containing Arrows and tuples of Arrows. The content of
+            the array depends on the connection configurations and processed logic.
 
+        Raises:
+            None
         """
-        arrow_array = []
         for index, conn in enumerate(self.connections_array):
-
             if isinstance(conn.src_node, Matrix):
-                if conn .tgt_node.meta.__SPANNING_NODE__ or conn.tgt_node.attributes.get('label').strip() == "":
+                if (
+                    conn.tgt_node.meta.__SPANNING_NODE__
+                    or conn.tgt_node.attributes.get("label").strip() == ""
+                ):
                     continue
                 if conn.tgt_node.meta.__MULTI_CONNECTION_LEFT__:
-                    for i, node in enumerate(conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__):
+                    for i, node in enumerate(
+                        conn.tgt_node.meta.__CONNECTION_INDEXES_LEFT__
+                    ):
                         arrow = conn.create_connection_mc(self.matrix.y, node, i)
                         if isinstance(arrow, tuple):
-                            self.create_mxobject(arrow[0].attributes, is_arrow=True, __id__=str(generate_id()))
-                            self.create_mxobject(arrow[1].attributes, is_arrow=True, __id__=str(generate_id()))
-                            self.create_mxobject(arrow[2].attributes, is_arrow=True, __id__=str(generate_id()))
+                            self.create_mxobject(
+                                has_label=False,
+                                is_mxarray=True,
+                                mx_points=arrow,
+                                __id__=str(generate_id()),
+                            )
                         else:
-                            arrow_array.append(arrow)
-                            self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+                            self.create_mxobject(
+                                arrow.attributes,
+                                has_label=False,
+                                is_arrow=True,
+                                __id__=str(generate_id()),
+                            )
+                        # self.arrow_array.append(arrow)
                 else:
                     arrow = conn.create_connection_sc()
-                    arrow_array.append(arrow)
-                    self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
-
+                    self.create_mxobject(
+                        arrow.attributes,
+                        has_label=False,
+                        is_arrow=True,
+                        __id__=str(generate_id()),
+                    )
             elif isinstance(conn.src_node, ApplianceMc):
-
-                if conn.src_node.meta.__SPANNING_NODE__ or conn.src_node.attributes.get('label').strip() == "":
+                if (
+                    conn.src_node.meta.__SPANNING_NODE__
+                    or conn.src_node.attributes.get("label").strip() == ""
+                ):
                     continue
                 if conn.src_node.meta.__SIDE__ == "left":
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
-                        for i, node in enumerate(conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__):
+                        for i, node in enumerate(
+                            conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__
+                        ):
                             arrow = conn.create_connection_mc(self.matrix.y, node, i)
                             if isinstance(arrow, tuple):
-                                self.create_mxobject(arrow[0].attributes, is_arrow=True, __id__=str(generate_id()))
-                                self.create_mxobject(arrow[1].attributes, is_arrow=True, __id__=str(generate_id()))
-                                self.create_mxobject(arrow[2].attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(
+                                    has_label=False,
+                                    is_mxarray=True,
+                                    mx_points=arrow,
+                                    __id__=str(generate_id()),
+                                )
                             else:
-                                arrow_array.append(arrow)
-                                self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(
+                                    arrow.attributes,
+                                    has_label=False,
+                                    is_arrow=True,
+                                    __id__=str(generate_id()),
+                                )
+                            # self.arrow_array.append(arrow)
                     else:
                         arrow = conn.create_connection_sc()
-                        arrow_array.append(arrow)
-                        self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+                        if isinstance(arrow, tuple):
+                            self.create_mxobject(
+                                has_label=False,
+                                is_mxarray=True,
+                                mx_points=arrow,
+                                __id__=str(generate_id()),
+                            )
+                        else:
+                            self.create_mxobject(
+                                arrow.attributes,
+                                has_label=False,
+                                is_arrow=True,
+                                __id__=str(generate_id()),
+                            )
+                        # self.arrow_array.append(arrow)
                 else:
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
-                        for i, node in enumerate(conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__):
+                        for i, node in enumerate(
+                            conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__
+                        ):
                             arrow = conn.create_connection_mc(self.matrix.y, node, i)
                             if isinstance(arrow, tuple):
-                                self.create_mxobject(arrow[0].attributes, is_arrow=True, __id__=str(generate_id()))
-                                self.create_mxobject(arrow[1].attributes, is_arrow=True, __id__=str(generate_id()))
-                                self.create_mxobject(arrow[2].attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(
+                                    has_label=False,
+                                    is_mxarray=True,
+                                    mx_points=arrow,
+                                    __id__=str(generate_id()),
+                                )
                             else:
-                                arrow_array.append(arrow)
-                                self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
+                                self.create_mxobject(
+                                    arrow.attributes,
+                                    has_label=False,
+                                    is_arrow=True,
+                                    __id__=str(generate_id()),
+                                )
+                            # self.arrow_array.append(arrow)
                     else:
                         arrow = conn.create_connection_sc()
-                        arrow_array.append(arrow)
-                        self.create_mxobject(arrow.attributes, is_arrow=True, __id__=str(generate_id()))
-        return arrow_array
+                        if isinstance(arrow, tuple):
+                            self.create_mxobject(
+                                has_label=False,
+                                is_mxarray=True,
+                                mx_points=arrow,
+                                __id__=str(generate_id()),
+                            )
+                        else:
+                            self.create_mxobject(
+                                arrow.attributes,
+                                has_label=False,
+                                is_arrow=True,
+                                __id__=str(generate_id()),
+                            )
+                        # self.arrow_array.append(arrow)
+
+    def draw_arrows(self):
+        for arrow in self.arrow_array:
+            if isinstance(arrow, Arrow):
+                self.create_mxobject(
+                    arrow.attributes,
+                    has_label=False,
+                    is_arrow=True,
+                    __id__=str(generate_id()),
+                )
+            elif isinstance(arrow, tuple) and len(arrow) == 3:
+                self.create_mxobject(
+                    has_label=False,
+                    is_mxarray=True,
+                    mx_points=arrow,
+                    __id__=str(generate_id()),
+                )
 
     @staticmethod
     def check_matrix_dimensions(matrix_dims: MatrixDimensions):
@@ -688,12 +852,14 @@ class DrawmateMc(DocBuilder):
     @staticmethod
     def debug_print(appliance_node: ApplianceMc):
         print("\n")
-        print(f"\tLabel         : {appliance_node.attributes.get('label')}\n"
-              f"\tSide          : {appliance_node.meta.__SIDE__}\n"
-              f"\tSpanning Node : {appliance_node.meta.__SPANNING_NODE__}\n"
-              f"\tMulti-Left    : {appliance_node.meta.__MULTI_CONNECTION_LEFT__}\n"
-              f"\tMulti-Right   : {appliance_node.meta.__MULTI_CONNECTION_RIGHT__}\n"
-              f"\tColumn Index  : {appliance_node.meta.__COLUMN_INDEX__}\n"
-              f"\tRow Index     : {appliance_node.meta.__ROW_INDEX__}\n"
-              f"\tInput Labels  : {appliance_node.meta.__INPUT_LABELS__}\n"
-              f"\tOutput Labels : {appliance_node.meta.__OUTPUT_LABELS__}\n")
+        print(
+            f"\tLabel         : {appliance_node.attributes.get('label')}\n"
+            f"\tSide          : {appliance_node.meta.__SIDE__}\n"
+            f"\tSpanning Node : {appliance_node.meta.__SPANNING_NODE__}\n"
+            f"\tMulti-Left    : {appliance_node.meta.__MULTI_CONNECTION_LEFT__}\n"
+            f"\tMulti-Right   : {appliance_node.meta.__MULTI_CONNECTION_RIGHT__}\n"
+            f"\tColumn Index  : {appliance_node.meta.__COLUMN_INDEX__}\n"
+            f"\tRow Index     : {appliance_node.meta.__ROW_INDEX__}\n"
+            f"\tInput Labels  : {appliance_node.meta.__INPUT_LABELS__}\n"
+            f"\tOutput Labels : {appliance_node.meta.__OUTPUT_LABELS__}\n"
+        )
