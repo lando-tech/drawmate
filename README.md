@@ -1,4 +1,10 @@
-# **Drawmate: Automate Wiremaps and Diagrams with Draw.io**
+# ** CHANGES **
+- Please refer to the CHANGELOG.md and docs/API.md for updates on the new API.
+- The legacy API is still available, please refer to the docs or open a discussion if you have any questions!
+
+---
+
+## **Drawmate: Automate Wiremaps and Diagrams with Draw.io**
 
 **Drawmate** is a powerful tool designed to automate the creation of wiremaps and network architecture diagrams using the **Draw.io XML format**. This tool streamlines the diagramming process by utilizing a JSON API to automatically generate basic wiremaps, saving time and effort for network engineers and IT professionals.
 
