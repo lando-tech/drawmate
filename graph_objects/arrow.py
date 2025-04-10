@@ -34,7 +34,7 @@ class Arrow(ArrowRect):
         source_y: int,
         label: str,
         _type: str,
-        meta = None,
+        meta=None,
         style=DEFAULT_STYLE,
     ):
 

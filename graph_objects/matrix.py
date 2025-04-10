@@ -2,6 +2,7 @@ from constants.constants import MX_GRAPH_XML_STYLES
 from graph_objects.rect import Rect
 from dataclasses import dataclass
 
+
 @dataclass
 class MatrixMeta:
     __ID__: str

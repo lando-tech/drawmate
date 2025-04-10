@@ -38,12 +38,12 @@ class MxCell(DocBuilder):
             # print("Generating Node ID")
 
     def set_mxcell_values_point(
-            self,
-            style: str,
-            value: str,
-            __id__: str = None,
-            src_id: str = None,
-            tgt_id: str = None,
+        self,
+        style: str,
+        value: str,
+        __id__: str = None,
+        src_id: str = None,
+        tgt_id: str = None,
     ):
         """_summary_
 

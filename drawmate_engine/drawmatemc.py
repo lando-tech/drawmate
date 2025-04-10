@@ -57,7 +57,7 @@ class DrawmateMc(DocBuilder):
         is_arrow: bool = False,
         has_label: bool = True,
         is_mxarray: bool = False,
-        mx_points: tuple= None,
+        mx_points: tuple = None,
     ):
         """
         Summary:
@@ -92,15 +92,11 @@ class DrawmateMc(DocBuilder):
             cell_elem.appendChild(geo_elem)
 
             # Call to the create_mxpoint function
-            self.create_mxpoint(
-                mx_geo_elem=geo_elem, mxcell_obj=cell, data=data
-            )
+            self.create_mxpoint(mx_geo_elem=geo_elem, mxcell_obj=cell, data=data)
             self.root.appendChild(cell_elem)
         elif is_mxarray:
             # Create mxarray
-            self.create_mxarray(
-                mx_points=mx_points
-            )
+            self.create_mxarray(mx_points=mx_points)
 
         else:
             # Create mxCell object
@@ -137,7 +133,9 @@ class DrawmateMc(DocBuilder):
         # Set source mxPoint element
         source_point = MxPoint()
         source_point.set_mxpoint_source(data["source_x"], data["source_y"])
-        source_element = mxcell_obj.create_xml_element("mxPoint", source_point.attributes)
+        source_element = mxcell_obj.create_xml_element(
+            "mxPoint", source_point.attributes
+        )
         mx_geo_elem.appendChild(source_element)
 
         # Set target mxPoint element
@@ -146,9 +144,7 @@ class DrawmateMc(DocBuilder):
         target_elem = mxcell_obj.create_xml_element("mxPoint", target_point.attributes)
         mx_geo_elem.appendChild(target_elem)
 
-    def create_mxarray(
-        self, mx_points
-    ):
+    def create_mxarray(self, mx_points):
 
         for waypoint in mx_points:
             cell = MxCell()
@@ -679,12 +675,14 @@ class DrawmateMc(DocBuilder):
                         __id__=str(generate_id()),
                     )
             elif isinstance(conn.src_node, ApplianceMc):
-                if (
-                    conn.src_node.meta.__SPANNING_NODE__
-                    or conn.src_node.attributes.get("label").strip() == ""
-                ):
+                if conn.src_node.attributes.get("label").strip() == "":
                     continue
+                elif isinstance(conn.tgt_node, ApplianceMc):
+                    if conn.tgt_node.attributes.get("label").strip() == "":
+                        continue
                 if conn.src_node.meta.__SIDE__ == "left":
+                    if conn.src_node.meta.__SPANNING_NODE__:
+                        continue
                     if conn.src_node.meta.__MULTI_CONNECTION_RIGHT__:
                         for i, node in enumerate(
                             conn.src_node.meta.__CONNECTION_INDEXES_RIGHT__

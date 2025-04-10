@@ -1,7 +1,10 @@
 from graph_objects.appliance import ApplianceSc, ApplianceMc
 from graph_objects.matrix import Matrix
 from graph_objects.arrow import Arrow, ArrowMeta
-from constants.constants import MATRIX_CONNECTIONS, MX_GRAPH_XML_STYLES, APPLIANCE_ATTRIBUTES_MC
+from constants.constants import (
+    MATRIX_CONNECTIONS,
+    MX_GRAPH_XML_STYLES,
+)
 
 
 class ConnectionsSc:
@@ -101,6 +104,7 @@ class ConnectionMc:
         self.target_x = 0
         self.target_y = 0
         self.offset = 0
+        self.set_ids = set()
 
     def create_connection_sc(self) -> Arrow:
         """
@@ -159,17 +163,20 @@ class ConnectionMc:
             if connection_index != self.tgt_node.meta.__LABEL_INDEXES__[pos_index]:
                 connection_y = (
                     (int(matrix_y) + MATRIX_CONNECTIONS["height"])
-                    + (MATRIX_CONNECTIONS["label_spacing"] * self.tgt_node.meta.__LABEL_INDEXES__[pos_index])
+                    + (
+                        MATRIX_CONNECTIONS["label_spacing"]
+                        * self.tgt_node.meta.__LABEL_INDEXES__[pos_index]
+                    )
                     + mc_offset
                 )
 
                 mc_offset = (
-                    (MATRIX_CONNECTIONS["height"] + MATRIX_CONNECTIONS["label_spacing"] * connection_index)
-                    + mc_offset
-                )
+                    MATRIX_CONNECTIONS["height"]
+                    + MATRIX_CONNECTIONS["label_spacing"] * connection_index
+                ) + mc_offset
 
                 return self.create_arrow_waypoints(
-                    connection_index, pos_index, connection_y, mc_offset
+                    connection_y, mc_offset
                 )
 
             connection_y = (
@@ -186,9 +193,13 @@ class ConnectionMc:
                 + mc_offset
             )
             if connection_index != self.src_node.meta.__LABEL_INDEXES__[pos_index]:
-                mc_offset = 65
+                mc_offset =  (
+                (int(matrix_y) + MATRIX_CONNECTIONS["height"])
+                + (MATRIX_CONNECTIONS["label_spacing"] * self.src_node.meta.__LABEL_INDEXES__[pos_index])
+                + mc_offset
+                )
                 return self.create_arrow_waypoints(
-                    connection_index, pos_index, connection_y, mc_offset
+                    connection_y, mc_offset
                 )
 
             elif self.src_node.meta.__SIDE__ == "left":
@@ -218,7 +229,7 @@ class ConnectionMc:
         return arrow
 
     def create_arrow_waypoints(
-        self, connection_index, pos_index, connection_y, mc_offset
+        self, connection_y, mc_offset
     ) -> tuple[Arrow, Arrow, Arrow] | None:
         """
         Generates and returns waypoints for drawing arrows between source and target nodes.
@@ -231,8 +242,6 @@ class ConnectionMc:
         functionality is included to print relevant connection data.
 
         Args:
-            connection_index (int): The index of the current connection for debug purposes.
-            pos_index (int): The position index to identify where the arrow connects.
             connection_y (float): The vertical coordinate for the connection point on the target node.
             mc_offset (float): The offset added or applied to the y-coordinates of source node to
                 define the connection path.
@@ -242,17 +251,32 @@ class ConnectionMc:
                 the midpoint, vertical, and final part of the connection.
         """
         meta = ArrowMeta(self.src_node.meta.__ID__, self.tgt_node.meta.__ID__)
+
+        source_id = self.src_node.meta.__ID__
+        target_id = self.tgt_node.meta.__ID__
+        if source_id in self.set_ids or target_id in self.set_ids:
+            midpoint = self.get_x_coord_midpoint(self.tgt_node.x, self.src_node.x) + 50
+        else:
+            midpoint = self.get_x_coord_midpoint(self.tgt_node.x, self.src_node.x)
+            self.set_ids.add(source_id)
+            self.set_ids.add(target_id)
+
         # print(f"Source ID: {self.src_node.meta.__ID__} | Target ID: {self.tgt_node.meta.__ID__}")
-        midpoint = self.get_x_coord_midpoint(self.tgt_node.x, self.src_node.x)
+
+        if isinstance(self.src_node, Matrix):
+            source_y = self.src_node.y + mc_offset
+        else:
+            source_y = mc_offset
+
         midpoint_waypoints = {
             "source_x": self.src_node.x,
-            "source_y": self.src_node.y + mc_offset,
+            "source_y": source_y,
             "target_x": self.src_node.x + midpoint,
-            "target_y": self.src_node.y + mc_offset,
+            "target_y": source_y,
         }
         vertical_waypoints = {
             "source_x": self.src_node.x + midpoint,
-            "source_y": self.src_node.y + mc_offset,
+            "source_y": source_y,
             "target_x": self.src_node.x + midpoint,
             "target_y": connection_y,
         }
@@ -270,7 +294,7 @@ class ConnectionMc:
             style=MX_GRAPH_XML_STYLES["hidden_arrow"],
             _type="arrow",
             meta=meta,
-            label=""
+            label="",
         )
         vertical_arrow = self.create_arrow_break(
             vertical_waypoints["source_x"],
@@ -280,7 +304,7 @@ class ConnectionMc:
             style=MX_GRAPH_XML_STYLES["hidden_arrow_end"],
             _type="arrow",
             meta=meta,
-            label=""
+            label="",
         )
         final_arrow = self.create_arrow_break(
             final_point_waypoints["source_x"],
@@ -290,7 +314,7 @@ class ConnectionMc:
             style=MX_GRAPH_XML_STYLES["hidden_arrow_start"],
             _type="arrow",
             meta=meta,
-            label=""
+            label="",
         )
         # self.debug_print(connection_index, pos_index, connection_y)
         return midpoint_arrow, vertical_arrow, final_arrow
@@ -315,7 +339,9 @@ class ConnectionMc:
         print("\t=======================================")
 
     @staticmethod
-    def create_arrow_break(src_x, src_y, tgt_x, tgt_y, style, meta=None, _type="", label="") -> Arrow:
+    def create_arrow_break(
+        src_x, src_y, tgt_x, tgt_y, style, meta=None, _type="", label=""
+    ) -> Arrow:
         waypoint = Arrow(
             source_x=src_x,
             source_y=src_y,
