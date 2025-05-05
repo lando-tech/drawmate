@@ -10,8 +10,11 @@ from graph_objects.matrix import Matrix
 from graph_objects.appliance import ApplianceSc
 from graph_objects.connections import ConnectionsSc
 from graph_objects.text_box import TextBox
-from drawmate_engine.doc_builder import DocBuilder, MxObject
+from drawmate_engine.doc_builder import DocBuilder
 from drawmate_engine.drawmate_config import MatrixDimensions
+from mx_graph_api.mxobject import MxObject
+from mx_graph_api.mxcell import MxCell
+from mx_graph_api.mxgeometry import MxGeometry
 from constants.constants import (
     MATRIX_CONNECTIONS,
     MATRIX_LABEL,
@@ -65,7 +68,7 @@ class DrawmateSc(DocBuilder):
         # If the rect being passed in is an arrow, adjust methods accordingly
         if is_arrow:
             # Create mxCell object
-            cell = mx_obj.MxCell()
+            cell = MxCell()
             cell.set_mxcell_values_point(data["style"], data["label"])
 
             # Append mxCell to mxObject
@@ -73,7 +76,7 @@ class DrawmateSc(DocBuilder):
             mx_obj.mx_object.appendChild(cell_elem)
 
             # Create mxGeometry object
-            geo = cell.MxGeometry()
+            geo = MxGeometry()
             geo.set_geometry_values_point()
             geo_elem = mx_obj.create_xml_element("mxGeometry", geo.attributes)
 
@@ -87,7 +90,7 @@ class DrawmateSc(DocBuilder):
 
         else:
             # Create mxCell object
-            cell = mx_obj.MxCell()
+            cell = MxCell()
             if not has_label:
                 cell.set_mxcell_values(value="", style=data["style"])
             else:
@@ -97,7 +100,7 @@ class DrawmateSc(DocBuilder):
             mx_obj.mx_object.appendChild(cell_elem)
 
             # Create mxGeometry object
-            geo = cell.MxGeometry()
+            geo = MxGeometry()
             geo.set_geometry_values(data["x"], data["y"], data["width"], data["height"])
 
             # Append mxGeometry to mxCell

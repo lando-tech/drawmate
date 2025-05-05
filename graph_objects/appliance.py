@@ -36,7 +36,7 @@ class ApplianceSc(Rect):
     Args:
         x (int): The X coord for the rect.
         y (int): The Y coord for the rect.
-        style (str, optional): xml style for the graph element. Defaults to DEFAULT_STYLE.
+        style (str, optional): XML style for the graph element. Defaults to DEFAULT_STYLE.
     """
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]
@@ -91,7 +91,7 @@ class ApplianceSc(Rect):
 
 class ApplianceMc(Rect):
     """
-    Summary: This is child class of the Rect class. It inherits the attributes dictionary.
+    Summary: This is the child class of the Rect class. This class inherits the attributes dictionary.
     This class manages the attributes of the appliances that will be attached to the matrix.
 
     Args:
@@ -103,7 +103,7 @@ class ApplianceMc(Rect):
         meta (ApplianceMetadata): An instance of the ApplianceMetadata class
         width (int, optional): Appliance width
         height (int, optional): Appliance height
-        style (str, optional): xml style for the graph element. Defaults to DEFAULT_STYLE.
+        style (str, optional): XML style for the graph element. Defaults to DEFAULT_STYLE.
     """
 
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["rect"]

@@ -4,10 +4,10 @@ It contains the core logic for making a basic diagram.
 Use this module as a template to implement various network topologies and connection logic.
 """
 
-from drawmate_engine.archive.matrix import Arrow
 from drawmate_engine.drawmate_config import DrawmateConfig
 
 from graph_objects.rect import Rect
+from graph_objects.arrow import Arrow
 from graph_objects.matrix import Matrix, MatrixMeta
 from graph_objects.appliance import ApplianceMc, ApplianceMetadata
 from graph_objects.connections import ConnectionMc
@@ -344,8 +344,8 @@ class DrawmateMc(DocBuilder):
     def create_node_array(
         self,
         node_arr: list,
-        x,
-        start_y,
+        base_x,
+        base_y,
         x_spacing,
         y_spacing,
         left: bool,
@@ -356,8 +356,8 @@ class DrawmateMc(DocBuilder):
         Args:
             debug : if debug print statements are needed
             node_arr: The multidimensional array of objects, which will be instantiated as Appliance objects
-            x: The starting x coordinate
-            start_y: The starting y coordinate (the matrix y - spacing/offset)
+            base_x: The starting x coordinate
+            base_y: The starting y coordinate (the matrix y - spacing/offset)
             x_spacing: The x spacing for each row on the grid
             y_spacing: The y spacing for each object on the grid
             left: If the multidimensional array belongs to the left or right side of the grid
@@ -366,7 +366,7 @@ class DrawmateMc(DocBuilder):
                 list[ApplianceMc]: A list of Appliance objects
         """
         if not left:
-            x += 40
+            base_x += 40
 
         # Array of Appliance objects
         appliance_array = []
@@ -378,9 +378,9 @@ class DrawmateMc(DocBuilder):
         column_index = 0
         for index, item in enumerate(node_arr):
             # Set starting y coordinate
-            y = start_y
+            y = base_y
             if index > 0:
-                x = x - x_spacing if left else x + x_spacing
+                base_x = base_x - x_spacing if left else base_x + x_spacing
 
             # Iterate through the sublist of Node data
             for r_index, row in enumerate(item):
@@ -439,7 +439,7 @@ class DrawmateMc(DocBuilder):
                     height = APPLIANCE_ATTRIBUTES_MC["height"]
 
                 appliance_node = ApplianceMc(
-                    x=x,
+                    x=base_x,
                     y=y,
                     label=label,
                     input_label=l_input,

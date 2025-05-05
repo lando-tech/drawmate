@@ -5,15 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/drawmate.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/drawmate.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmate_master.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmate_master.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/archive/drawmate.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/archive/matrix.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/doc_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/doc_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmate_master.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/mx_factory.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_objects/appliance.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/appliance.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,17 +35,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;test&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/landotech/easyrok/drawmate&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "test",
+    "last_opened_file_path": "/home/landotech/easyrok/drawmate",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="drawmate" />
