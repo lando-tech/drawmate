@@ -1,12 +1,12 @@
-from graph_objects.appliance import ApplianceMc
+from graph_objects.appliance import Appliance, ApplianceMetadata
 
 
 class NodeBuilder:
     def __init__(self):
-        self.node_dict: dict[str, ApplianceMc] = dict()
+        self.node_dict: dict[str, Appliance] = dict()
 
-    def create_node(self):
+    def init_node_meta(self, attrib_dict: dict) -> ApplianceMetadata:
         pass
 
-    def init_node_dict(self):
+    def init_node_dict(self) -> None:
         pass

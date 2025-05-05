@@ -9,7 +9,7 @@ from drawmate_engine.drawmate_config import DrawmateConfig
 from graph_objects.rect import Rect
 from graph_objects.arrow import Arrow
 from graph_objects.matrix import Matrix, MatrixMeta
-from graph_objects.appliance import ApplianceMc, ApplianceMetadata
+from graph_objects.appliance import Appliance, ApplianceMetadata
 from graph_objects.connections import ConnectionMc
 from graph_objects.text_box import TextBox
 from drawmate_engine.doc_builder import DocBuilder, generate_id
@@ -304,7 +304,7 @@ class DrawmateMc(DocBuilder):
 
     def process_nodes(
         self, matrix_arr: tuple[list, list]
-    ) -> dict[str, list[ApplianceMc]]:
+    ) -> dict[str, list[Appliance]]:
         """
         Process the nodes and configure the x and y spacing. This method will then
         dispatch the nodes to the create_node_array method.
@@ -312,7 +312,7 @@ class DrawmateMc(DocBuilder):
             matrix_arr: Matrix Array of left and right nodes.
 
         Returns:
-            dict[str, list[ApplianceMc]]: A dictionary with a list of right and left side Appliance object arrays.
+            dict[str, list[Appliance]]: A dictionary with a list of right and left side Appliance object arrays.
         """
 
         node_dict = {}
@@ -350,7 +350,7 @@ class DrawmateMc(DocBuilder):
         y_spacing,
         left: bool,
         debug: bool = False,
-    ) -> list[ApplianceMc]:
+    ) -> list[Appliance]:
         """
         Creates the Appliance nodes for the left and right sides of the matrix.
         Args:
@@ -363,7 +363,7 @@ class DrawmateMc(DocBuilder):
             left: If the multidimensional array belongs to the left or right side of the grid
 
         Returns:
-                list[ApplianceMc]: A list of Appliance objects
+                list[Appliance]: A list of Appliance objects
         """
         if not left:
             base_x += 40
@@ -438,7 +438,7 @@ class DrawmateMc(DocBuilder):
                     width = APPLIANCE_ATTRIBUTES_MC["width"]
                     height = APPLIANCE_ATTRIBUTES_MC["height"]
 
-                appliance_node = ApplianceMc(
+                appliance_node = Appliance(
                     x=base_x,
                     y=y,
                     label=label,
@@ -456,7 +456,7 @@ class DrawmateMc(DocBuilder):
 
         return appliance_array
 
-    def create_nodes(self, appliance_array: list[ApplianceMc]):
+    def create_nodes(self, appliance_array: list[Appliance]):
         """
         Creates the mxobject instance for each node iteratively
         Args:
@@ -475,7 +475,7 @@ class DrawmateMc(DocBuilder):
                     node.attributes, has_label=False, __id__=str(node.meta.__ID__)
                 )
 
-    def create_node_in_out_textbox(self, appliance_array: list[ApplianceMc]) -> None:
+    def create_node_in_out_textbox(self, appliance_array: list[Appliance]) -> None:
         """
         Create the textbox objects for the input and output labels for each node
         Args:
@@ -537,7 +537,7 @@ class DrawmateMc(DocBuilder):
         )
         self.create_mxobject(text_box.attributes, str(generate_id()))
 
-    def create_node_label(self, appliance_array: list[ApplianceMc]):
+    def create_node_label(self, appliance_array: list[Appliance]):
         """
         Create labels for each node/appliance
         Args:
@@ -562,7 +562,7 @@ class DrawmateMc(DocBuilder):
             )
             self.create_mxobject(label_textbox.attributes, str(generate_id()))
 
-    def create_node_ptrs(self, appliance_array: list[ApplianceMc], left: bool):
+    def create_node_ptrs(self, appliance_array: list[Appliance], left: bool):
         """
         Create pointers for each node to manage connections on the graph
         Args:
@@ -604,8 +604,8 @@ class DrawmateMc(DocBuilder):
 
     def append_connection(
         self,
-        src_node: ApplianceMc | Matrix,
-        tgt_node: ApplianceMc | Matrix,
+        src_node: Appliance | Matrix,
+        tgt_node: Appliance | Matrix,
     ):
         """
         Appends a connection between two nodes to the connection array.
@@ -674,10 +674,10 @@ class DrawmateMc(DocBuilder):
                         is_arrow=True,
                         __id__=str(generate_id()),
                     )
-            elif isinstance(conn.src_node, ApplianceMc):
+            elif isinstance(conn.src_node, Appliance):
                 if conn.src_node.attributes.get("label").strip() == "":
                     continue
-                elif isinstance(conn.tgt_node, ApplianceMc):
+                elif isinstance(conn.tgt_node, Appliance):
                     if conn.tgt_node.attributes.get("label").strip() == "":
                         continue
                 if conn.src_node.meta.__SIDE__ == "left":
@@ -845,7 +845,7 @@ class DrawmateMc(DocBuilder):
         return row_index
 
     @staticmethod
-    def debug_print(appliance_node: ApplianceMc):
+    def debug_print(appliance_node: Appliance):
         print("\n")
         print(
             f"\tLabel         : {appliance_node.attributes.get('label')}\n"

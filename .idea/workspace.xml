@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/drawmate.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/drawmate.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/archive/drawmate.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/archive/matrix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/doc_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/doc_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmate_master.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/mx_factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/builder/node_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graph_objects/appliance.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/appliance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_objects/connections.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/connections.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

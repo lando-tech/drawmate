@@ -1,4 +1,4 @@
-from graph_objects.appliance import ApplianceSc, ApplianceMc
+from graph_objects.appliance import ApplianceSc, Appliance
 from graph_objects.matrix import Matrix
 from graph_objects.arrow import Arrow, ArrowMeta
 from constants.constants import (
@@ -81,14 +81,14 @@ class ConnectionMc:
     and adds an instance of the Arrow class between the source and target.
 
     Args:
-        tgt_node (ApplianceMc | Matrix): An instance of a target Rect.
+        tgt_node (Appliance | Matrix): An instance of a target Rect.
         src_node (Appliance | Matrix): An instance of a source Rect.
     """
 
     def __init__(
         self,
-        src_node: ApplianceMc | Matrix,
-        tgt_node: ApplianceMc | Matrix,
+        src_node: Appliance | Matrix,
+        tgt_node: Appliance | Matrix,
     ):
         self.src_node = src_node
         self.tgt_node = tgt_node
@@ -186,7 +186,7 @@ class ConnectionMc:
             )
             self.source_y = connection_y
             self.target_y = self.source_y
-        elif isinstance(self.src_node, ApplianceMc):
+        elif isinstance(self.src_node, Appliance):
             connection_y = (
                 (int(matrix_y) + MATRIX_CONNECTIONS["height"])
                 + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
