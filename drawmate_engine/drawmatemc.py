@@ -61,14 +61,14 @@ class DrawmateMc(DocBuilder):
     ):
         """
         Summary:
-            Creates the document structure for the xml object, appending each
+            Creates the document structure for the XML object, appending each
             node to the appropriate parent.
 
         Args:
             mx_points:
-            is_mxarray (bool): is the object has more than one mxpoint/arrow
+            is_mxarray (bool): if the object has more than one mxpoint/arrow
             __id__: ID of the graph object
-            data (dict): The attributes of an instance of the Rect class or one of its children.
+            data (dict): The attributes out from an instance of the Rect class or one of its children.
             is_arrow (bool): Check if the Rect is an ArrowRect.
             has_label (bool): If a label should be added, or a blank string placed instead
         """
@@ -91,7 +91,7 @@ class DrawmateMc(DocBuilder):
             # Append mxGeometry to mxCell
             cell_elem.appendChild(geo_elem)
 
-            # Call to the create_mxpoint function
+            # Call the 'create_mxpoint' function
             self.create_mxpoint(mx_geo_elem=geo_elem, mxcell_obj=cell, data=data)
             self.root.appendChild(cell_elem)
         elif is_mxarray:
@@ -123,10 +123,10 @@ class DrawmateMc(DocBuilder):
     def create_mxpoint(self, mx_geo_elem, mxcell_obj, data: dict):
         """
         Summary:
-            Creates the xml structure for, and instantiates the mxPoint object.
+            Creates the XML structure for and instantiates the mxPoint object.
 
         Args:
-            mx_geo_elem (mxGeometryElement): An instance of the mxGeometry xml element.
+            mx_geo_elem (mxGeometryElement): An instance of the mxGeometry XML element.
             mxcell_obj (mxObject): An instance of the mxObject class.
             data (dict): An attribute dictionary from the instance of the Arrow class.
         """
@@ -138,7 +138,7 @@ class DrawmateMc(DocBuilder):
         )
         mx_geo_elem.appendChild(source_element)
 
-        # Set target mxPoint element
+        # Set target for mxPoint element
         target_point = MxPoint()
         target_point.set_mxpoint_target(data["target_x"], data["target_y"])
         target_elem = mxcell_obj.create_xml_element("mxPoint", target_point.attributes)
@@ -217,7 +217,7 @@ class DrawmateMc(DocBuilder):
         )
         self.create_matrix_label()
         self.create_matrix_connections()
-        # Create final XML Document
+        # Create the final XML Document
         self.create_xml(output_file_path=self.output_file)
 
     def create_matrix(self) -> Matrix:
@@ -382,7 +382,7 @@ class DrawmateMc(DocBuilder):
             if index > 0:
                 x = x - x_spacing if left else x + x_spacing
 
-            # Iterate through sublist of Node data
+            # Iterate through the sublist of Node data
             for r_index, row in enumerate(item):
 
                 __ID__ = generate_id()
@@ -608,7 +608,7 @@ class DrawmateMc(DocBuilder):
         tgt_node: ApplianceMc | Matrix,
     ):
         """
-        Appends a connection between two nodes to the connections array.
+        Appends a connection between two nodes to the connection array.
 
         This method creates a new `ConnectionMc` object using the provided source and
         target nodes and adds it to the `connections_array`.
@@ -779,7 +779,7 @@ class DrawmateMc(DocBuilder):
         It also verifies the starting X and Y coordinates are in a proper location,
         relative to the size of the graph.
         Args:
-            matrix_dims (MatrixDimensions) : The dimensions returned by the config file
+            matrix_dims (MatrixDimensions): The dimensions returned by the config file
 
         Returns:
             bool: True if the dimensions are within bounds

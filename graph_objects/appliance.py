@@ -30,7 +30,7 @@ class Bounds:
 
 class ApplianceSc(Rect):
     """
-    Summary: This is child class of the Rect class. It inherits the attributes dictionary.
+    Summary: This is the child class of the Rect class. It inherits the attributes dictionary.
     This class manages the attributes of the appliances that will be attached to the matrix.
 
     Args:
