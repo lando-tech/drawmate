@@ -4,17 +4,17 @@
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
-        <mxCell id="2038735867039563021" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="1000" y="1000" width="160" height="90" relative="" as="geometry"/>
+        <mxCell id="5769874848649966668" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+          <mxGeometry x="200" y="200" width="160" height="90" relative="" as="geometry"/>
         </mxCell>
-        <mxCell id="1459216935743147963" value="AV Appliance" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="1000" y="1000" width="160" height="40" relative="" as="geometry"/>
+        <mxCell id="8973621148391887880" value="AV Appliance" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+          <mxGeometry x="200" y="200" width="160" height="40" relative="" as="geometry"/>
         </mxCell>
-        <mxCell id="919379280279978003" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="1005" y="1045" width="60" height="40" relative="" as="geometry"/>
+        <mxCell id="4372193294212544459" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+          <mxGeometry x="205" y="245" width="60" height="40" relative="" as="geometry"/>
         </mxCell>
-        <mxCell id="8187021522985199479" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="1100" y="1045" width="60" height="40" relative="" as="geometry"/>
+        <mxCell id="7519833393410240642" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
+          <mxGeometry x="295" y="245" width="60" height="40" relative="" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>

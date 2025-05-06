@@ -7,7 +7,7 @@ Use this module as a template to implement various network topologies and connec
 from drawmate_engine.drawmate_config import DrawmateConfig
 from graph_objects.rect import Rect
 from graph_objects.matrix import Matrix
-from graph_objects.appliance import ApplianceSc
+from graph_objects.node import ApplianceSc
 from builder.connection_builder import ConnectionsSc
 from graph_objects.text_box import TextBox
 from builder.doc_builder import DocBuilder
@@ -19,10 +19,10 @@ from constants.constants import (
     MATRIX_CONNECTIONS,
     MATRIX_LABEL,
     ARROW_CONNECTIONS,
-    APPLIANCE_ATTRIBUTES,
-    APPLIANCE_INPUT,
-    APPLIANCE_OUTPUT,
-    APPLIANCE_INPUT_OUTPUT_DIMS,
+    NODE_ATTRIBUTES,
+    NODE_INPUT,
+    NODE_OUTPUT,
+    NODE_INPUT_OUTPUT_DIMS,
 )
 
 
@@ -335,14 +335,14 @@ class DrawmateSc(DocBuilder):
 
         for node in appliance_array:
             # Input attributes
-            input_x = int(node.attributes["x"]) + APPLIANCE_INPUT["x_offset"]
-            input_y = int(node.attributes["y"]) + APPLIANCE_INPUT["y_offset"]
+            input_x = int(node.attributes["x"]) + NODE_INPUT["x_offset"]
+            input_y = int(node.attributes["y"]) + NODE_INPUT["y_offset"]
             # Output attributes
-            output_x = int(node.attributes["x"]) + APPLIANCE_OUTPUT["x_offset"]
-            output_y = int(node.attributes["y"]) + APPLIANCE_OUTPUT["y_offset"]
+            output_x = int(node.attributes["x"]) + NODE_OUTPUT["x_offset"]
+            output_y = int(node.attributes["y"]) + NODE_OUTPUT["y_offset"]
             # width and height
-            width = APPLIANCE_INPUT_OUTPUT_DIMS["width"]
-            height = APPLIANCE_INPUT_OUTPUT_DIMS["height"]
+            width = NODE_INPUT_OUTPUT_DIMS["width"]
+            height = NODE_INPUT_OUTPUT_DIMS["height"]
 
             # Input
             input_textbox = TextBox(
@@ -525,7 +525,7 @@ class DrawmateSc(DocBuilder):
         """
         # Starts +70 on the y-axis (which puts it below the matrix y) and increments that spacing by +120
         total_height = (
-            matrix_dims.num_connections * (APPLIANCE_ATTRIBUTES["height"] + 20)
+            matrix_dims.num_connections * (NODE_ATTRIBUTES["height"] + 20)
         ) + 70
         if matrix_dims.height < total_height:
             # print(f"Matrix not large enough. Height = {matrix_dims.height}px")

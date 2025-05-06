@@ -9,8 +9,8 @@ from drawmate_engine.drawmate_config import DrawmateConfig
 from graph_objects.rect import Rect
 from graph_objects.arrow import Arrow
 from graph_objects.matrix import Matrix, MatrixMeta
-from graph_objects.appliance import Appliance, ApplianceMetadata
-from builder.connection_builder import ConnectionMc
+from graph_objects.node import Node, NodeMetaData
+from builder.connection_builder import ConnectionBuilder
 from graph_objects.text_box import TextBox
 from builder.doc_builder import DocBuilder, generate_id
 from mx_graph_api.mxcell import MxCell
@@ -20,11 +20,11 @@ from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
     MATRIX_CONNECTIONS,
     MATRIX_LABEL,
-    APPLIANCE_ATTRIBUTES,
-    APPLIANCE_ATTRIBUTES_MC,
-    APPLIANCE_INPUT,
-    APPLIANCE_OUTPUT,
-    APPLIANCE_INPUT_OUTPUT_DIMS,
+    NODE_ATTRIBUTES,
+    NODE_ATTRIBUTES_MC,
+    NODE_INPUT,
+    NODE_OUTPUT,
+    NODE_INPUT_OUTPUT_DIMS,
 )
 
 
@@ -47,7 +47,7 @@ class DrawmateMc(DocBuilder):
         # Create an instance of the Matrix class
         self.matrix = self.create_matrix()
         self.node_dict = {}
-        self.connections_array: list[ConnectionMc] = []
+        self.connections_array: list[ConnectionBuilder] = []
         self.arrow_array = []
 
     # mx_builder.py
@@ -311,7 +311,7 @@ class DrawmateMc(DocBuilder):
     # node_builder.py
     def process_nodes(
         self, matrix_arr: tuple[list, list]
-    ) -> dict[str, list[Appliance]]:
+    ) -> dict[str, list[Node]]:
         """
         Process the nodes and configure the x and y spacing. This method will then
         dispatch the nodes to the create_node_array method.
@@ -319,12 +319,12 @@ class DrawmateMc(DocBuilder):
             matrix_arr: Matrix Array of left and right nodes.
 
         Returns:
-            dict[str, list[Appliance]]: A dictionary with a list of right and left side Appliance object arrays.
+            dict[str, list[Node]]: A dictionary with a list of right and left side Appliance object arrays.
         """
 
         node_dict = {}
-        x_spacing = APPLIANCE_ATTRIBUTES["x_spacing"]
-        y_spacing = APPLIANCE_ATTRIBUTES["y_spacing"]
+        x_spacing = NODE_ATTRIBUTES["x_spacing"]
+        y_spacing = NODE_ATTRIBUTES["y_spacing"]
         left_x = int(self.matrix.attributes["x"]) - x_spacing
         right_x = int(self.matrix.attributes["x"]) + x_spacing
         start_y = int(self.matrix.attributes["y"]) - (y_spacing - 25)
@@ -358,7 +358,7 @@ class DrawmateMc(DocBuilder):
         y_spacing,
         left: bool,
         debug: bool = False,
-    ) -> list[Appliance]:
+    ) -> list[Node]:
         """
         Creates the Appliance nodes for the left and right sides of the matrix.
         Args:
@@ -371,7 +371,7 @@ class DrawmateMc(DocBuilder):
             left: If the multidimensional array belongs to the left or right side of the grid
 
         Returns:
-                list[Appliance]: A list of Appliance objects
+                list[Node]: A list of Appliance objects
         """
         if not left:
             base_x += 40
@@ -394,7 +394,7 @@ class DrawmateMc(DocBuilder):
             for r_index, row in enumerate(item):
 
                 __ID__ = generate_id()
-                meta = ApplianceMetadata(__SIDE__=side, __ID__=str(__ID__))
+                meta = NodeMetaData(__SIDE__=side, __ID__=str(__ID__))
                 meta.__ROW_INDEX__ = self.get_corresponding_index(
                     r_index, max_per_column
                 )
@@ -430,8 +430,8 @@ class DrawmateMc(DocBuilder):
 
                 if connections_left[0] == "NONE" and connections_right[0] == "NONE":
                     y += y_spacing
-                    width = APPLIANCE_ATTRIBUTES["width"]
-                    height = APPLIANCE_ATTRIBUTES["height"]
+                    width = NODE_ATTRIBUTES["width"]
+                    height = NODE_ATTRIBUTES["height"]
                 else:
                     if connections_left[0] != "NONE":
                         meta.__MULTI_CONNECTION_LEFT__ = True
@@ -443,10 +443,10 @@ class DrawmateMc(DocBuilder):
                         meta.__MULTI_CONNECTION_RIGHT__ = False
 
                     y += y_spacing
-                    width = APPLIANCE_ATTRIBUTES_MC["width"]
-                    height = APPLIANCE_ATTRIBUTES_MC["height"]
+                    width = NODE_ATTRIBUTES_MC["width"]
+                    height = NODE_ATTRIBUTES_MC["height"]
 
-                appliance_node = Appliance(
+                appliance_node = Node(
                     x=base_x,
                     y=y,
                     label=label,
@@ -464,7 +464,7 @@ class DrawmateMc(DocBuilder):
 
         return appliance_array
 
-    def create_nodes(self, appliance_array: list[Appliance]):
+    def create_nodes(self, appliance_array: list[Node]):
         """
         Creates the mxobject instance for each node iteratively
         Args:
@@ -483,7 +483,7 @@ class DrawmateMc(DocBuilder):
                     node.attributes, has_label=False, __id__=str(node.meta.__ID__)
                 )
 
-    def create_node_in_out_textbox(self, appliance_array: list[Appliance]) -> None:
+    def create_node_in_out_textbox(self, appliance_array: list[Node]) -> None:
         """
         Create the textbox objects for the input and output labels for each node
         Args:
@@ -497,14 +497,14 @@ class DrawmateMc(DocBuilder):
             label_buffer = 15
             spacing = int(node.attributes["height"]) / 2 + label_buffer
             # Input attributes
-            input_x = int(node.x) + APPLIANCE_INPUT["x_offset"]
-            input_y = int(node.y) + APPLIANCE_INPUT["y_offset"]
+            input_x = int(node.x) + NODE_INPUT["x_offset"]
+            input_y = int(node.y) + NODE_INPUT["y_offset"]
             # Output attributes
-            output_x = int(node.x) + APPLIANCE_OUTPUT["x_offset"]
-            output_y = int(node.y) + APPLIANCE_OUTPUT["y_offset"]
+            output_x = int(node.x) + NODE_OUTPUT["x_offset"]
+            output_y = int(node.y) + NODE_OUTPUT["y_offset"]
             # width and height
-            width = APPLIANCE_INPUT_OUTPUT_DIMS["width"]
-            height = APPLIANCE_INPUT_OUTPUT_DIMS["height"]
+            width = NODE_INPUT_OUTPUT_DIMS["width"]
+            height = NODE_INPUT_OUTPUT_DIMS["height"]
 
             if node.meta.__SPANNING_NODE__:
                 continue
@@ -545,7 +545,7 @@ class DrawmateMc(DocBuilder):
         )
         self.create_mxobject(text_box.attributes, str(generate_id()))
 
-    def create_node_label(self, appliance_array: list[Appliance]):
+    def create_node_label(self, appliance_array: list[Node]):
         """
         Create labels for each node/appliance
         Args:
@@ -570,7 +570,7 @@ class DrawmateMc(DocBuilder):
             )
             self.create_mxobject(label_textbox.attributes, str(generate_id()))
 
-    def create_node_ptrs(self, appliance_array: list[Appliance], left: bool):
+    def create_node_ptrs(self, appliance_array: list[Node], left: bool):
         """
         Create pointers for each node to manage connections on the graph
         Args:
@@ -612,8 +612,8 @@ class DrawmateMc(DocBuilder):
 
     def append_connection(
         self,
-        src_node: Appliance | Matrix,
-        tgt_node: Appliance | Matrix,
+        src_node: Node | Matrix,
+        tgt_node: Node | Matrix,
     ):
         """
         Appends a connection between two nodes to the connection array.
@@ -627,7 +627,7 @@ class DrawmateMc(DocBuilder):
             tgt_node: The target node for the connection. Can be an instance of
                 `ApplianceMc` or `Matrix`.
         """
-        connection = ConnectionMc(
+        connection = ConnectionBuilder(
             src_node=src_node,
             tgt_node=tgt_node,
         )
@@ -682,10 +682,10 @@ class DrawmateMc(DocBuilder):
                         is_arrow=True,
                         __id__=str(generate_id()),
                     )
-            elif isinstance(conn.src_node, Appliance):
+            elif isinstance(conn.src_node, Node):
                 if conn.src_node.attributes.get("label").strip() == "":
                     continue
-                elif isinstance(conn.tgt_node, Appliance):
+                elif isinstance(conn.tgt_node, Node):
                     if conn.tgt_node.attributes.get("label").strip() == "":
                         continue
                 if conn.src_node.meta.__SIDE__ == "left":
@@ -794,7 +794,7 @@ class DrawmateMc(DocBuilder):
         """
         # Starts +70 on the y-axis (which puts it below the matrix y) and increments that spacing by +120
         total_height = (
-            matrix_dims.num_connections * (APPLIANCE_ATTRIBUTES["height"] + 20)
+            matrix_dims.num_connections * (NODE_ATTRIBUTES["height"] + 20)
         ) + 70
         if matrix_dims.height < total_height:
             # print(f"Matrix not large enough. Height = {matrix_dims.height}px")
@@ -853,7 +853,7 @@ class DrawmateMc(DocBuilder):
         return row_index
 
     @staticmethod
-    def debug_print(appliance_node: Appliance):
+    def debug_print(appliance_node: Node):
         print("\n")
         print(
             f"\tLabel         : {appliance_node.attributes.get('label')}\n"

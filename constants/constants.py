@@ -18,12 +18,12 @@ MATRIX_LABEL = {
     "y_offset": 40,
 }
 
-APPLIANCE_INPUT_OUTPUT_DIMS = {
+NODE_INPUT_OUTPUT_DIMS = {
     "width": 60,
     "height": 40,
 }
 
-APPLIANCE_ATTRIBUTES = {
+NODE_ATTRIBUTES = {
     "width": 160,
     "height": 90,
     "label_height": 40,
@@ -31,16 +31,16 @@ APPLIANCE_ATTRIBUTES = {
     "y_spacing": 120,
 }
 
-APPLIANCE_ATTRIBUTES_MC = {"width": 160, "height": 210, "y_spacing": 25}
+NODE_ATTRIBUTES_MC = {"width": 160, "height": 210, "y_spacing": 25}
 
-APPLIANCE_INPUT = {
+NODE_INPUT = {
     "y_offset": 45,
     "x_offset": 5,
 }
 
-APPLIANCE_OUTPUT = {
+NODE_OUTPUT = {
     "y_offset": 45,
-    "x_offset": 100,
+    "x_offset": 5,
 }
 
 ARROW_CONNECTIONS = {
@@ -54,7 +54,9 @@ ARROW_CONNECTIONS = {
 These are the different xml styles used to control the type of object being placed on the graph.
 """
 MX_GRAPH_XML_STYLES = {
-    "text-box": "text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;",
+    "text-box": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;",
+    "input-text-box": "text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;",
+    "output-text-box": "text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;",
     "rect": "rounded=0;whiteSpace=wrap;html=1;",
     "arrow": "edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;exitX=1;entryY=0.5;entryDx=0;entryDy=0;",
     "arrow2": "edgeStyle=loopEdgeStyle;orthogonalloop=0;rounded=0;jettySize=auto;html=1",

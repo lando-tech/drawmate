@@ -57,29 +57,31 @@ class MxBuilder:
 
         return cell_elem
 
-    def create_mxcell_arrow(self, data: dict = None, __id__: str = "") -> Element | None:
-            # Create mxCell object
-            cell = MxCell()
-            cell.set_mxcell_values_point(data["style"], data["label"], __id__)
+    def create_mxcell_arrow(
+        self, data: dict = None, __id__: str = ""
+    ) -> Element | None:
+        # Create mxCell object
+        cell = MxCell()
+        cell.set_mxcell_values_point(data["style"], data["label"], __id__)
 
-            # Append mxCell to mxObject
-            cell_elem = cell.create_xml_element("mxCell", cell.attributes)
-            cell.mxcell_object.appendChild(cell_elem)
+        # Append mxCell to mxObject
+        cell_elem = cell.create_xml_element("mxCell", cell.attributes)
+        cell.mxcell_object.appendChild(cell_elem)
 
-            # Create mxGeometry object
-            geo = MxGeometry()
-            geo.set_geometry_values_point()
-            geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
+        # Create mxGeometry object
+        geo = MxGeometry()
+        geo.set_geometry_values_point()
+        geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
 
-            # Append mxGeometry to mxCell
-            cell_elem.appendChild(geo_elem)
+        # Append mxGeometry to mxCell
+        cell_elem.appendChild(geo_elem)
 
-            # Create mxPoint objects and append to mxGeometry
-            mx_points = self.create_mxpoint(mxcell_obj=cell, data=data)
-            geo_elem.appendChild(mx_points[0])
-            geo_elem.appendChild(mx_points[1])
+        # Create mxPoint objects and append to mxGeometry
+        mx_points = self.create_mxpoint(mxcell_obj=cell, data=data)
+        geo_elem.appendChild(mx_points[0])
+        geo_elem.appendChild(mx_points[1])
 
-            return cell_elem
+        return cell_elem
 
     def create_mxpoint(self, mxcell_obj, data: dict) -> tuple[Element, Element] | None:
         """
@@ -102,7 +104,9 @@ class MxBuilder:
         # Set target for mxPoint element
         target_point = MxPoint()
         target_point.set_mxpoint_target(data["target_x"], data["target_y"])
-        target_element = mxcell_obj.create_xml_element("mxPoint", target_point.attributes)
+        target_element = mxcell_obj.create_xml_element(
+            "mxPoint", target_point.attributes
+        )
         return source_element, target_element
 
     def create_mxcell_waypoints(self, mx_points: tuple[Arrow]) -> list[Element] | None:

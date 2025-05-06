@@ -1,4 +1,4 @@
-from graph_objects.appliance import Appliance
+from graph_objects.node import Node
 from graph_objects.matrix import Matrix
 from graph_objects.arrow import Arrow, ArrowMeta
 from constants.constants import (
@@ -6,21 +6,22 @@ from constants.constants import (
     MX_GRAPH_XML_STYLES,
 )
 
-class ConnectionMc:
+
+class ConnectionBuilder:
     """
     Summary: Accepts an instance of a target and source rect, and manages the connections between the two objects.
     It also servers as a dispatcher for the Arrow class
     and adds an instance of the Arrow class between the source and target.
 
     Args:
-        tgt_node (Appliance | Matrix): An instance of a target Rect.
+        tgt_node (Node | Matrix): An instance of a target Rect.
         src_node (Appliance | Matrix): An instance of a source Rect.
     """
 
     def __init__(
         self,
-        src_node: Appliance | Matrix,
-        tgt_node: Appliance | Matrix,
+        src_node: Node | Matrix,
+        tgt_node: Node | Matrix,
     ):
         self.src_node = src_node
         self.tgt_node = tgt_node
@@ -107,9 +108,7 @@ class ConnectionMc:
                     + MATRIX_CONNECTIONS["label_spacing"] * connection_index
                 ) + mc_offset
 
-                return self.create_arrow_waypoints(
-                    connection_y, mc_offset
-                )
+                return self.create_arrow_waypoints(connection_y, mc_offset)
 
             connection_y = (
                 (int(matrix_y) + MATRIX_CONNECTIONS["height"])
@@ -118,21 +117,22 @@ class ConnectionMc:
             )
             self.source_y = connection_y
             self.target_y = self.source_y
-        elif isinstance(self.src_node, Appliance):
+        elif isinstance(self.src_node, Node):
             connection_y = (
                 (int(matrix_y) + MATRIX_CONNECTIONS["height"])
                 + (MATRIX_CONNECTIONS["label_spacing"] * connection_index)
                 + mc_offset
             )
             if connection_index != self.src_node.meta.__LABEL_INDEXES__[pos_index]:
-                mc_offset =  (
-                (int(matrix_y) + MATRIX_CONNECTIONS["height"])
-                + (MATRIX_CONNECTIONS["label_spacing"] * self.src_node.meta.__LABEL_INDEXES__[pos_index])
-                + mc_offset
+                mc_offset = (
+                    (int(matrix_y) + MATRIX_CONNECTIONS["height"])
+                    + (
+                        MATRIX_CONNECTIONS["label_spacing"]
+                        * self.src_node.meta.__LABEL_INDEXES__[pos_index]
+                    )
+                    + mc_offset
                 )
-                return self.create_arrow_waypoints(
-                    connection_y, mc_offset
-                )
+                return self.create_arrow_waypoints(connection_y, mc_offset)
 
             elif self.src_node.meta.__SIDE__ == "left":
                 self.target_y = connection_y

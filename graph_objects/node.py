@@ -1,11 +1,11 @@
 from graph_objects.rect import Rect
-from constants.constants import MX_GRAPH_XML_STYLES, APPLIANCE_ATTRIBUTES
+from constants.constants import MX_GRAPH_XML_STYLES, NODE_ATTRIBUTES
 from dataclasses import dataclass, field
 from typing import Optional, List
 
 
 @dataclass
-class ApplianceMetadata:
+class NodeMetaData:
     __ID__: str
     __SIDE__: str
     __ROW_INDEX__: Optional[int] = None
@@ -27,7 +27,8 @@ class Bounds:
     width: int
     height: int
 
-class Appliance(Rect):
+
+class Node(Rect):
     """
     Summary: This is the child class of the Rect class. This class inherits the attributes dictionary.
     This class manages the attributes of the appliances that will be attached to the matrix.
@@ -38,7 +39,7 @@ class Appliance(Rect):
         label (str): Appliance label.
         input_label (str): label of appliance input port
         output_label (str): label of appliance output port
-        meta (ApplianceMetadata): An instance of the ApplianceMetadata class
+        meta (NodeMetaData): An instance of the ApplianceMetadata class
         width (int, optional): Appliance width
         height (int, optional): Appliance height
         style (str, optional): XML style for the graph element. Defaults to DEFAULT_STYLE.
@@ -53,9 +54,9 @@ class Appliance(Rect):
         label,
         input_label,
         output_label,
-        meta: ApplianceMetadata,
-        width: int = APPLIANCE_ATTRIBUTES["width"],
-        height: int = APPLIANCE_ATTRIBUTES["height"],
+        meta: NodeMetaData,
+        width: int = NODE_ATTRIBUTES["width"],
+        height: int = NODE_ATTRIBUTES["height"],
         style=DEFAULT_STYLE,
     ):
         super().__init__(

@@ -1,4 +1,4 @@
-from constants.constants import APPLIANCE_ATTRIBUTES, MATRIX_LABEL
+from constants.constants import NODE_ATTRIBUTES, MATRIX_LABEL
 from drawmate_engine.drawmate_config import MatrixDimensions
 from graph_objects.matrix import Matrix, MatrixMeta
 from builder.doc_builder import generate_id
@@ -33,8 +33,11 @@ class MatrixBuilder:
             height=MATRIX_LABEL["height"],
             label=self.matrix_dimensions.labels,
             _type="matrix",
-            style="rounded=0;whiteSpace=wrap;html=1;"
+            style="rounded=0;whiteSpace=wrap;html=1;",
         )
+
+    def init_matrix_ports(self):
+        pass
 
     def verify_matrix_dimensions(self):
         """
@@ -46,10 +49,12 @@ class MatrixBuilder:
         initial_y_offset: int = 70
         label_height: int = 20
         total_height: int = (
-                (self.matrix_dimensions.num_connections * (APPLIANCE_ATTRIBUTES["height"] + label_height))
-                + initial_y_offset
-        )
+            self.matrix_dimensions.num_connections
+            * (NODE_ATTRIBUTES["height"] + label_height)
+        ) + initial_y_offset
         pad_y_bottom: int = 50
         if self.matrix_dimensions.height < total_height:
             difference: int = total_height - self.matrix_dimensions.height
-            self.matrix_dimensions.height = self.matrix_dimensions.height + difference + pad_y_bottom
+            self.matrix_dimensions.height = (
+                self.matrix_dimensions.height + difference + pad_y_bottom
+            )

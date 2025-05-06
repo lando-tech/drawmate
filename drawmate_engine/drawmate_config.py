@@ -125,6 +125,50 @@ class DrawmateConfig:
         else:
             return None
 
+    def build_node_dict(self, num_connections: int):
+        left_side = {}
+        right_side = {}
+        levels = [
+            "first",
+            "second",
+            "third",
+            "fourth",
+            "fifth",
+            "sixth",
+            "seventh",
+            "eighth",
+        ]
+        col_index_left = 0
+        row_index_left = 0
+        col_index_right = 0
+        row_index_right = 0
+        if self.template_data:
+            for key, value in self.template_data.items():
+                current_key = key.split("-")
+                current_level = current_key[0]
+                current_side = current_key[-1]
+
+                if current_level == levels[col_index_left] and current_side == "left":
+                    for label in value["labels"]:
+                        if row_index_left >= num_connections:
+                            row_index_left = 0
+                        object_key = f"{col_index_left}-{row_index_left}"
+                        left_side[object_key] = label
+                        row_index_left += 1
+                    col_index_left += 1
+                elif current_level == levels[col_index_right] and current_side == "right":
+                    for label in value["labels"]:
+                        if row_index_right >= num_connections:
+                            row_index_right = 0
+                        object_key = f"{col_index_right}-{row_index_right}"
+                        right_side[object_key] = label
+                        row_index_right += 1
+                    col_index_right += 1
+
+            return left_side, right_side
+        else:
+            return None
+
     def get_matrix_connection_labels(self) -> tuple[list, list]:
         return self.template_data.get("connections-left"), self.template_data.get(
             "connections-right"
