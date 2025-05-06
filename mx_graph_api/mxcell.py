@@ -1,4 +1,4 @@
-from drawmate_engine.doc_builder import DocBuilder, generate_id
+from builder.doc_builder import DocBuilder, generate_id
 
 
 class MxCell(DocBuilder):

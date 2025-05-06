@@ -10,7 +10,7 @@ from graph_objects.matrix import Matrix
 from graph_objects.appliance import ApplianceSc
 from graph_objects.connections import ConnectionsSc
 from graph_objects.text_box import TextBox
-from drawmate_engine.doc_builder import DocBuilder
+from builder.doc_builder import DocBuilder
 from drawmate_engine.drawmate_config import MatrixDimensions
 from mx_graph_api.mxobject import MxObject
 from mx_graph_api.mxcell import MxCell

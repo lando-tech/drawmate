@@ -1,5 +1,5 @@
-from drawmate_engine.doc_builder import DocBuilder
-from drawmate_engine.doc_builder import generate_id
+from builder.doc_builder import DocBuilder
+from builder.doc_builder import generate_id
 from constants.constants import MX_OBJECT_ATTRIBUTES
 
 

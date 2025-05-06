@@ -1,0 +1,16 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="26.2.9">
+  <diagram id="0" name="Page-1">
+    <mxGraphModel dx="-33" dy="-309" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="1740467165147708171" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" vertex="1">
+          <mxGeometry x="2000" y="2000" width="200" height="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="7100436950984649650" value="Video/Audio Codec" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" vertex="1">
+          <mxGeometry x="2000" y="2000" width="200" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

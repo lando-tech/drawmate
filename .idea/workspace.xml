@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/builder/matrix_builder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/matrix_builder_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/builder/node_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/builder/connection_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/connection_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/builder/matrix_builder.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/node_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/doc_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/doc_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmate_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmate_config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_objects/appliance.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/appliance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_objects/connections.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/connections.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/mx_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/mx_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_objects/matrix.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/matrix.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mx_graph_api/mxcell.py" beforeDir="false" afterPath="$PROJECT_DIR$/mx_graph_api/mxcell.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mx_graph_api/mxobject.py" beforeDir="false" afterPath="$PROJECT_DIR$/mx_graph_api/mxobject.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +42,7 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.main.executor": "Run",
+    "Python.matrix_builder_test.executor": "Run",
     "Python.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -41,6 +52,12 @@
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/builder" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="drawmate" />
@@ -56,7 +73,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="-mc $PROJECT_DIR$/test/mc_test_1.json $USER_HOME$/Desktop/output.drawio" />
+      <option name="PARAMETERS" value="$PROJECT_DIR$/test/four-levels-template.json $USER_HOME$/Desktop/output.drawio" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />

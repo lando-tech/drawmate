@@ -2,14 +2,16 @@ from graph_objects.arrow import Arrow
 from mx_graph_api.mxcell import MxCell
 from mx_graph_api.mxgeometry import MxGeometry
 from mx_graph_api.mxpoint import MxPoint
-from doc_builder import generate_id
+from builder.doc_builder import generate_id
 from xml.dom.minidom import Element
 
 
-class MxFactory:
+class MxBuilder:
     """
     This is the top-level class for the templating engine.
     It contains the core logic for building the XML document.
+    The caller is responsible for appending each cell to the
+    document root.
     """
 
     def create_mxcell(
@@ -19,15 +21,20 @@ class MxFactory:
         has_label: bool = True,
     ) -> Element | None:
         """
-        Summary:
-            Creates the document structure for the XML object, appending each
-            node to the appropriate parent.
+        Creates an Mxcell element with geometry.
 
         Args:
-            __id__: ID of the graph object
-            data (dict): The attributes out from an instance of the Rect class or one of its children.
-            has_label (bool): If a label should be added, or a blank string placed instead
+            data (dict): Dictionary containing cell attributes.
+            __id__ (str): Unique identifier for the cell. Must be unique across all elements.
+            has_label (bool, optional): Whether to include the label. Defaults to True.
+
+        Returns:
+            Element | None: The created MX cell element, or None if creation fails
+
+        Note:
+            The caller must manually append the created element to the document root.
         """
+
         # Create mxCell object
         cell = MxCell()
         if not has_label:
@@ -76,12 +83,14 @@ class MxFactory:
 
     def create_mxpoint(self, mxcell_obj, data: dict) -> tuple[Element, Element] | None:
         """
-        Summary:
-            Creates the XML structure for and instantiates the mxPoint object.
+        Creates source and target point elements for an MX cell.
 
         Args:
-            mxcell_obj (mxObject): An instance of the mxObject class.
-            data (dict): An attribute dictionary from the instance of the Arrow class.
+            mxcell_obj (MxCell): The Mxcell object to create points for
+            data (dict): Dictionary containing point coordinates
+        Returns:
+            tuple[Element, Element] | None: A tuple containing (source_point, target_point) elements,
+                or None if creation fails
         """
         # Set source mxPoint element
         source_point = MxPoint()
@@ -96,7 +105,7 @@ class MxFactory:
         target_element = mxcell_obj.create_xml_element("mxPoint", target_point.attributes)
         return source_element, target_element
 
-    def create_mxarray(self, mx_points: tuple[Arrow]) -> list[Element] | None:
+    def create_mxcell_waypoints(self, mx_points: tuple[Arrow]) -> list[Element] | None:
         elements = []
         for index, waypoint in enumerate(mx_points):
             cell = MxCell()

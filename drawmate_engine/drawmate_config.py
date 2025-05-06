@@ -122,6 +122,8 @@ class DrawmateConfig:
                         right_side.append(list(value["labels"]))
 
             return left_side, right_side
+        else:
+            return None
 
     def get_matrix_connection_labels(self) -> tuple[list, list]:
         return self.template_data.get("connections-left"), self.template_data.get(

@@ -12,7 +12,7 @@ from graph_objects.matrix import Matrix, MatrixMeta
 from graph_objects.appliance import Appliance, ApplianceMetadata
 from graph_objects.connections import ConnectionMc
 from graph_objects.text_box import TextBox
-from drawmate_engine.doc_builder import DocBuilder, generate_id
+from builder.doc_builder import DocBuilder, generate_id
 from mx_graph_api.mxcell import MxCell
 from mx_graph_api.mxgeometry import MxGeometry
 from mx_graph_api.mxpoint import MxPoint
@@ -50,6 +50,7 @@ class DrawmateMc(DocBuilder):
         self.connections_array: list[ConnectionMc] = []
         self.arrow_array = []
 
+    # mx_builder.py
     def create_mxobject(
         self,
         data: dict = None,
@@ -120,6 +121,7 @@ class DrawmateMc(DocBuilder):
             cell_elem.appendChild(geo_elem)
             self.root.appendChild(cell_elem)
 
+    # mx_builder.py
     def create_mxpoint(self, mx_geo_elem, mxcell_obj, data: dict):
         """
         Summary:
@@ -144,6 +146,7 @@ class DrawmateMc(DocBuilder):
         target_elem = mxcell_obj.create_xml_element("mxPoint", target_point.attributes)
         mx_geo_elem.appendChild(target_elem)
 
+    # mx_builder.py
     def create_mxarray(self, mx_points):
 
         for waypoint in mx_points:
@@ -220,6 +223,7 @@ class DrawmateMc(DocBuilder):
         # Create the final XML Document
         self.create_xml(output_file_path=self.output_file)
 
+    # matrix_builder.py
     def create_matrix(self) -> Matrix:
         """
         Create the matrix object
@@ -239,6 +243,7 @@ class DrawmateMc(DocBuilder):
             meta=meta,
         )
 
+    # connection_builder.py
     def create_matrix_connections(self):
         """
         Create the connection labels for the matrix
@@ -280,6 +285,7 @@ class DrawmateMc(DocBuilder):
             self.create_mxobject(right_text_box.attributes, str(generate_id()))
             y += MATRIX_CONNECTIONS["label_spacing"]
 
+    # matrix_builder.py
     def create_matrix_label(self):
         """
         Create the label for the matrix
@@ -302,6 +308,7 @@ class DrawmateMc(DocBuilder):
         )
         self.create_mxobject(matrix_text_box.attributes, str(generate_id()))
 
+    # node_builder.py
     def process_nodes(
         self, matrix_arr: tuple[list, list]
     ) -> dict[str, list[Appliance]]:
@@ -341,6 +348,7 @@ class DrawmateMc(DocBuilder):
         )
         return node_dict
 
+    # node_builder.py
     def create_node_array(
         self,
         node_arr: list,

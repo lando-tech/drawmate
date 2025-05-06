@@ -34,7 +34,7 @@ class Matrix(Rect):
         height: int,
         x: int,
         y: int,
-        meta=None,
+        meta: MatrixMeta=None,
         style=DEFAULT_STYLE,
     ):
         super().__init__(
