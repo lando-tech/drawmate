@@ -23,9 +23,10 @@ APPLIANCE_INPUT_OUTPUT_DIMS = {
     "height": 40,
 }
 
-APPLIANCE_ATTRIBUTES_SC = {
+APPLIANCE_ATTRIBUTES = {
     "width": 160,
     "height": 90,
+    "label_height": 40,
     "x_spacing": 400,
     "y_spacing": 120,
 }
@@ -39,7 +40,7 @@ APPLIANCE_INPUT = {
 
 APPLIANCE_OUTPUT = {
     "y_offset": 45,
-    "x_offset": 120,
+    "x_offset": 100,
 }
 
 ARROW_CONNECTIONS = {

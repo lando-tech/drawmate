@@ -10,7 +10,7 @@ from graph_objects.rect import Rect
 from graph_objects.arrow import Arrow
 from graph_objects.matrix import Matrix, MatrixMeta
 from graph_objects.appliance import Appliance, ApplianceMetadata
-from graph_objects.connections import ConnectionMc
+from builder.connection_builder import ConnectionMc
 from graph_objects.text_box import TextBox
 from builder.doc_builder import DocBuilder, generate_id
 from mx_graph_api.mxcell import MxCell
@@ -20,7 +20,7 @@ from drawmate_engine.drawmate_config import MatrixDimensions
 from constants.constants import (
     MATRIX_CONNECTIONS,
     MATRIX_LABEL,
-    APPLIANCE_ATTRIBUTES_SC,
+    APPLIANCE_ATTRIBUTES,
     APPLIANCE_ATTRIBUTES_MC,
     APPLIANCE_INPUT,
     APPLIANCE_OUTPUT,
@@ -323,8 +323,8 @@ class DrawmateMc(DocBuilder):
         """
 
         node_dict = {}
-        x_spacing = APPLIANCE_ATTRIBUTES_SC["x_spacing"]
-        y_spacing = APPLIANCE_ATTRIBUTES_SC["y_spacing"]
+        x_spacing = APPLIANCE_ATTRIBUTES["x_spacing"]
+        y_spacing = APPLIANCE_ATTRIBUTES["y_spacing"]
         left_x = int(self.matrix.attributes["x"]) - x_spacing
         right_x = int(self.matrix.attributes["x"]) + x_spacing
         start_y = int(self.matrix.attributes["y"]) - (y_spacing - 25)
@@ -430,8 +430,8 @@ class DrawmateMc(DocBuilder):
 
                 if connections_left[0] == "NONE" and connections_right[0] == "NONE":
                     y += y_spacing
-                    width = APPLIANCE_ATTRIBUTES_SC["width"]
-                    height = APPLIANCE_ATTRIBUTES_SC["height"]
+                    width = APPLIANCE_ATTRIBUTES["width"]
+                    height = APPLIANCE_ATTRIBUTES["height"]
                 else:
                     if connections_left[0] != "NONE":
                         meta.__MULTI_CONNECTION_LEFT__ = True
@@ -794,7 +794,7 @@ class DrawmateMc(DocBuilder):
         """
         # Starts +70 on the y-axis (which puts it below the matrix y) and increments that spacing by +120
         total_height = (
-            matrix_dims.num_connections * (APPLIANCE_ATTRIBUTES_SC["height"] + 20)
+            matrix_dims.num_connections * (APPLIANCE_ATTRIBUTES["height"] + 20)
         ) + 70
         if matrix_dims.height < total_height:
             # print(f"Matrix not large enough. Height = {matrix_dims.height}px")

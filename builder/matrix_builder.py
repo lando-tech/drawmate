@@ -1,4 +1,4 @@
-from constants.constants import APPLIANCE_ATTRIBUTES_SC, MATRIX_LABEL
+from constants.constants import APPLIANCE_ATTRIBUTES, MATRIX_LABEL
 from drawmate_engine.drawmate_config import MatrixDimensions
 from graph_objects.matrix import Matrix, MatrixMeta
 from builder.doc_builder import generate_id
@@ -28,11 +28,12 @@ class MatrixBuilder:
     def init_matrix_label(self):
         return TextBox(
             x=self.matrix_dimensions.x,
-            y=self.matrix_dimensions.y - MATRIX_LABEL["y_offset"],
+            y=int(self.matrix_dimensions.y) - MATRIX_LABEL["y_offset"],
             width=self.matrix_dimensions.width,
             height=MATRIX_LABEL["height"],
             label=self.matrix_dimensions.labels,
-            _type="matrix"
+            _type="matrix",
+            style="rounded=0;whiteSpace=wrap;html=1;"
         )
 
     def verify_matrix_dimensions(self):
@@ -45,7 +46,7 @@ class MatrixBuilder:
         initial_y_offset: int = 70
         label_height: int = 20
         total_height: int = (
-                (self.matrix_dimensions.num_connections * (APPLIANCE_ATTRIBUTES_SC["height"] + label_height))
+                (self.matrix_dimensions.num_connections * (APPLIANCE_ATTRIBUTES["height"] + label_height))
                 + initial_y_offset
         )
         pad_y_bottom: int = 50

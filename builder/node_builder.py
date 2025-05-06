@@ -1,5 +1,7 @@
 from graph_objects.appliance import Appliance, ApplianceMetadata
-from constants.constants import APPLIANCE_ATTRIBUTES_SC
+from graph_objects.rect import Rect
+from constants.constants import APPLIANCE_ATTRIBUTES, APPLIANCE_INPUT_OUTPUT_DIMS, APPLIANCE_INPUT, APPLIANCE_OUTPUT
+from graph_objects.text_box import TextBox
 
 
 class NodeBuilder:
@@ -10,8 +12,8 @@ class NodeBuilder:
         x = node_attributes["x"]
         y = node_attributes["y"]
         label = node_attributes["label"]
-        input_label = node_attributes["left_labels"]
-        output_label = node_attributes["right_labels"]
+        input_label = node_attributes["input_labels"]
+        output_label = node_attributes["output_labels"]
         width = node_attributes["width"]
         height = node_attributes["height"]
         return Appliance(
@@ -25,5 +27,46 @@ class NodeBuilder:
             meta=self.meta,
         )
 
-    def init_node_label(self):
-        pass
+    def init_node_label(self, node: Appliance):
+        return Rect(
+            x=node.x,
+            y=node.y,
+            width=node.attributes["width"],
+            height=APPLIANCE_ATTRIBUTES["label_height"],
+            label=node.attributes["label"],
+            _type="text-box"
+        )
+
+    def init_node_input(self, x: int, y: int, label: str):
+        input_x, input_y = self.calculate_input_offset(x, y)
+        return TextBox(
+            x=input_x,
+            y=input_y,
+            width=APPLIANCE_INPUT_OUTPUT_DIMS["width"],
+            height=APPLIANCE_INPUT_OUTPUT_DIMS["height"],
+            label=label,
+            _type="text-box"
+        )
+
+    def init_node_output(self, x: int, y: int, label: str):
+        output_x, output_y = self.calculate_output_offset(x, y)
+        return TextBox(
+            x=output_x,
+            y=output_y,
+            width=APPLIANCE_INPUT_OUTPUT_DIMS["width"],
+            height=APPLIANCE_INPUT_OUTPUT_DIMS["height"],
+            label=label,
+            _type="text-box"
+        )
+
+    @staticmethod
+    def calculate_input_offset(x: int, y: int) -> tuple[int, int]:
+        x = x + APPLIANCE_INPUT["x_offset"]
+        y = y + APPLIANCE_INPUT["y_offset"]
+        return x, y
+
+    @staticmethod
+    def calculate_output_offset(x: int, y: int) -> tuple[int, int]:
+        x = x + 100
+        y = y + APPLIANCE_OUTPUT["y_offset"]
+        return x, y

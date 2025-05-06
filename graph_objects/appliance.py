@@ -1,5 +1,5 @@
 from graph_objects.rect import Rect
-from constants.constants import MX_GRAPH_XML_STYLES, APPLIANCE_ATTRIBUTES_SC
+from constants.constants import MX_GRAPH_XML_STYLES, APPLIANCE_ATTRIBUTES
 from dataclasses import dataclass, field
 from typing import Optional, List
 
@@ -54,8 +54,8 @@ class Appliance(Rect):
         input_label,
         output_label,
         meta: ApplianceMetadata,
-        width: int = APPLIANCE_ATTRIBUTES_SC["width"],
-        height: int = APPLIANCE_ATTRIBUTES_SC["height"],
+        width: int = APPLIANCE_ATTRIBUTES["width"],
+        height: int = APPLIANCE_ATTRIBUTES["height"],
         style=DEFAULT_STYLE,
     ):
         super().__init__(
