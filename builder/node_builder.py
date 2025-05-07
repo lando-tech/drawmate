@@ -1,12 +1,7 @@
 from graph_objects.node import Node, NodeMetaData
 from graph_objects.rect import Rect
-from constants.constants import (
-    NODE_ATTRIBUTES,
-    NODE_INPUT_OUTPUT_DIMS,
-    NODE_INPUT,
-    NODE_OUTPUT,
-    MX_GRAPH_XML_STYLES,
-)
+from constants.constants import MX_GRAPH_XML_STYLES
+from constants.node_constants import NodePorts, NodeLabels
 from graph_objects.text_box import TextBox
 
 
@@ -14,12 +9,12 @@ class NodeBuilder:
     def __init__(self, appliance_meta: NodeMetaData):
         self.meta = appliance_meta
 
-    def init_node(self, node_attributes: dict) -> Node:
+    def init_node_single_connection(self, node_attributes: dict) -> Node:
         x = node_attributes["x"]
         y = node_attributes["y"]
         label = node_attributes["label"]
-        input_label = node_attributes["input_labels"]
-        output_label = node_attributes["output_labels"]
+        input_label = node_attributes["input_label"]
+        output_label = node_attributes["output_label"]
         width = node_attributes["width"]
         height = node_attributes["height"]
         return Node(
@@ -33,12 +28,15 @@ class NodeBuilder:
             meta=self.meta,
         )
 
+    def init_node_multi_connection(self, node_attributes: dict) -> Node:
+        pass
+
     def init_node_label(self, node: Node) -> Rect:
         return Rect(
             x=node.x,
             y=node.y,
-            width=node.attributes["width"],
-            height=NODE_ATTRIBUTES["label_height"],
+            width=NodeLabels.width,
+            height=NodeLabels.height,
             label=node.attributes["label"],
             _type="text-box",
         )
@@ -48,20 +46,22 @@ class NodeBuilder:
         return TextBox(
             x=input_x,
             y=input_y,
-            width=NODE_INPUT_OUTPUT_DIMS["width"],
-            height=NODE_INPUT_OUTPUT_DIMS["height"],
+            width=NodePorts.width,
+            height=NodePorts.height,
             label=label,
             _type="text-box",
             style=MX_GRAPH_XML_STYLES["input-text-box"],
         )
 
-    def init_node_output_ports(self, x: int, y: int, width: int, height: int, label: str) -> TextBox:
+    def init_node_output_ports(
+        self, x: int, y: int, width: int, height: int, label: str
+    ) -> TextBox:
         output_x, output_y = self.calculate_output_offset(x, y, height, width)
         return TextBox(
             x=output_x,
             y=output_y,
-            width=NODE_INPUT_OUTPUT_DIMS["width"],
-            height=NODE_INPUT_OUTPUT_DIMS["height"],
+            width=NodePorts.width,
+            height=NodePorts.height,
             label=label,
             _type="text-box",
             style=MX_GRAPH_XML_STYLES["output-text-box"],
@@ -69,12 +69,14 @@ class NodeBuilder:
 
     @staticmethod
     def calculate_input_offset(x: int, y: int, height: int) -> tuple[int, int]:
-        x = x + NODE_INPUT["x_offset"]
+        x = x + NodePorts.x_offset
         y = y + (height // 2)
         return x, y
 
     @staticmethod
-    def calculate_output_offset(x: int, y: int, height: int, width: int) -> tuple[int, int]:
-        x = x + (width - NODE_INPUT_OUTPUT_DIMS["width"]) - NODE_OUTPUT["x_offset"]
+    def calculate_output_offset(
+        x: int, y: int, height: int, width: int
+    ) -> tuple[int, int]:
+        x = x + (width - NodePorts.width) - NodePorts.x_offset
         y = y + (height // 2)
         return x, y

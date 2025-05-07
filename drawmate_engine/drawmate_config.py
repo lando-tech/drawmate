@@ -147,7 +147,9 @@ class DrawmateConfig:
                         left_side[object_key] = label
                         row_index_left += 1
                     col_index_left += 1
-                elif current_level == levels[col_index_right] and current_side == "right":
+                elif (
+                    current_level == levels[col_index_right] and current_side == "right"
+                ):
                     for label in value["labels"]:
                         if row_index_right >= num_connections:
                             row_index_right = 0

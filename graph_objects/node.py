@@ -1,5 +1,6 @@
 from graph_objects.rect import Rect
-from constants.constants import MX_GRAPH_XML_STYLES, NODE_ATTRIBUTES
+from constants.constants import MX_GRAPH_XML_STYLES
+from constants.node_constants import NodeAttributes
 from dataclasses import dataclass, field
 from typing import Optional, List
 
@@ -8,16 +9,19 @@ from typing import Optional, List
 class NodeMetaData:
     __ID__: str
     __SIDE__: str
+    __LABEL__: str = None
     __ROW_INDEX__: Optional[int] = None
     __COLUMN_INDEX__: Optional[int] = None
     __MULTI_CONNECTION_LEFT__: bool = False
     __MULTI_CONNECTION_RIGHT__: bool = False
     __SPANNING_NODE__: bool = False
+    __INPUT_LABEL__: str = None
+    __OUTPUT_LABEL__: str = None
+    __INPUT_LABEL_ARRAY__: List[str] = field(default_factory=list)
+    __OUTPUT_LABEL_ARRAY: List[str] = field(default_factory=list)
     __CONNECTION_INDEXES_LEFT__: List[int] = field(default_factory=list)
     __CONNECTION_INDEXES_RIGHT__: List[int] = field(default_factory=list)
     __LABEL_INDEXES__: List[int] = field(default_factory=list)
-    __INPUT_LABELS__: List[str] = field(default_factory=list)
-    __OUTPUT_LABELS__: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -54,9 +58,9 @@ class Node(Rect):
         label,
         input_label,
         output_label,
-        meta: NodeMetaData,
-        width: int = NODE_ATTRIBUTES["width"],
-        height: int = NODE_ATTRIBUTES["height"],
+        meta: NodeMetaData = None,
+        width: int = NodeAttributes.width,
+        height: int = NodeAttributes.height,
         style=DEFAULT_STYLE,
     ):
         super().__init__(
@@ -64,7 +68,7 @@ class Node(Rect):
             y=y,
             style=style,
             label=label,
-            _type="DTP",
+            _type="node",
             width=width,
             height=height,
         )

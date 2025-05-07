@@ -21,14 +21,13 @@ matrix: Matrix = matrix_builder.init_matrix()
 matrix_label: TextBox = matrix_builder.init_matrix_label()
 matrix_ports: list[TextBox] = matrix_builder.init_matrix_ports(
     spacing=MATRIX_CONNECTIONS["label_spacing"],
-    connection_labels=dc.get_matrix_connection_labels()
+    connection_labels=dc.get_matrix_connection_labels(),
 )
 
 matrix_cell_elem: Element = mx_builder.create_mxcell(
     data=matrix.attributes, __id__=matrix.meta.__ID__, has_label=False
 )
 matrix_label_elem: Element = mx_builder.create_mxcell(data=matrix_label.attributes)
-
 
 
 doc_builder.root.appendChild(matrix_cell_elem)

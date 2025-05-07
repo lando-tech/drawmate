@@ -1,62 +1,20 @@
-<mxfile>
-  <diagram>
-    <mxGraphModel>
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="26.2.14">
+  <diagram id="0" name="Page-1">
+    <mxGraphModel dx="1491" dy="704" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        <mxCell id="8307643592386215826" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2000" y="2000" width="200" height="1040" relative="" as="geometry"/>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4815933525873464769" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" vertex="1">
+          <mxGeometry x="200" y="200" width="160" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="5250047597601968240" value="Video/Audio Codec" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2000" y="2000" width="200" height="80" relative="" as="geometry"/>
+        <mxCell id="8805921589616119136" value="AV Appliance" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" connectable="" vertex="1">
+          <mxGeometry x="195" y="200" width="160" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="4249088095450553161" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2120" width="60" height="40" relative="" as="geometry"/>
+        <mxCell id="1588037348779140511" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" vertex="1">
+          <mxGeometry x="205" y="245" width="60" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="1662729480172497882" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2120" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="6334366860643212211" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2240" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="3091441475025901909" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2240" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="2321761253468082971" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2360" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="9818073293577398687" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2360" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="4192497097818505522" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2480" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="9890813609332932472" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2480" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="7599426913571407794" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2600" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="4731306266853473368" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2600" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="2110346041113366469" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2720" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="9358335046997144647" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2720" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="1346965188617986727" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2840" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="6885751563421104303" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2840" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="4949467211840557743" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2005" y="2960" width="60" height="40" relative="" as="geometry"/>
-        </mxCell>
-        <mxCell id="2922862824022519254" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" edge="" vertex="1" source="" target="">
-          <mxGeometry x="2135" y="2960" width="60" height="40" relative="" as="geometry"/>
+        <mxCell id="185346086535951056" value="HDMI" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" connectable="" vertex="1">
+          <mxGeometry x="295" y="245" width="60" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

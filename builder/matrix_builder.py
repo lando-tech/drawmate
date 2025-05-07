@@ -35,12 +35,16 @@ class MatrixBuilder:
             style="rounded=0;whiteSpace=wrap;html=1;",
         )
 
-    def init_matrix_ports(self, spacing: int, connection_labels: tuple[list, list]) -> list[TextBox]:
+    def init_matrix_ports(
+        self, spacing: int, connection_labels: tuple[list, list]
+    ) -> list[TextBox]:
         ports = []
         left_side, right_side = connection_labels
         max_len = self.matrix_dimensions.num_connections
 
-        left_ports_x = self.calculate_port_offset_left(matrix_x=self.matrix_dimensions.x)
+        left_ports_x = self.calculate_port_offset_left(
+            matrix_x=self.matrix_dimensions.x
+        )
         right_ports_x = self.calculate_port_offset_right(
             matrix_x=self.matrix_dimensions.x, matrix_width=self.matrix_dimensions.width
         )
@@ -73,7 +77,10 @@ class MatrixBuilder:
         """
         Verifies the matrix height is enough to accommodate all the ports.
         """
-        total_height: int = (self.matrix_dimensions.num_connections * MatrixPorts.y_offset + MatrixPorts.port_height)
+        total_height: int = (
+            self.matrix_dimensions.num_connections * MatrixPorts.y_offset
+            + MatrixPorts.port_height
+        )
         # Ensure padding at the bottom of the matrix
         pad_y_bottom: int = MatrixPorts.port_height
         if self.matrix_dimensions.height < total_height:
@@ -88,4 +95,6 @@ class MatrixBuilder:
 
     @staticmethod
     def calculate_port_offset_right(matrix_x: int, matrix_width: int):
-        return (matrix_x + matrix_width) - ( MatrixPorts.port_width + MatrixPorts.x_offset )
+        return (matrix_x + matrix_width) - (
+            MatrixPorts.port_width + MatrixPorts.x_offset
+        )

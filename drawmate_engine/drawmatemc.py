@@ -309,9 +309,7 @@ class DrawmateMc(DocBuilder):
         self.create_mxobject(matrix_text_box.attributes, str(generate_id()))
 
     # node_builder.py
-    def process_nodes(
-        self, matrix_arr: tuple[list, list]
-    ) -> dict[str, list[Node]]:
+    def process_nodes(self, matrix_arr: tuple[list, list]) -> dict[str, list[Node]]:
         """
         Process the nodes and configure the x and y spacing. This method will then
         dispatch the nodes to the create_node_array method.
@@ -413,14 +411,14 @@ class DrawmateMc(DocBuilder):
                 r_output = row[2]
 
                 if isinstance(l_input, list):
-                    meta.__INPUT_LABELS__ = l_input
-                    if len(meta.__INPUT_LABELS__) > 0:
-                        for i in range(len(meta.__INPUT_LABELS__)):
+                    meta.__INPUT_LABEL_ARRAY__ = l_input
+                    if len(meta.__INPUT_LABEL_ARRAY__) > 0:
+                        for i in range(len(meta.__INPUT_LABEL_ARRAY__)):
                             meta.__LABEL_INDEXES__.append(meta.__ROW_INDEX__ + i)
                     l_input = None
 
                 if isinstance(r_output, list):
-                    meta.__OUTPUT_LABELS__ = r_output
+                    meta.__OUTPUT_LABEL_ARRAY = r_output
                     r_output = None
 
                 connections_left = row[3]
@@ -518,14 +516,14 @@ class DrawmateMc(DocBuilder):
                 )
 
             elif (
-                len(node.meta.__INPUT_LABELS__) > 1
-                and len(node.meta.__OUTPUT_LABELS__) > 1
+                len(node.meta.__INPUT_LABEL_ARRAY__) > 1
+                and len(node.meta.__OUTPUT_LABEL_ARRAY) > 1
             ):
 
-                for index, item in enumerate(node.meta.__INPUT_LABELS__):
+                for index, item in enumerate(node.meta.__INPUT_LABEL_ARRAY__):
 
                     input_label = item
-                    output_label = node.meta.__OUTPUT_LABELS__[index]
+                    output_label = node.meta.__OUTPUT_LABEL_ARRAY[index]
 
                     self.dispatch_in_out_textbox(
                         input_x, input_y, width, height, input_label
@@ -863,6 +861,6 @@ class DrawmateMc(DocBuilder):
             f"\tMulti-Right   : {appliance_node.meta.__MULTI_CONNECTION_RIGHT__}\n"
             f"\tColumn Index  : {appliance_node.meta.__COLUMN_INDEX__}\n"
             f"\tRow Index     : {appliance_node.meta.__ROW_INDEX__}\n"
-            f"\tInput Labels  : {appliance_node.meta.__INPUT_LABELS__}\n"
-            f"\tOutput Labels : {appliance_node.meta.__OUTPUT_LABELS__}\n"
+            f"\tInput Labels  : {appliance_node.meta.__INPUT_LABEL_ARRAY__}\n"
+            f"\tOutput Labels : {appliance_node.meta.__OUTPUT_LABEL_ARRAY}\n"
         )
