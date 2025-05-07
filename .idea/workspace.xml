@@ -6,20 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builder/connection_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/connection_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builder/doc_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/doc_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/builder/matrix_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/matrix_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builder/mx_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/mx_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/node_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constants/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmate_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmate_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatemc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_objects/appliance.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/node.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_objects/matrix.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/matrix.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/builder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/builder_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/matrix_builder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/matrix_builder_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/mc_test_1.drawio.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test/mc_test_1.drawio.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/node_builder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/node_builder_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +36,9 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.builder_test.executor": "Run",
     "Python.drawmate_config.executor": "Run",
+    "Python.drawmate_master.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.matrix_builder.executor": "Run",
     "Python.matrix_builder_test.executor": "Run",
     "Python.node_builder.executor": "Run",
     "Python.node_builder_test.executor": "Run",
@@ -53,7 +48,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "test",
     "last_opened_file_path": "/home/landotech/easyrok/drawmate",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "settings.editor.selected.configurable": "editor.preferences.inline.completion"
   }
 }]]></component>
   <component name="RecentsManager">

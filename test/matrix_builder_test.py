@@ -1,5 +1,6 @@
 from xml.dom.minidom import Element
 
+from constants.constants import MATRIX_CONNECTIONS
 from drawmate_engine.drawmate_config import DrawmateConfig, MatrixDimensions
 from graph_objects.matrix import Matrix
 from builder.matrix_builder import MatrixBuilder
@@ -15,14 +16,24 @@ doc_builder: DocBuilder = DocBuilder()
 
 matrix_dims: MatrixDimensions = dc.get_matrix_dimensions()
 matrix_builder: MatrixBuilder = MatrixBuilder(matrix_dimensions=matrix_dims)
+
 matrix: Matrix = matrix_builder.init_matrix()
 matrix_label: TextBox = matrix_builder.init_matrix_label()
+matrix_ports: list[TextBox] = matrix_builder.init_matrix_ports(
+    spacing=MATRIX_CONNECTIONS["label_spacing"],
+    connection_labels=dc.get_matrix_connection_labels()
+)
 
 matrix_cell_elem: Element = mx_builder.create_mxcell(
     data=matrix.attributes, __id__=matrix.meta.__ID__, has_label=False
 )
 matrix_label_elem: Element = mx_builder.create_mxcell(data=matrix_label.attributes)
 
+
+
 doc_builder.root.appendChild(matrix_cell_elem)
 doc_builder.root.appendChild(matrix_label_elem)
+for port in matrix_ports:
+    doc_builder.root.appendChild(mx_builder.create_mxcell(data=port.attributes))
+
 doc_builder.create_xml("/home/landotech/easyrok/drawmate/test/mc_test_1.drawio.xml")

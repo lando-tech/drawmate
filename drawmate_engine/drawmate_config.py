@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass
 
+from constants.matrix_constants import MatrixDimensions
 from utils.pathfinder import PathFinder
 from utils.log_manager import LogManager
 
@@ -14,16 +15,6 @@ class GraphDimensions:
     dy: int
     width: int
     height: int
-
-
-@dataclass
-class MatrixDimensions:
-    labels: str
-    width: int
-    height: int
-    x: int
-    y: int
-    num_connections: int
 
 
 class DrawmateConfig:

@@ -9,9 +9,7 @@ import random
 from utils.pathfinder import PathFinder
 from utils.log_manager import LogManager
 from constants.constants import (
-    MX_OBJECT_ATTRIBUTES,
     TOP_LEVEL_MX_CELL,
-    MX_ARRAY_ATTRIBUTES,
     MX_GRAPH_MODEL_ATTRIBUTES,
 )
 

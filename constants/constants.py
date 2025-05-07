@@ -5,10 +5,10 @@ as well as default style configurations
 """
 
 MATRIX_CONNECTIONS = {
-    "y_offset": 70,
+    "y_offset": 40,
     "label_spacing": 120,
-    "x_offset_left": 10,
-    "x_offset_right": 140,
+    "x_offset_left": 5,
+    "x_offset_right": 5,
     "height": 40,
     "width": 60,
 }
