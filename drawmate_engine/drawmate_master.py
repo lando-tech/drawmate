@@ -1,19 +1,22 @@
 from xml.dom.minidom import Element
 
+# from drawmate_engine.drawmate_config import DrawmateConfig
+from builder.node_builder import NodeBuilder
 from builder.node_meta_builder import NodeMetaBuilder
-from drawmate_engine.drawmate_config import DrawmateConfig
-from graph_objects.matrix import Matrix
 from builder.matrix_builder import MatrixBuilder
 from builder.mx_builder import MxBuilder
 from builder.doc_builder import DocBuilder
-from graph_objects.node import NodeMetaData
+from graph_objects.matrix import Matrix
+from graph_objects.node import Node, NodeMetaData
 from graph_objects.text_box import TextBox
+from graph_objects.rect import Rect
 
 
 class DrawmateMaster(DocBuilder, MxBuilder):
-    def __init__(self, matrix_builder: MatrixBuilder):
+    def __init__(self, matrix_builder: MatrixBuilder, node_builder: NodeBuilder):
         super().__init__()
         self.matrix_builder: MatrixBuilder = matrix_builder
+        self.node_builder: NodeBuilder = node_builder
 
     def draw_matrix(self) -> None:
         matrix_obj: Matrix = self.matrix_builder.init_matrix()
@@ -48,14 +51,27 @@ class DrawmateMaster(DocBuilder, MxBuilder):
         for port in matrix_ports:
             self.root.appendChild(self.create_mxcell(data=port.attributes))
 
-    def draw_node(self) -> None:
-        pass
+    def draw_node(self, node: Node) -> None:
+        node_elem: Element = self.create_mxcell(node.attributes, __id__=node.meta.__ID__, has_label=False)
+        self.root.appendChild(node_elem)
 
-    def draw_node_label(self):
-        pass
+    def draw_node_label(self, node: Node) -> None:
+        node_label: Rect = self.node_builder.init_node_label(node)
+        node_label_elem: Element = self.create_mxcell(data=node_label.attributes)
+        self.root.appendChild(node_label_elem)
 
-    def draw_node_ports(self):
-        pass
+    def draw_node_ports_input(self, x: int, y: int, height: int, label: str) -> None:
+        node_port: TextBox = self.node_builder.init_node_input_ports(x, y, height, label)
+        node_port_elem: Element = self.create_mxcell(data=node_port.attributes)
+        self.root.appendChild(node_port_elem)
+
+    def draw_node_ports_output(self, x: int, y: int, width: int, height: int, label: str) -> None:
+        node_port: TextBox = self.node_builder.init_node_output_ports(x, y, width, height, label)
+        node_port_elem: Element = self.create_mxcell(data=node_port.attributes)
+        self.root.appendChild(node_port_elem)
+
+    def create_node(self, node_attributes: dict, node_meta: NodeMetaData = None) -> Node:
+        return self.node_builder.init_node(node_attributes, node_meta)
 
     def create_node_metadata(self, node_attributes: dict, col_index: int, row_index: int, side: str) -> NodeMetaData:
         """Creates a node metadata object with the provided attributes.
@@ -95,11 +111,12 @@ class DrawmateMaster(DocBuilder, MxBuilder):
         )
 
 
-if __name__ == "__main__":
-    dc = DrawmateConfig("/home/landotech/easyrok/drawmate/test/mc_test_1.json")
-    matrix_builder: MatrixBuilder = MatrixBuilder(dc.get_matrix_dimensions())
-    dm = DrawmateMaster(matrix_builder)
-    dm.draw_matrix()
-    dm.draw_matrix_label()
-    dm.draw_matrix_ports(120, dc.get_matrix_connection_labels())
-    dm.create_xml("/home/landotech/easyrok/drawmate/test/mc_test_1.drawio.xml")
+# if __name__ == "__main__":
+#     dc = DrawmateConfig("/home/landotech/easyrok/drawmate/test/mc_test_1.json")
+#     matrix_builder: MatrixBuilder = MatrixBuilder(dc.get_matrix_dimensions())
+#     node_builder: NodeBuilder = NodeBuilder()
+#     dm = DrawmateMaster(matrix_builder, node_builder)
+#     dm.draw_matrix()
+#     dm.draw_matrix_label()
+#     dm.draw_matrix_ports(120, dc.get_matrix_connection_labels())
+#     dm.create_xml("/home/landotech/easyrok/drawmate/test/mc_test_1.drawio.xml")

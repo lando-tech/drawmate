@@ -6,10 +6,8 @@ from graph_objects.text_box import TextBox
 
 
 class NodeBuilder:
-    def __init__(self, appliance_meta: NodeMetaData):
-        self.meta = appliance_meta
 
-    def init_node_single_connection(self, node_attributes: dict) -> Node:
+    def init_node(self, node_attributes: dict, node_meta: NodeMetaData = None) -> Node:
         x = node_attributes["x"]
         y = node_attributes["y"]
         label = node_attributes["label"]
@@ -25,11 +23,8 @@ class NodeBuilder:
             output_label=output_label,
             width=width,
             height=height,
-            meta=self.meta,
+            meta=node_meta,
         )
-
-    def init_node_multi_connection(self, node_attributes: dict) -> Node:
-        pass
 
     def init_node_label(self, node: Node) -> Rect:
         return Rect(

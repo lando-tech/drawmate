@@ -27,7 +27,7 @@ node_attributes = {
 
 node_builder = NodeBuilder(node_meta)
 
-node_obj = node_builder.init_node_single_connection(node_attributes)
+node_obj = node_builder.init_node(node_attributes)
 node_label_obj = node_builder.init_node_label(node_obj)
 
 node_input_obj = node_builder.init_node_input_ports(
