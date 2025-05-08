@@ -31,7 +31,7 @@ class NodeMetaBuilder:
         node_meta = NodeMetaData(__SIDE__=side, __ID__=_id)
         node_meta.__LABEL__ = node_attributes["label"]
         node_meta.__ROW_INDEX__ = row_index
-        node_meta.__COL_INDEX__ = col_index
+        node_meta.__COLUMN_INDEX__ = col_index
 
         if isinstance(node_attributes["input-labels"], str):
             node_attributes["input-labels"] = node_meta.__INPUT_LABEL__
@@ -39,7 +39,7 @@ class NodeMetaBuilder:
             node_attributes["output-labels"] = node_meta.__OUTPUT_LABEL__
         else:
             node_meta.__INPUT_LABEL_ARRAY__ = node_attributes["input-labels"]
-            node_meta.__OUTPUT_LABEL_ARRAY = node_attributes["output-labels"]
+            node_meta.__OUTPUT_LABEL_ARRAY__ = node_attributes["output-labels"]
             self.verify_label_indexes(node_meta)
 
         node_meta.__CONNECTION_INDEXES_LEFT__ = node_attributes[
@@ -87,7 +87,6 @@ class NodeMetaBuilder:
         """
         if len(node_meta.__INPUT_LABEL_ARRAY__) > 0:
             for index, label in enumerate(node_meta.__INPUT_LABEL_ARRAY__):
-                print(type(index))
                 node_meta.__LABEL_INDEXES__.append(node_meta.__ROW_INDEX__ + index)
 
     def verify_multi_connection_node(self, node_meta: NodeMetaData) -> None:

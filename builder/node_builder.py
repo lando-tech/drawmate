@@ -63,6 +63,10 @@ class NodeBuilder:
         )
 
     @staticmethod
+    def calculate_node_height(num_connections: int, current_height: int) -> int:
+        pass
+
+    @staticmethod
     def calculate_input_offset(x: int, y: int, height: int) -> tuple[int, int]:
         x = x + NodePorts.x_offset
         y = y + (height // 2)

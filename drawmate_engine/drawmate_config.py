@@ -24,6 +24,7 @@ class DrawmateConfig:
         self.pf = PathFinder()
         self.log_mgr = LogManager()
         self.template_data = self.load_template()
+        self.num_levels = 0
 
     def load_template(self) -> dict | None:
         try:
@@ -140,6 +141,7 @@ class DrawmateConfig:
                 current_side = current_key[-1]
 
                 if current_level == levels[col_index_left] and current_side == "left":
+                    self.num_levels += 1
                     for label in value["labels"]:
                         if row_index_left >= num_connections:
                             row_index_left = 0

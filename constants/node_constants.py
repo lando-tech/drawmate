@@ -4,8 +4,8 @@ from dataclasses import dataclass
 @dataclass
 class NodeAttributes:
     width: int = 160
-    height: int = 210
-    x_spacing: int = 400
+    height: int = 120
+    x_spacing: int = 300
     y_spacing: int = 120
 
 

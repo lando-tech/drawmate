@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from typing import Optional, List
 
 
-@dataclass
+@dataclass(slots=True)
 class NodeMetaData:
     __ID__: str
     __SIDE__: str
@@ -18,7 +18,7 @@ class NodeMetaData:
     __INPUT_LABEL__: str = None
     __OUTPUT_LABEL__: str = None
     __INPUT_LABEL_ARRAY__: List[str] = field(default_factory=list)
-    __OUTPUT_LABEL_ARRAY: List[str] = field(default_factory=list)
+    __OUTPUT_LABEL_ARRAY__: List[str] = field(default_factory=list)
     __CONNECTION_INDEXES_LEFT__: List[int] = field(default_factory=list)
     __CONNECTION_INDEXES_RIGHT__: List[int] = field(default_factory=list)
     __LABEL_INDEXES__: List[int] = field(default_factory=list)
