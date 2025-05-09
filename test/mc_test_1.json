@@ -45,8 +45,8 @@
             ],
             [
                 "AV Appliance",
-                ["HDMI", "HDMI"],
-                ["HDMI", "HDMI"],
+                ["HDMI", "HDMI", "HDMI"],
+                ["HDMI", "HDMI", "HDMI"],
                 ["NONE"],
                 [1, 3]
             ],

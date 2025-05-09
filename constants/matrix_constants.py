@@ -20,7 +20,7 @@ class MatrixLabel:
 
 @dataclass
 class MatrixPorts:
-    port_spacing: int = 120
+    port_spacing: int = 160
     port_width: int = 60
     port_height: int = 40
     y_offset: int = MatrixLabel.height + port_height

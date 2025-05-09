@@ -5,8 +5,8 @@ from dataclasses import dataclass
 class NodeAttributes:
     width: int = 160
     height: int = 120
-    x_spacing: int = 300
-    y_spacing: int = 120
+    x_spacing: int = 400
+    y_spacing: int = 160
 
 
 @dataclass
@@ -20,4 +20,4 @@ class NodePorts:
     width: int = 60
     height: int = 40
     y_offset: int = 45
-    x_offset: int = 5
+    x_offset: int = 10

@@ -1,4 +1,4 @@
-from constants.matrix_constants import MatrixPorts
+from constants.matrix_constants import MatrixPorts, MatrixLabel
 from constants.node_constants import NodeAttributes
 from builder.matrix_builder import MatrixBuilder
 from builder.node_builder import NodeBuilder
@@ -19,19 +19,87 @@ class VideoCodec:
         self.node_dict_right: dict[str, Node] = {}
 
     def render_nodes(self):
+
+        # print("\nLeft Side:")
+        # print("=============================")
         for key, node in self.node_dict_left.items():
             if node.meta.__SPANNING_NODE__:
                 continue
             else:
-                print(f"x = {node.x} | y = {node.y}")
+                # print(
+                #     f"Node ID ({node.meta.__ID__})\ncolumn {node.meta.__COLUMN_INDEX__} row {node.meta.__ROW_INDEX__}"
+                # )
+                # print(f"x = {node.x} | y = {node.y}")
+                # print(f"matrix x = {self.matrix.x}")
+                # print("=============================")
                 self.drawmate.draw_node(node)
+                self.drawmate.draw_node_label(node)
 
+        # print("\nRight Side:")
+        # print("=============================")
         for key, node in self.node_dict_right.items():
             if node.meta.__SPANNING_NODE__:
                 continue
             else:
-                print(f"x = {node.x} | {node.y}")
+                # print(
+                #     f"Node ID ({node.meta.__ID__})\ncolumn {node.meta.__COLUMN_INDEX__} row {node.meta.__ROW_INDEX__}"
+                # )
+                # print(f"x = {node.x} | y = {node.y}")
+                # print(f"matrix x = {self.matrix.x}")
+                # print("=============================")
                 self.drawmate.draw_node(node)
+                self.drawmate.draw_node_label(node)
+
+    def render_node_input_ports(self):
+        for key, node in self.node_dict_left.items():
+            input_port_array = node.meta.__INPUT_LABEL_ARRAY__
+            x = node.x
+            base_y = node.y
+            height = int(node.attributes["height"])
+            if input_port_array:
+                for port in input_port_array:
+                    self.drawmate.draw_node_ports_input(x, base_y, height, port)
+                    base_y -= MatrixPorts.port_spacing
+            if node.input_label:
+                self.drawmate.draw_node_ports_input(x, base_y, height, node.input_label)
+
+        for key, node in self.node_dict_right.items():
+            input_port_array = node.meta.__INPUT_LABEL_ARRAY__
+            x = node.x
+            base_y = node.y
+            height = int(node.attributes["height"])
+            if input_port_array:
+                for port in input_port_array:
+                    self.drawmate.draw_node_ports_input(x, base_y, height, port)
+                    base_y -= MatrixPorts.port_spacing
+            if node.input_label:
+                self.drawmate.draw_node_ports_input(x, base_y, height, node.input_label)
+
+    def render_node_output_ports(self):
+        for key, node in self.node_dict_left.items():
+            input_port_array = node.meta.__INPUT_LABEL_ARRAY__
+            x = node.x
+            base_y = node.y
+            height = int(node.attributes["height"])
+            width = int(node.attributes["width"])
+            if input_port_array:
+                for port in input_port_array:
+                    self.drawmate.draw_node_ports_output(x, base_y, width, height, port)
+                    base_y -= MatrixPorts.port_spacing
+            if node.input_label:
+                self.drawmate.draw_node_ports_output(x, base_y, width, height, node.input_label)
+
+        for key, node in self.node_dict_right.items():
+            input_port_array = node.meta.__INPUT_LABEL_ARRAY__
+            x = node.x
+            base_y = node.y
+            height = int(node.attributes["height"])
+            if input_port_array:
+                for port in input_port_array:
+                    self.drawmate.draw_node_ports_input(x, base_y, height, port)
+                    base_y -= MatrixPorts.port_spacing
+            if node.input_label:
+                self.drawmate.draw_node_ports_input(x, base_y, height, node.input_label)
 
     def render_matrix(
         self,
@@ -76,7 +144,12 @@ class VideoCodec:
             else:
                 self.node_meta_array_right.append(node_meta)
 
-    def create_nodes(self, node_width: int = None, node_height: int = None):
+    def create_nodes(self):
+        self.initialize_node_arrays()
+        self.create_node_pointers()
+        self.calculate_node_position()
+
+    def initialize_node_arrays(self, node_width: int = None, node_height: int = None):
         node_attributes = {
             "x": 0,
             "y": 0,
@@ -94,12 +167,16 @@ class VideoCodec:
         if self.node_meta_array_left:
             for node_meta in self.node_meta_array_left:
                 node = self.drawmate.create_node(node_attributes, node_meta)
+                node.input_label = node_meta.__INPUT_LABEL__
+                node.output_label = node_meta.__OUTPUT_LABEL__
                 self.node_dict_left[
                     f"{node_meta.__COLUMN_INDEX__}-{node_meta.__ROW_INDEX__}"
                 ] = node
         if self.node_meta_array_right:
             for node_meta in self.node_meta_array_right:
                 node = self.drawmate.create_node(node_attributes, node_meta)
+                node.input_label = node_meta.__INPUT_LABEL__
+                node.output_label = node_meta.__OUTPUT_LABEL__
                 self.node_dict_right[
                     f"{node_meta.__COLUMN_INDEX__}-{node_meta.__ROW_INDEX__}"
                 ] = node
@@ -118,6 +195,7 @@ class VideoCodec:
                 elif node.meta.__COLUMN_INDEX__ == self.num_levels:
                     node.right_ptr = self.node_dict_left.get(f"{int(col) - 1}-{row}")
                     node.left_ptr = None
+
                 else:
                     node.right_ptr = self.node_dict_left.get(f"{int(col) - 1}-{row}")
                     node.left_ptr = self.node_dict_left.get(f"{int(col) + 1}-{row}")
@@ -135,9 +213,6 @@ class VideoCodec:
                     node.left_ptr = self.node_dict_left.get(f"{int(col) - 1}-{row}")
                     node.right_ptr = self.node_dict_left.get(f"{int(col) + 1}-{row}")
 
-    def create_node_connections(self):
-        pass
-
     def calculate_node_position(self):
         if not self.node_dict_left and not self.node_dict_right:
             print("Please initialize nodes first!")
@@ -147,22 +222,19 @@ class VideoCodec:
             for key, node in self.node_dict_left.items():
                 col, row = key.split("-")
                 x = self.calculate_node_x_left(node.right_ptr.x)
-                y = self.matrix.y
-                node.attributes["x"] = x
-                node.attributes["y"] = y
-                node.x = x
-                node.y = y
+                y = self.calculate_node_y(int(row))
+                node.attributes["x"], node.attributes["y"] = x, y
+                node.x, node.y = x, y
                 # print(f"Node {col}-{row} -- y = {node.y} | x = {node.x}")
 
         if self.node_dict_right:
             for key, node in self.node_dict_right.items():
                 col, row = key.split("-")
+                # print(f"Node {node.meta.__COLUMN_INDEX__} {node.meta.__ROW_INDEX__} Left pointer: {node.left_ptr}")
                 x = self.calculate_node_x_right(node.left_ptr.x, int(col))
-                y = self.matrix.y
-                node.attributes["x"] = x
-                node.attributes["y"] = y
-                node.x = x
-                node.y = y
+                y = self.calculate_node_y(int(row))
+                node.attributes["x"], node.attributes["y"] = x, y
+                node.x, node.y = x, y
                 # print(f"Node {col}-{row} -- y = {node.y} | x = {node.x}")
 
     def calculate_node_x_left(
@@ -174,27 +246,24 @@ class VideoCodec:
 
     def calculate_node_x_right(
         self,
-        pointer_x: int,
         node_column: int,
         node_spacing: int = NodeAttributes.x_spacing,
-        node_width: int = NodeAttributes.width
+        node_width: int = NodeAttributes.width,
     ):
-        if node_column == 0:
-            return self.matrix.x + node_spacing + node_width
-        else:
-            return pointer_x + node_spacing + node_width
+        base = self.matrix.x + int(self.matrix.attributes["width"])
+        offset = node_spacing - node_width
+        return base + offset + (node_column * node_spacing)
 
     def calculate_node_y(
         self,
         node_row: int,
-        node_height: int = NodeAttributes.height,
         node_spacing: int = NodeAttributes.y_spacing,
-        matrix_y: int = 0,
     ):
-        pass
+        base = self.matrix.y + (MatrixLabel.height // 2)
+        return base + (node_row * node_spacing)
 
 
-drawmate_config = DrawmateConfig("/home/landotech/easyrok/drawmate/test/mc_test_1.json")
+drawmate_config = DrawmateConfig("/home/landotech/easyrok/drawmate/test/mc_test_3.json")
 matrix_dims = drawmate_config.get_matrix_dimensions()
 left_nodes, right_nodes = drawmate_config.build_node_dict(matrix_dims.num_connections)
 matrix_builder = MatrixBuilder(matrix_dims)
@@ -206,8 +275,8 @@ video.drawmate.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4
 video.create_node_meta_array(left_nodes, "left")
 video.create_node_meta_array(right_nodes, "right")
 video.create_nodes()
-video.create_node_pointers()
-video.calculate_node_position()
 video.render_nodes()
+video.render_node_input_ports()
+video.render_node_output_ports()
 video.render_matrix(drawmate_config.get_matrix_connection_labels())
 video.drawmate.create_xml("/home/landotech/Desktop/output.drawio")

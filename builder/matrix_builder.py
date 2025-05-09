@@ -78,7 +78,7 @@ class MatrixBuilder:
         Verifies the matrix height is enough to accommodate all the ports.
         """
         total_height: int = (
-            self.matrix_dimensions.num_connections * MatrixPorts.y_offset
+            self.matrix_dimensions.num_connections * MatrixPorts.port_spacing
             + MatrixPorts.port_height
         )
         # Ensure padding at the bottom of the matrix

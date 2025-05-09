@@ -34,9 +34,9 @@ class NodeMetaBuilder:
         node_meta.__COLUMN_INDEX__ = col_index
 
         if isinstance(node_attributes["input-labels"], str):
-            node_attributes["input-labels"] = node_meta.__INPUT_LABEL__
+            node_meta.__INPUT_LABEL__ = node_attributes["input-labels"]
         elif isinstance(node_attributes["output-labels"], str):
-            node_attributes["output-labels"] = node_meta.__OUTPUT_LABEL__
+            node_meta.__OUTPUT_LABEL__ = node_attributes["output-labels"]
         else:
             node_meta.__INPUT_LABEL_ARRAY__ = node_attributes["input-labels"]
             node_meta.__OUTPUT_LABEL_ARRAY__ = node_attributes["output-labels"]

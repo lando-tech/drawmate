@@ -74,6 +74,8 @@ class Node(Rect):
         )
         self.x = x
         self.y = y
+        self.attributes["x"] = self.x
+        self.attributes["y"] = self.y
         self.left_ptr = None
         self.right_ptr = None
         self.input_label = input_label
