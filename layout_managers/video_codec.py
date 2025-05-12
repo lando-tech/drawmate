@@ -3,18 +3,29 @@ from constants.node_constants import NodeAttributes
 from builder.matrix_builder import MatrixBuilder
 from drawmate_engine.drawmate_config import DrawmateConfig
 from drawmate_engine.drawmate_master import DrawmateMaster
+from graph_objects.arrow import Arrow
 from graph_objects.node import Node
 from graph_objects.matrix import Matrix
 from graph_objects.text_box import TextBox
+from layout_managers.connection_manager import ConnectionManager
 from layout_managers.container_manager import ContainerManager
 
 
 class VideoCodec:
-    def __init__(self, drawmate: DrawmateMaster, matrix_dimensions: MatrixDimensions, num_levels: int):
+    def __init__(
+        self,
+        drawmate: DrawmateMaster,
+        matrix_dimensions: MatrixDimensions,
+        num_levels: int,
+    ):
         self.drawmate = drawmate
         self.matrix_builder = MatrixBuilder(matrix_dimensions)
         self.matrix: Matrix = self.matrix_builder.init_matrix()
         self.num_levels: int = num_levels
+
+    def render_connections(self, arrow_dict: dict[str, Arrow]):
+        for key, arrow in arrow_dict.items():
+            self.drawmate.draw_connection(arrow)
 
     def render_nodes(self, node_dict: dict[str, Node], node_labels: dict[str, TextBox]):
 
@@ -43,15 +54,21 @@ class VideoCodec:
     def render_matrix(self, connection_labels: tuple[list, list]):
         self.drawmate.draw_matrix(self.matrix)
         matrix_label = self.matrix_builder.init_matrix_label()
-        matrix_ports = self.matrix_builder.init_matrix_ports(spacing=MatrixPorts.port_spacing, connection_labels=connection_labels)
+        matrix_ports = self.matrix_builder.init_matrix_ports(
+            spacing=MatrixPorts.port_spacing, connection_labels=connection_labels
+        )
         self.drawmate.draw_matrix_label(matrix_label)
         self.drawmate.draw_matrix_ports(matrix_ports)
 
-    def compute_node_data(self, node_dict_left: dict[str, Node], node_dict_right: dict[str, Node]):
+    def compute_node_data(
+        self, node_dict_left: dict[str, Node], node_dict_right: dict[str, Node]
+    ):
         self.create_node_pointers(node_dict_left, node_dict_right)
         self.calculate_node_position(node_dict_left, node_dict_right)
 
-    def create_node_pointers(self, node_dict_left: dict[str, Node], node_dict_right: dict[str, Node]):
+    def create_node_pointers(
+        self, node_dict_left: dict[str, Node], node_dict_right: dict[str, Node]
+    ):
         for key, node in node_dict_left.items():
             col, row = key.split("-")
             if node.meta.__COLUMN_INDEX__ == 0:
@@ -77,7 +94,9 @@ class VideoCodec:
                 node.left_ptr = node_dict_right.get(f"{int(col) - 1}-{row}")
                 node.right_ptr = node_dict_right.get(f"{int(col) + 1}-{row}")
 
-    def calculate_node_position(self, node_dict_left: dict[str, Node], node_dict_right: dict[str, Node]):
+    def calculate_node_position(
+        self, node_dict_left: dict[str, Node], node_dict_right: dict[str, Node]
+    ):
 
         for key, node in node_dict_left.items():
             col, row = key.split("-")
@@ -123,9 +142,13 @@ class VideoCodec:
 
 
 if __name__ == "__main__":
-    drawmate_config = DrawmateConfig("/home/landotech/easyrok/drawmate/test_templates/mc_test_3.json")
+    drawmate_config = DrawmateConfig(
+        "/home/landotech/easyrok/drawmate/test_templates/mc_test_3.json"
+    )
     matrix_dims = drawmate_config.get_matrix_dimensions()
-    left_nodes, right_nodes = drawmate_config.build_node_dict(matrix_dims.num_connections)
+    left_nodes, right_nodes = drawmate_config.build_node_dict(
+        matrix_dims.num_connections
+    )
     drawmate_master = DrawmateMaster()
 
     container_mgr = ContainerManager()
@@ -148,5 +171,13 @@ if __name__ == "__main__":
 
     video.render_node_ports(node_ports_right.input_ports)
     video.render_node_ports(node_ports_right.output_ports)
+
+    connection_mgr_left = ConnectionManager(node_containers_left.nodes, (node_ports_left.input_ports, node_ports_left.output_ports))
+    connection_mgr_left.create_connections_dict_left()
+    video.render_connections(connection_mgr_left.connection_dict)
+
+    connection_mgr_right = ConnectionManager(node_containers_right.nodes, (node_ports_right.input_ports, node_ports_right.output_ports))
+    connection_mgr_right.create_connections_dict_right(matrix_dims.width)
+    video.render_connections(connection_mgr_right.connection_dict)
 
     video.drawmate.create_xml("/home/landotech/Desktop/output.drawio")

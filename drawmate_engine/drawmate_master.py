@@ -6,7 +6,6 @@ from graph_objects.arrow import Arrow
 from graph_objects.matrix import Matrix
 from graph_objects.node import Node
 from graph_objects.text_box import TextBox
-from graph_objects.rect import Rect
 
 
 class DrawmateMaster(DocBuilder, MxBuilder):
@@ -23,9 +22,7 @@ class DrawmateMaster(DocBuilder, MxBuilder):
         matrix_label_elem: Element = self.create_mxcell(data=matrix_label.attributes)
         self.root.appendChild(matrix_label_elem)
 
-    def draw_matrix_ports(
-        self, matrix_ports: list[TextBox]
-    ) -> None:
+    def draw_matrix_ports(self, matrix_ports: list[TextBox]) -> None:
         for port in matrix_ports:
             self.root.appendChild(self.create_mxcell(data=port.attributes))
 

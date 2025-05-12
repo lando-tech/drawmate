@@ -8,10 +8,12 @@ from builder.node_meta_builder import NodeMetaBuilder
 from builder.node_builder import NodeBuilder
 from constants.node_constants import NodeAttributes
 
+
 @dataclass
 class NodeContainer:
     meta: list[NodeMetaData]
     nodes: dict[str, Node]
+
 
 @dataclass
 class PortContainer:
@@ -25,7 +27,9 @@ class ContainerManager:
         self.node_meta_builder = NodeMetaBuilder()
         self.node_builder = NodeBuilder()
 
-    def build_node_container(self, node_data: dict[str, list | str], orientation: str) -> NodeContainer:
+    def build_node_container(
+        self, node_data: dict[str, list | str], orientation: str
+    ) -> NodeContainer:
         meta = self.initialize_meta_array(node_data, orientation)
         nodes = self.initialize_node_dict(meta)
         return NodeContainer(
@@ -33,14 +37,16 @@ class ContainerManager:
             nodes,
         )
 
-    def build_port_container(self, node_dict: dict[str, Node]):
-        return PortContainer (
+    def build_port_container(self, node_dict: dict[str, Node]) -> PortContainer:
+        return PortContainer(
             self.initialize_node_port_input_dict(node_dict),
             self.initialize_node_port_output_dict(node_dict),
-            self.initialize_node_label_dict(node_dict)
+            self.initialize_node_label_dict(node_dict),
         )
 
-    def initialize_meta_array(self, node_data: dict[str, list | str], orientation: str) -> list[NodeMetaData]:
+    def initialize_meta_array(
+        self, node_data: dict[str, list | str], orientation: str
+    ) -> list[NodeMetaData]:
         """
         Creates an array of NodeMetaData objects
         """
@@ -54,11 +60,20 @@ class ContainerManager:
                 "connection-indexes-left": node[3],
                 "connection-indexes-right": node[4],
             }
-            meta_list.append(self.node_meta_builder.init_node_meta(node_attributes_left, int(col), int(row), orientation))
+            meta_list.append(
+                self.node_meta_builder.init_node_meta(
+                    node_attributes_left, int(col), int(row), orientation
+                )
+            )
 
         return meta_list
 
-    def initialize_node_dict(self, metadata_array: list[NodeMetaData], node_width: int = None, node_height: int = None) -> dict[str, Node]:
+    def initialize_node_dict(
+        self,
+        metadata_array: list[NodeMetaData],
+        node_width: int = None,
+        node_height: int = None,
+    ) -> dict[str, Node]:
         node_dict = {}
         node_attributes = {
             "x": 0,
@@ -86,7 +101,9 @@ class ContainerManager:
 
         return node_label_dict
 
-    def initialize_node_port_input_dict(self, node_dict: dict[str, Node]) -> dict[str, TextBox]:
+    def initialize_node_port_input_dict(
+        self, node_dict: dict[str, Node]
+    ) -> dict[str, TextBox]:
         port_dict = {}
         for key, node in node_dict.items():
             input_port_array = node.meta.__INPUT_LABEL_ARRAY__
@@ -95,18 +112,24 @@ class ContainerManager:
             height = int(node.attributes["height"])
             if input_port_array:
                 for port in input_port_array:
-                    current_port = self.node_builder.init_node_input_ports(x, base_y, height, port)
+                    current_port = self.node_builder.init_node_input_ports(
+                        x, base_y, height, port
+                    )
                     current_port.id = str(generate_id())
                     base_y -= MatrixPorts.port_spacing
-                    port_dict[current_port.id] = current_port
+                    port_dict[node.meta.__ID__] = current_port
             else:
-                current_port = self.node_builder.init_node_input_ports(x, base_y, height, node.input_label)
+                current_port = self.node_builder.init_node_input_ports(
+                    x, base_y, height, node.input_label
+                )
                 current_port.id = str(generate_id())
-                port_dict[current_port.id] = current_port
+                port_dict[node.meta.__ID__] = current_port
 
         return port_dict
 
-    def initialize_node_port_output_dict(self, node_dict: dict[str, Node]) -> dict[str, TextBox]:
+    def initialize_node_port_output_dict(
+        self, node_dict: dict[str, Node]
+    ) -> dict[str, TextBox]:
         port_dict = {}
         for key, node in node_dict.items():
             input_port_array = node.meta.__INPUT_LABEL_ARRAY__
@@ -116,13 +139,17 @@ class ContainerManager:
             width = int(node.attributes["width"])
             if input_port_array:
                 for port in input_port_array:
-                    current_port = self.node_builder.init_node_output_ports(x, base_y, width, height, port)
+                    current_port = self.node_builder.init_node_output_ports(
+                        x, base_y, width, height, port
+                    )
                     current_port.id = str(generate_id())
                     base_y -= MatrixPorts.port_spacing
-                    port_dict[current_port.id] = current_port
+                    port_dict[node.meta.__ID__] = current_port
             else:
-                current_port = self.node_builder.init_node_output_ports(x, base_y, width, height, node.input_label)
+                current_port = self.node_builder.init_node_output_ports(
+                    x, base_y, width, height, node.input_label
+                )
                 current_port.id = str(generate_id())
-                port_dict[current_port.id] = current_port
+                port_dict[node.meta.__ID__] = current_port
 
         return port_dict
