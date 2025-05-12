@@ -27,6 +27,7 @@ class TextBox(Rect):
         height: int,
         label: str,
         _type: str,
+        _id: str = None,
         style=DEFAULT_STYLE,
     ):
 
@@ -35,3 +36,4 @@ class TextBox(Rect):
         )
         self.x = x
         self.y = y
+        self.id = _id
