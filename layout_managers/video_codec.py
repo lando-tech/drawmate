@@ -47,9 +47,14 @@ class VideoCodec:
         for key, label in node_label_dict.items():
             self.drawmate.draw_node_label(label)
 
-    def render_node_ports(self, node_port_dict: dict[str, TextBox]):
+    def render_node_ports_single(self, node_port_dict: dict[str, TextBox]):
         for key, port in node_port_dict.items():
             self.drawmate.draw_node_label(port)
+
+    def render_node_ports_multi(self, node_port_dict: dict[str, list[TextBox]]):
+        for key, ports in node_port_dict.items():
+            for port in ports:
+                self.drawmate.draw_node_label(port)
 
     def render_matrix(self, connection_labels: tuple[list, list]):
         self.drawmate.draw_matrix(self.matrix)
@@ -137,13 +142,13 @@ class VideoCodec:
         node_row: int,
         node_spacing: int = NodeAttributes.y_spacing,
     ):
-        base = self.matrix.y + (MatrixLabel.height // 2)
+        base = self.matrix.y + ((MatrixPorts.port_height * 2) // 2)
         return base + (node_row * node_spacing)
 
 
 if __name__ == "__main__":
     drawmate_config = DrawmateConfig(
-        "/home/landotech/easyrok/drawmate/test_templates/mc_test_3.json"
+        "/home/landotech/easyrok/drawmate/test_templates/xtp_crosspoint_6400.json"
     )
     matrix_dims = drawmate_config.get_matrix_dimensions()
     left_nodes, right_nodes = drawmate_config.build_node_dict(
@@ -159,25 +164,48 @@ if __name__ == "__main__":
     video.drawmate.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4000)
     video.compute_node_data(node_containers_left.nodes, node_containers_right.nodes)
 
-    node_ports_left = container_mgr.build_port_container(node_containers_left.nodes)
-    node_ports_right = container_mgr.build_port_container(node_containers_right.nodes)
+    node_ports_left_single = container_mgr.build_port_container_single(
+        node_containers_left.nodes
+    )
+    node_ports_right_single = container_mgr.build_port_container_single(
+        node_containers_right.nodes
+    )
+
+    node_ports_left_multi = container_mgr.build_port_container_multi(node_containers_left.nodes)
+    node_ports_right_multi = container_mgr.build_port_container_multi(node_containers_right.nodes)
 
     video.render_matrix(drawmate_config.get_matrix_connection_labels())
-    video.render_nodes(node_containers_left.nodes, node_ports_left.node_labels)
-    video.render_nodes(node_containers_right.nodes, node_ports_right.node_labels)
+    video.render_nodes(node_containers_left.nodes, node_ports_left_single.node_labels)
+    video.render_nodes(node_containers_right.nodes, node_ports_right_single.node_labels)
 
-    video.render_node_ports(node_ports_left.input_ports)
-    video.render_node_ports(node_ports_left.output_ports)
+    video.render_node_ports_single(node_ports_left_single.input_ports)
+    video.render_node_ports_single(node_ports_left_single.output_ports)
+    video.render_node_ports_multi(node_ports_left_multi.input_ports)
+    video.render_node_ports_multi(node_ports_left_multi.output_ports)
 
-    video.render_node_ports(node_ports_right.input_ports)
-    video.render_node_ports(node_ports_right.output_ports)
+    video.render_node_ports_single(node_ports_right_single.input_ports)
+    video.render_node_ports_single(node_ports_right_single.output_ports)
+    video.render_node_ports_multi(node_ports_right_multi.input_ports)
+    video.render_node_ports_multi(node_ports_right_multi.output_ports)
 
-    connection_mgr_left = ConnectionManager(node_containers_left.nodes, (node_ports_left.input_ports, node_ports_left.output_ports))
-    connection_mgr_left.create_connections_dict_left()
-    video.render_connections(connection_mgr_left.connection_dict)
+    connection_mgr_left = ConnectionManager(
+        node_containers_left.nodes,
+        (node_ports_left_single.input_ports, node_ports_left_single.output_ports),
+        (node_ports_left_multi.input_ports, node_ports_left_multi.output_ports)
+    )
+    connection_mgr_left.create_connections_dict_left_single()
+    connection_mgr_left.create_connections_dict_left_multi()
+    video.render_connections(connection_mgr_left.connection_dict_single)
+    video.render_connections(connection_mgr_left.connection_dict_multi)
 
-    connection_mgr_right = ConnectionManager(node_containers_right.nodes, (node_ports_right.input_ports, node_ports_right.output_ports))
-    connection_mgr_right.create_connections_dict_right(matrix_dims.width)
-    video.render_connections(connection_mgr_right.connection_dict)
+    connection_mgr_right = ConnectionManager(
+        node_containers_right.nodes,
+        (node_ports_right_single.input_ports, node_ports_right_single.output_ports),
+        (node_ports_right_multi.input_ports, node_ports_right_multi.output_ports)
+    )
+    connection_mgr_right.create_connections_dict_right_single(matrix_dims.width)
+    connection_mgr_right.create_connections_dict_right_multi(matrix_dims.width)
+    video.render_connections(connection_mgr_right.connection_dict_single)
+    video.render_connections(connection_mgr_right.connection_dict_multi)
 
     video.drawmate.create_xml("/home/landotech/Desktop/output.drawio")

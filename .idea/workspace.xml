@@ -6,6 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/node_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/matrix_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/matrix_constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/node_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/node_constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_engine/drawmatesc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layout_managers/connection_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/connection_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layout_managers/container_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/container_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layout_managers/video_codec.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/video_codec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_templates/mc_test_1.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/mc_test_1.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +36,7 @@
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.builder_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.connection_manager.executor&quot;: &quot;Run&quot;,
     &quot;Python.drawmate_config.executor&quot;: &quot;Run&quot;,
     &quot;Python.drawmate_master.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
@@ -42,7 +51,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;test&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/landotech/easyrok/database_operations&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/landotech/easyrok/drawmate&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>

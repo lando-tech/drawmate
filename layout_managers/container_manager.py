@@ -16,10 +16,16 @@ class NodeContainer:
 
 
 @dataclass
-class PortContainer:
+class PortContainerSingle:
     input_ports: dict[str, TextBox]
     output_ports: dict[str, TextBox]
     node_labels: dict[str, TextBox]
+
+
+@dataclass
+class PortContainerMulti:
+    input_ports: dict[str, list[TextBox]]
+    output_ports: dict[str, list[TextBox]]
 
 
 class ContainerManager:
@@ -37,11 +43,21 @@ class ContainerManager:
             nodes,
         )
 
-    def build_port_container(self, node_dict: dict[str, Node]) -> PortContainer:
-        return PortContainer(
-            self.initialize_node_port_input_dict(node_dict),
-            self.initialize_node_port_output_dict(node_dict),
+    def build_port_container_single(
+        self, node_dict: dict[str, Node]
+    ) -> PortContainerSingle:
+        return PortContainerSingle(
+            self.initialize_single_port_input_dict(node_dict),
+            self.initialize_single_port_output_dict(node_dict),
             self.initialize_node_label_dict(node_dict),
+        )
+
+    def build_port_container_multi(
+        self, node_dict: dict[str, Node]
+    ) -> PortContainerMulti:
+        return PortContainerMulti(
+            self.initialize_multi_port_input_dict(node_dict),
+            self.initialize_multi_port_output_dict(node_dict)
         )
 
     def initialize_meta_array(
@@ -101,9 +117,52 @@ class ContainerManager:
 
         return node_label_dict
 
-    def initialize_node_port_input_dict(
+    def initialize_single_port_input_dict(
         self, node_dict: dict[str, Node]
     ) -> dict[str, TextBox]:
+        port_dict = {}
+        for key, node in node_dict.items():
+            multi_left, multi_right = node.meta.__MULTI_CONNECTION_LEFT__, node.meta.__MULTI_CONNECTION_RIGHT__
+            spanning = node.meta.__SPANNING_NODE__
+            if multi_left or multi_right or spanning:
+                # print("Skipping multi connection input")
+                continue
+            x = node.x
+            base_y = node.y
+            height = int(node.attributes["height"])
+            current_port = self.node_builder.init_node_input_ports(
+                x, base_y, height, node.input_label
+            )
+            current_port.id = str(generate_id())
+            port_dict[node.meta.__ID__] = current_port
+
+        return port_dict
+
+    def initialize_single_port_output_dict(
+        self, node_dict: dict[str, Node]
+    ) -> dict[str, TextBox]:
+        port_dict = {}
+        for key, node in node_dict.items():
+            multi_left, multi_right = node.meta.__MULTI_CONNECTION_LEFT__, node.meta.__MULTI_CONNECTION_RIGHT__
+            spanning = node.meta.__SPANNING_NODE__
+            if multi_left or multi_right or spanning:
+                # print("Skipping multi connection output")
+                continue
+            x = node.x
+            base_y = node.y
+            height = int(node.attributes["height"])
+            width = int(node.attributes["width"])
+            current_port = self.node_builder.init_node_output_ports(
+                x, base_y, width, height, node.input_label
+            )
+            current_port.id = str(generate_id())
+            port_dict[node.meta.__ID__] = current_port
+
+        return port_dict
+
+    def initialize_multi_port_input_dict(
+        self, node_dict: dict[str, Node]
+    ) -> dict[str, list[TextBox]] | None:
         port_dict = {}
         for key, node in node_dict.items():
             input_port_array = node.meta.__INPUT_LABEL_ARRAY__
@@ -111,25 +170,21 @@ class ContainerManager:
             base_y = node.y
             height = int(node.attributes["height"])
             if input_port_array:
+                port_array = []
                 for port in input_port_array:
                     current_port = self.node_builder.init_node_input_ports(
                         x, base_y, height, port
                     )
                     current_port.id = str(generate_id())
                     base_y -= MatrixPorts.port_spacing
-                    port_dict[node.meta.__ID__] = current_port
-            else:
-                current_port = self.node_builder.init_node_input_ports(
-                    x, base_y, height, node.input_label
-                )
-                current_port.id = str(generate_id())
-                port_dict[node.meta.__ID__] = current_port
+                    port_array.append(current_port)
+                port_dict[node.meta.__ID__] = port_array
 
         return port_dict
 
-    def initialize_node_port_output_dict(
+    def initialize_multi_port_output_dict(
         self, node_dict: dict[str, Node]
-    ) -> dict[str, TextBox]:
+    ) -> dict[str, list[TextBox]] | None:
         port_dict = {}
         for key, node in node_dict.items():
             input_port_array = node.meta.__INPUT_LABEL_ARRAY__
@@ -138,18 +193,14 @@ class ContainerManager:
             height = int(node.attributes["height"])
             width = int(node.attributes["width"])
             if input_port_array:
+                port_array = []
                 for port in input_port_array:
                     current_port = self.node_builder.init_node_output_ports(
                         x, base_y, width, height, port
                     )
                     current_port.id = str(generate_id())
                     base_y -= MatrixPorts.port_spacing
-                    port_dict[node.meta.__ID__] = current_port
-            else:
-                current_port = self.node_builder.init_node_output_ports(
-                    x, base_y, width, height, node.input_label
-                )
-                current_port.id = str(generate_id())
-                port_dict[node.meta.__ID__] = current_port
+                    port_array.append(current_port)
+                port_dict[node.meta.__ID__] = port_array
 
         return port_dict

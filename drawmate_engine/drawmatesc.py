@@ -467,7 +467,7 @@ class DrawmateSc(DocBuilder):
                                 + self.generate_connection_number(col, counter, left)
                             )
 
-                        arrow = connection_mgr.create_connection("", "arrow")
+                        arrow = connection_mgr.create_connection_single("", "arrow")
                         arrow_textbox = TextBox(
                             x=int(arrow.attributes["target_x"])
                             - ARROW_CONNECTIONS["x_offset"],
@@ -497,7 +497,7 @@ class DrawmateSc(DocBuilder):
                                 + self.generate_connection_number(col, counter, False)
                             )
 
-                        arrow = connection_mgr.create_connection("", "arrow")
+                        arrow = connection_mgr.create_connection_single("", "arrow")
                         arrow_textbox = TextBox(
                             x=int(arrow.attributes["target_x"])
                             - ARROW_CONNECTIONS["x_offset"],

@@ -74,7 +74,7 @@ class NodeBuilder:
 
     @staticmethod
     def calculate_node_height(num_connections: int, current_height: int) -> int:
-        total_height = (num_connections * NodeAttributes.y_spacing) + NodePorts.height
+        total_height = (num_connections * NodeAttributes.y_spacing) + (num_connections * NodePorts.height)
         if total_height > current_height:
             difference = total_height - current_height
             return difference + NodePorts.height
