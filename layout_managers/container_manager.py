@@ -57,7 +57,7 @@ class ContainerManager:
     ) -> PortContainerMulti:
         return PortContainerMulti(
             self.initialize_multi_port_input_dict(node_dict),
-            self.initialize_multi_port_output_dict(node_dict)
+            self.initialize_multi_port_output_dict(node_dict),
         )
 
     def initialize_meta_array(
@@ -122,7 +122,10 @@ class ContainerManager:
     ) -> dict[str, TextBox]:
         port_dict = {}
         for key, node in node_dict.items():
-            multi_left, multi_right = node.meta.__MULTI_CONNECTION_LEFT__, node.meta.__MULTI_CONNECTION_RIGHT__
+            multi_left, multi_right = (
+                node.meta.__MULTI_CONNECTION_LEFT__,
+                node.meta.__MULTI_CONNECTION_RIGHT__,
+            )
             spanning = node.meta.__SPANNING_NODE__
             if multi_left or multi_right or spanning:
                 # print("Skipping multi connection input")
@@ -143,7 +146,10 @@ class ContainerManager:
     ) -> dict[str, TextBox]:
         port_dict = {}
         for key, node in node_dict.items():
-            multi_left, multi_right = node.meta.__MULTI_CONNECTION_LEFT__, node.meta.__MULTI_CONNECTION_RIGHT__
+            multi_left, multi_right = (
+                node.meta.__MULTI_CONNECTION_LEFT__,
+                node.meta.__MULTI_CONNECTION_RIGHT__,
+            )
             spanning = node.meta.__SPANNING_NODE__
             if multi_left or multi_right or spanning:
                 # print("Skipping multi connection output")

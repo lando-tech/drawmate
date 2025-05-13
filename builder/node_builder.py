@@ -48,6 +48,10 @@ class NodeBuilder:
 
     def init_node_input_ports(self, x: int, y: int, height: int, label: str) -> TextBox:
         input_x, input_y = self.calculate_input_offset(x, y, height)
+        if len(label) > NodePorts.width:
+            orientation = "right"
+        else:
+            orientation = "left"
         return TextBox(
             x=input_x,
             y=input_y,
@@ -55,7 +59,7 @@ class NodeBuilder:
             height=NodePorts.height,
             label=label,
             _type="text-box",
-            style=MX_GRAPH_XML_STYLES["input-text-box"],
+            style=MX_GRAPH_XML_STYLES[f"text-box-{orientation}-justified"],
         )
 
     def init_node_output_ports(
@@ -69,13 +73,20 @@ class NodeBuilder:
             height=NodePorts.height,
             label=label,
             _type="text-box",
-            style=MX_GRAPH_XML_STYLES["output-text-box"],
+            style=MX_GRAPH_XML_STYLES["text-box-right-justified"],
         )
 
     @staticmethod
     def calculate_node_height(num_connections: int, current_height: int) -> int:
-        total_height = (num_connections * NodeAttributes.y_spacing) + (num_connections * NodePorts.height)
-        if total_height > current_height:
+        total_height = (
+            (2 * NodePorts.height)
+            + (num_connections * NodePorts.height)
+            + ((num_connections - 1) * NodeAttributes.y_spacing)
+        )
+        # total_height = num_connections * NodeAttributes.y_spacing + NodePorts.height
+        # print(total_height)
+        # print(current_height)
+        if current_height <= total_height:
             difference = total_height - current_height
             return difference + NodePorts.height
         else:

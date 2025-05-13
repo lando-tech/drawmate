@@ -5,9 +5,9 @@ from constants.matrix_constants import MatrixPorts
 @dataclass
 class NodeAttributes:
     width: int = 160
-    height: int = 120
+    height: int = 60
     x_spacing: int = 400
-    y_spacing: int = MatrixPorts.port_spacing
+    y_spacing: int = 60
 
 
 @dataclass

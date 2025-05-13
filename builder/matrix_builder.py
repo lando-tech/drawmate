@@ -77,16 +77,21 @@ class MatrixBuilder:
         """
         Verifies the matrix height is enough to accommodate all the ports.
         """
-        total_height: int = (
-            self.matrix_dimensions.num_connections * MatrixPorts.port_spacing
-            + MatrixPorts.port_height
+        total_height = (
+            (2 * MatrixPorts.port_height)
+            + (self.matrix_dimensions.num_connections * MatrixPorts.port_height)
+            + ((self.matrix_dimensions.num_connections - 1) * MatrixPorts.port_spacing)
         )
+        # total_height: int = (
+        #     self.matrix_dimensions.num_connections * MatrixPorts.port_spacing
+        #     + MatrixPorts.port_height
+        # )
         # Ensure padding at the bottom of the matrix
         pad_y_bottom: int = MatrixPorts.port_height
         if self.matrix_dimensions.height < total_height:
             difference: int = total_height - self.matrix_dimensions.height
             self.matrix_dimensions.height = (
-                self.matrix_dimensions.height + difference + pad_y_bottom
+                difference + pad_y_bottom
             )
 
     @staticmethod

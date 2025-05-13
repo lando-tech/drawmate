@@ -142,7 +142,7 @@ class VideoCodec:
         node_row: int,
         node_spacing: int = NodeAttributes.y_spacing,
     ):
-        base = self.matrix.y + ((MatrixPorts.port_height * 2) // 2)
+        base = self.matrix.y + (MatrixLabel.height // 2) + MatrixPorts.port_height
         return base + (node_row * node_spacing)
 
 
@@ -171,8 +171,12 @@ if __name__ == "__main__":
         node_containers_right.nodes
     )
 
-    node_ports_left_multi = container_mgr.build_port_container_multi(node_containers_left.nodes)
-    node_ports_right_multi = container_mgr.build_port_container_multi(node_containers_right.nodes)
+    node_ports_left_multi = container_mgr.build_port_container_multi(
+        node_containers_left.nodes
+    )
+    node_ports_right_multi = container_mgr.build_port_container_multi(
+        node_containers_right.nodes
+    )
 
     video.render_matrix(drawmate_config.get_matrix_connection_labels())
     video.render_nodes(node_containers_left.nodes, node_ports_left_single.node_labels)
@@ -191,7 +195,7 @@ if __name__ == "__main__":
     connection_mgr_left = ConnectionManager(
         node_containers_left.nodes,
         (node_ports_left_single.input_ports, node_ports_left_single.output_ports),
-        (node_ports_left_multi.input_ports, node_ports_left_multi.output_ports)
+        (node_ports_left_multi.input_ports, node_ports_left_multi.output_ports),
     )
     connection_mgr_left.create_connections_dict_left_single()
     connection_mgr_left.create_connections_dict_left_multi()
@@ -201,11 +205,13 @@ if __name__ == "__main__":
     connection_mgr_right = ConnectionManager(
         node_containers_right.nodes,
         (node_ports_right_single.input_ports, node_ports_right_single.output_ports),
-        (node_ports_right_multi.input_ports, node_ports_right_multi.output_ports)
+        (node_ports_right_multi.input_ports, node_ports_right_multi.output_ports),
     )
     connection_mgr_right.create_connections_dict_right_single(matrix_dims.width)
     connection_mgr_right.create_connections_dict_right_multi(matrix_dims.width)
     video.render_connections(connection_mgr_right.connection_dict_single)
     video.render_connections(connection_mgr_right.connection_dict_multi)
 
-    video.drawmate.create_xml("/home/landotech/Desktop/output.drawio")
+    output_file: str = "/home/landotech/Desktop/output.drawio"
+    video.drawmate.create_xml(output_file)
+    print(f"Template saved @ {output_file}")

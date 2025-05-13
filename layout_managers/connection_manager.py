@@ -10,7 +10,7 @@ class ConnectionManager:
         self,
         node_dict: dict[str, Node],
         node_ports_single: tuple[dict[str, TextBox], dict[str, TextBox]],
-        node_ports_multi: tuple[dict[str, list[TextBox]], dict[str, list[TextBox]]]
+        node_ports_multi: tuple[dict[str, list[TextBox]], dict[str, list[TextBox]]],
     ):
         self.node_dict: dict[str, Node] = node_dict
         self.node_ports_input: dict[str, TextBox] = node_ports_single[0]
@@ -31,7 +31,9 @@ class ConnectionManager:
             style=connection_data["style"],
         )
 
-    def create_connection_single(self, target_x, target_y, source_x, source_y, _id: str):
+    def create_connection_single(
+        self, target_x, target_y, source_x, source_y, _id: str
+    ):
         connection_data = {
             "target-x": target_x,
             "target-y": target_y,
@@ -108,7 +110,9 @@ class ConnectionManager:
                 target_x = node.right_ptr.x
                 source_y = target_y
                 source_x = node.x + NodeAttributes.width
-                self.create_connection_multi(target_x, target_y, source_x, source_y, str(generate_id()))
+                self.create_connection_multi(
+                    target_x, target_y, source_x, source_y, str(generate_id())
+                )
 
     def create_connections_dict_right_multi(self, matrix_width: int):
         for key, node in self.node_dict.items():
@@ -119,11 +123,17 @@ class ConnectionManager:
                 target_x = node.x
                 source_y = target_y
                 if node.meta.__COLUMN_INDEX__ == 0:
-                    source_x = self.calculate_connection_x(node.left_ptr.x, matrix_width)
+                    source_x = self.calculate_connection_x(
+                        node.left_ptr.x, matrix_width
+                    )
                 else:
-                    source_x = self.calculate_connection_x(node.left_ptr.x, NodeAttributes.width)
+                    source_x = self.calculate_connection_x(
+                        node.left_ptr.x, NodeAttributes.width
+                    )
 
-                self.create_connection_multi(target_x, target_y, source_x, source_y, str(generate_id()))
+                self.create_connection_multi(
+                    target_x, target_y, source_x, source_y, str(generate_id())
+                )
 
     def add_connection_waypoint(
         self, x: int, y: int, waypoint_meta: ArrowMeta = None
