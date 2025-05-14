@@ -6,7 +6,7 @@ from graph_objects.node import Node, NodeMetaData
 from graph_objects.text_box import TextBox
 from builder.node_meta_builder import NodeMetaBuilder
 from builder.node_builder import NodeBuilder
-from constants.node_constants import NodeAttributes
+from constants.node_constants import NodeAttributes, NodePorts
 
 
 @dataclass
@@ -182,7 +182,7 @@ class ContainerManager:
                         x, base_y, height, port
                     )
                     current_port.id = str(generate_id())
-                    base_y -= MatrixPorts.port_spacing
+                    base_y -= NodePorts.height
                     port_array.append(current_port)
                 port_dict[node.meta.__ID__] = port_array
 
@@ -205,7 +205,7 @@ class ContainerManager:
                         x, base_y, width, height, port
                     )
                     current_port.id = str(generate_id())
-                    base_y -= MatrixPorts.port_spacing
+                    base_y -= NodePorts.height
                     port_array.append(current_port)
                 port_dict[node.meta.__ID__] = port_array
 

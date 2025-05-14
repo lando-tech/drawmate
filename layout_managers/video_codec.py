@@ -142,8 +142,11 @@ class VideoCodec:
         node_row: int,
         node_spacing: int = NodeAttributes.y_spacing,
     ):
-        base = self.matrix.y + (MatrixLabel.height // 2)
-        return base + (node_row * node_spacing)
+        base = self.matrix.y
+        padding = MatrixLabel.height
+        if node_row == 0:
+            padding = 0
+        return base + (node_row * node_spacing) - padding
 
 
 if __name__ == "__main__":

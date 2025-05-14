@@ -79,18 +79,10 @@ class NodeBuilder:
     @staticmethod
     def calculate_node_height(num_connections: int, current_height: int) -> int:
         total_height = (
-            (2 * NodePorts.height)
-            + (num_connections * NodePorts.height)
-            + ((num_connections - 1) * NodeAttributes.y_spacing)
+            (num_connections * NodePorts.height)
+            + NodeLabels.height # Account for the label at the top
         )
-        # total_height = num_connections * NodeAttributes.y_spacing + NodePorts.height
-        # print(total_height)
-        # print(current_height)
-        if current_height <= total_height:
-            difference = total_height - current_height
-            return difference
-        else:
-            return current_height
+        return max(current_height, total_height)
 
     @staticmethod
     def calculate_input_offset(x: int, y: int, height: int) -> tuple[int, int]:

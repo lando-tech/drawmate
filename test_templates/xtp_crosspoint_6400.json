@@ -17,13 +17,24 @@
     "labels": [
       [
         "Cisco Appliance",
-        ["HDMI-OUT", "HDMI-OUT"],
-        ["HDMI-CAM", "HDMI-DATA"],
+        ["HDMI-OUT", "HDMI-OUT", "HDMI-OUT"],
+        ["HDMI-CAM", "HDMI-DATA", "HDMI-OUT"],
         [
-          0, 1
+          0, 1, 2
         ],
         [
-          0, 1
+          0, 1, 2
+        ]
+      ],
+      [
+        "__SPAN__",
+        "",
+        "",
+        [
+          "NONE"
+        ],
+        [
+          "NONE"
         ]
       ],
       [
@@ -41,17 +52,6 @@
         "AV Appliance",
         "HDMI",
         "HDMI",
-        [
-          "NONE"
-        ],
-        [
-          "NONE"
-        ]
-      ],
-      [
-        "",
-        "",
-        "",
         [
           "NONE"
         ],
