@@ -48,8 +48,8 @@ class MatrixBuilder:
         right_ports_x = self.calculate_port_offset_right(
             matrix_x=self.matrix_dimensions.x, matrix_width=self.matrix_dimensions.width
         )
-        y = self.matrix_dimensions.y + MatrixPorts.y_offset
-
+        # y = self.matrix_dimensions.y + MatrixPorts.y_offset
+        y = self.matrix_dimensions.y + MatrixLabel.height
         for i in range(max_len):
             left_text_box = TextBox(
                 x=left_ports_x,
@@ -77,21 +77,16 @@ class MatrixBuilder:
         """
         Verifies the matrix height is enough to accommodate all the ports.
         """
-        total_height = (
-            (2 * MatrixPorts.port_height)
-            + (self.matrix_dimensions.num_connections * MatrixPorts.port_height)
-            + ((self.matrix_dimensions.num_connections - 1) * MatrixPorts.port_spacing)
+        total_height: int = (
+            self.matrix_dimensions.num_connections * MatrixPorts.port_spacing
+            + MatrixPorts.port_height
         )
-        # total_height: int = (
-        #     self.matrix_dimensions.num_connections * MatrixPorts.port_spacing
-        #     + MatrixPorts.port_height
-        # )
         # Ensure padding at the bottom of the matrix
-        pad_y_bottom: int = MatrixPorts.port_height
+        pad_y_bottom: int = MatrixPorts.port_height * 2
         if self.matrix_dimensions.height < total_height:
             difference: int = total_height - self.matrix_dimensions.height
             self.matrix_dimensions.height = (
-                difference + pad_y_bottom
+                self.matrix_dimensions.height + difference + pad_y_bottom
             )
 
     @staticmethod

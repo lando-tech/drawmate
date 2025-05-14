@@ -23,5 +23,5 @@ class MatrixPorts:
     port_spacing: int = 60
     port_width: int = 60
     port_height: int = 40
-    y_offset: int = MatrixLabel.height + port_height
+    y_offset: int = port_height
     x_offset: int = 5

@@ -88,7 +88,7 @@ class NodeBuilder:
         # print(current_height)
         if current_height <= total_height:
             difference = total_height - current_height
-            return difference + NodePorts.height
+            return difference
         else:
             return current_height
 
