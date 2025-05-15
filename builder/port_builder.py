@@ -7,7 +7,16 @@ class PortBuilder:
     def __init__(self):
         pass
 
-    def init_port(self, x: int, y: int, width: int, height: int, label: str, parent: Node | Matrix, mx_graph_style: str) -> Port:
+    def init_port(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        label: str,
+        parent: Node | Matrix,
+        mx_graph_style: str,
+    ) -> Port:
         port = Port(
             x=x,
             y=y,

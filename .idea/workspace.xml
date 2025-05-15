@@ -9,15 +9,11 @@
       <change beforePath="$PROJECT_DIR$/builder/matrix_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/matrix_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/node_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/builder/port_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/port_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/matrix_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/matrix_constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/node_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/node_constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_objects/node.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/node.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graph_objects/port.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/port.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layout_managers/container_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/container_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layout_managers/default_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/default_layout.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layout_managers/video_codec.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/video_codec.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/builder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/builder_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_templates/xtp_crosspoint_6400.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/xtp_crosspoint_6400.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_templates/mc_test_1.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/mc_test_1.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

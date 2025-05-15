@@ -50,11 +50,15 @@ class VideoCodec:
 
     def render_node_ports_single(self, node_port_dict: dict[str, Port]):
         for key, port in node_port_dict.items():
+            if port.parent.meta.__SPANNING_NODE__:
+                continue
             self.drawmate.draw_node_label(port)
 
     def render_node_ports_multi(self, node_port_dict: dict[str, list[Port]]):
         for key, ports in node_port_dict.items():
             for port in ports:
+                if port.parent.meta.__SPANNING_NODE__:
+                    continue
                 self.drawmate.draw_node_label(port)
 
     def render_matrix(self, connection_labels: tuple[list, list]):
@@ -72,13 +76,48 @@ class VideoCodec:
         self.create_node_pointers_left(node_dict_left)
         self.calculate_node_position_left(node_dict_left, node_labels_dict)
 
-    def compute_node_ports_left(self, port_dict: dict[str, Port]):
+    def compute_node_port_data_single(self, port_dict: dict[str, Port], port_type: str):
         for key, port in port_dict.items():
-            x, y = int(port.parent.attributes["x"]), int(port.parent.attributes["y"])
+            node_x, node_y = int(port.parent.attributes["x"]), int(
+                port.parent.attributes["y"]
+            )
+            height = int(port.parent.attributes["height"])
+            width = int(port.parent.attributes["width"])
+            if port_type == "input":
+                port_x, port_y = self.calculate_input_offset(node_x, node_y, height)
+            elif port_type == "output":
+                port_x, port_y = self.calculate_output_offset(
+                    node_x, node_y, height, width
+                )
+            else:
+                print("Invalid port type!")
+                return
 
-    def create_node_pointers_left(
-        self, node_dict_left: dict[str, Node]
+            port.attributes["x"], port.attributes["y"] = port_x, port_y
+
+    def compute_node_port_data_multi(
+        self, port_dict: dict[str, list[Port]], port_type: str
     ):
+        for key, port_array in port_dict.items():
+            node_x, node_y = int(port_array[0].parent.attributes["x"]), int(
+                port_array[0].parent.attributes["y"]
+            )
+            height = int(port_array[0].parent.attributes["height"])
+            width = int(port_array[0].parent.attributes["width"])
+            if port_type == "input":
+                port_x, port_y = self.calculate_input_offset(node_x, node_y, height)
+            elif port_type == "output":
+                port_x, port_y = self.calculate_output_offset(
+                    node_x, node_y, height, width
+                )
+            else:
+                print("Invalid port type!")
+                return
+            for port in port_array:
+                port.attributes["x"], port.attributes["y"] = port_x, port_y
+                port_y -= MatrixPorts.port_spacing
+
+    def create_node_pointers_left(self, node_dict_left: dict[str, Node]):
         for key, node in node_dict_left.items():
             col, row = key.split("-")
             if node.meta.__COLUMN_INDEX__ == 0:
@@ -117,11 +156,16 @@ class VideoCodec:
             # node.attributes["x"], node.attributes["y"] = x, y
             previous_node = node_dict_left.get(f"{col}-{int(row) - 1}")
 
-            if int(row) == 0:
+            if int(row) == 0 and not node.meta.__SPANNING_NODE__:
                 base_y = self.matrix.y
                 y = self.calculate_node_y(base_y, 0, 0)
                 node.attributes["y"] = y
                 height = int(node.attributes["height"])
+            elif int(row) == 0 and node.meta.__SPANNING_NODE__:
+                base_y = self.matrix.y
+                y = self.calculate_node_y(base_y, 0, 0)
+                node.attributes["y"] = y
+                height = NodeAttributes.height
             elif node.meta.__SPANNING_NODE__:
                 base_y = self.matrix.y
                 y = self.calculate_node_y(base_y, 0, 0)
@@ -177,11 +221,19 @@ class VideoCodec:
     ):
         return base_y + node_height + node_spacing
 
-    def calculate_port_y(self):
-        pass
+    @staticmethod
+    def calculate_input_offset(x: int, y: int, height: int) -> tuple[int, int]:
+        x = x + NodePorts.x_offset
+        y = y + (height - NodePorts.height)
+        return x, y
 
-    def calculate_port_x(self):
-        pass
+    @staticmethod
+    def calculate_output_offset(
+        x: int, y: int, height: int, width: int
+    ) -> tuple[int, int]:
+        x = x + (width - NodePorts.width) - NodePorts.x_offset
+        y = y + (height - NodePorts.height)
+        return x, y
 
 
 if __name__ == "__main__":
@@ -213,7 +265,9 @@ if __name__ == "__main__":
 
     video = VideoCodec(drawmate_master, matrix_dims, drawmate_config.num_levels)
     video.drawmate.set_graph_values(dx=4000, dy=4000, page_width=4000, page_height=4000)
-    video.compute_node_data_left(node_containers_left.nodes, node_containers_left.node_labels)
+    video.compute_node_data_left(
+        node_containers_left.nodes, node_containers_left.node_labels
+    )
     video.render_matrix(drawmate_config.get_matrix_connection_labels())
     video.render_nodes(node_containers_left.nodes, node_containers_left.node_labels)
 
@@ -230,10 +284,12 @@ if __name__ == "__main__":
     node_ports_right_multi = container_mgr.build_port_container_multi(
         node_containers_right.nodes
     )
-    #
-    # video.render_nodes(node_containers_left.nodes, node_ports_left_single.node_labels)
-    # video.render_nodes(node_containers_right.nodes, node_ports_right_single.node_labels)
-    #
+
+    video.compute_node_port_data_single(node_ports_left_single.input_ports, "input")
+    video.compute_node_port_data_single(node_ports_left_single.output_ports, "output")
+    video.compute_node_port_data_multi(node_ports_left_multi.input_ports, "input")
+    video.compute_node_port_data_multi(node_ports_left_multi.output_ports, "output")
+
     video.render_node_ports_single(node_ports_left_single.input_ports)
     video.render_node_ports_single(node_ports_left_single.output_ports)
     video.render_node_ports_multi(node_ports_left_multi.input_ports)

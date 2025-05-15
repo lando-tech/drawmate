@@ -42,11 +42,7 @@ class ContainerManager:
         meta = self.initialize_meta_array(node_data, orientation)
         nodes = self.initialize_node_dict(meta)
         node_labels = self.initialize_node_label_dict(nodes)
-        return NodeContainer(
-            meta,
-            nodes,
-            node_labels
-        )
+        return NodeContainer(meta, nodes, node_labels)
 
     def initialize_meta_array(
         self, node_data: dict[str, list | str], orientation: str
@@ -140,7 +136,15 @@ class ContainerManager:
             # current_port = self.node_builder.init_node_input_ports(
             #     x, base_y, height, node.input_label
             # )
-            current_port = self.port_builder.init_port(x, base_y, NodePorts.width, NodePorts.height, node.input_label, node, MX_GRAPH_XML_STYLES["text-box-filled"])
+            current_port = self.port_builder.init_port(
+                x,
+                base_y,
+                NodePorts.width,
+                NodePorts.height,
+                node.input_label,
+                node,
+                MX_GRAPH_XML_STYLES["text-box-filled"],
+            )
             current_port.id = str(generate_id())
             port_dict[node.meta.__ID__] = current_port
 
@@ -166,7 +170,15 @@ class ContainerManager:
             # current_port = self.node_builder.init_node_output_ports(
             #     x, base_y, width, height, node.input_label
             # )
-            current_port = self.port_builder.init_port(x, base_y, NodePorts.width, NodePorts.height, node.input_label, node, MX_GRAPH_XML_STYLES["text-box-filled"])
+            current_port = self.port_builder.init_port(
+                x,
+                base_y,
+                NodePorts.width,
+                NodePorts.height,
+                node.input_label,
+                node,
+                MX_GRAPH_XML_STYLES["text-box-filled"],
+            )
             current_port.id = str(generate_id())
             port_dict[node.meta.__ID__] = current_port
 
@@ -184,9 +196,15 @@ class ContainerManager:
             if input_port_array:
                 port_array = []
                 for port in input_port_array:
-                    current_port = self.port_builder.init_port(x, base_y, NodePorts.width, NodePorts.height,
-                                                               port, node,
-                                                               MX_GRAPH_XML_STYLES["text-box-filled"])
+                    current_port = self.port_builder.init_port(
+                        x,
+                        base_y,
+                        NodePorts.width,
+                        NodePorts.height,
+                        port,
+                        node,
+                        MX_GRAPH_XML_STYLES["text-box-filled"],
+                    )
                     current_port.id = str(generate_id())
                     # TODO This variable should be passed in to avoid mutation
                     base_y -= NodePorts.height
@@ -208,9 +226,15 @@ class ContainerManager:
             if input_port_array:
                 port_array = []
                 for port in input_port_array:
-                    current_port = self.port_builder.init_port(x, base_y, NodePorts.width, NodePorts.height,
-                                                               port, node,
-                                                               MX_GRAPH_XML_STYLES["text-box-filled"])
+                    current_port = self.port_builder.init_port(
+                        x,
+                        base_y,
+                        NodePorts.width,
+                        NodePorts.height,
+                        port,
+                        node,
+                        MX_GRAPH_XML_STYLES["text-box-filled"],
+                    )
                     current_port.id = str(generate_id())
                     # TODO This variable should be passed in to avoid data mutation
                     base_y -= NodePorts.height

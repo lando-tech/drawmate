@@ -6,8 +6,20 @@ from graph_objects.text_box import TextBox
 
 class Port(TextBox):
     DEFAULT_STYLE = MX_GRAPH_XML_STYLES["text-box"]
-    def __init__(self, x: int, y: int, width: int, height: int, parent: Node | Matrix, label: str, style: str = DEFAULT_STYLE):
-        super().__init__(x=x, y=y, width=width, height=height, label=label, _type="port", style=style)
+
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        parent: Node | Matrix,
+        label: str,
+        style: str = DEFAULT_STYLE,
+    ):
+        super().__init__(
+            x=x, y=y, width=width, height=height, label=label, _type="port", style=style
+        )
         self.id: str = ""
         self.parent: Node | Matrix = parent
         self.x: int = int(self.attributes["x"])

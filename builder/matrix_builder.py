@@ -59,7 +59,7 @@ class MatrixBuilder:
                 height=MatrixPorts.port_height,
                 label=left_side[i],
                 _type="text-box",
-                style=MX_GRAPH_XML_STYLES["text-box-filled"]
+                style=MX_GRAPH_XML_STYLES["text-box-filled"],
             )
             right_text_box = TextBox(
                 x=right_ports_x,
@@ -68,7 +68,7 @@ class MatrixBuilder:
                 height=MatrixPorts.port_height,
                 label=right_side[i],
                 _type="text-box",
-                style=MX_GRAPH_XML_STYLES["text-box-filled"]
+                style=MX_GRAPH_XML_STYLES["text-box-filled"],
             )
             ports.append(left_text_box)
             ports.append(right_text_box)

@@ -15,9 +15,19 @@ class NodeBuilder:
         width = node_attributes["width"]
 
         if node_meta:
-            if node_meta.__INPUT_LABEL_ARRAY__ or node_meta.__OUTPUT_LABEL_ARRAY__:
+            input_array = node_meta.__INPUT_LABEL_ARRAY__
+            output_array = node_meta.__OUTPUT_LABEL_ARRAY__
+            if input_array and output_array:
+                    height = self.calculate_node_height(
+                        max(len(input_array), len(output_array)), int(node_attributes["height"])
+                    )
+            elif input_array:
                 height = self.calculate_node_height(
-                    len(node_meta.__INPUT_LABEL_ARRAY__), int(node_attributes["height"])
+                        len(input_array), int(node_attributes["height"])
+                    )
+            elif output_array:
+                height = self.calculate_node_height(
+                    len(output_array), int(node_attributes["height"])
                 )
             else:
                 height = node_attributes["height"]
@@ -49,7 +59,7 @@ class NodeBuilder:
     def calculate_node_height(num_connections: int, current_height: int) -> int:
         total_height = (
             (num_connections * NodePorts.height)
-            + NodeLabels.height # Account for the label at the top
-            + NodeAttributes.y_spacing
+            + NodeLabels.height  # Account for the label at the top
+            + ((num_connections - 1) * NodeAttributes.y_spacing)
         )
         return max(current_height, total_height)
