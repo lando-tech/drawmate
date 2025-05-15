@@ -14,14 +14,14 @@ class MatrixDimensions:
 @dataclass
 class MatrixLabel:
     width: int
-    height: int = 80
+    height: int = 40
     y_offset: int = height // 2
 
 
 @dataclass
 class MatrixPorts:
-    port_spacing: int = 60
     port_width: int = 60
     port_height: int = 40
+    port_spacing: int = port_height + 20
     y_offset: int = port_height
-    x_offset: int = 5
+    x_offset: int = 0

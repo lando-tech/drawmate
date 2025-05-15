@@ -55,6 +55,7 @@ These are the different xml styles used to control the type of object being plac
 """
 MX_GRAPH_XML_STYLES = {
     "text-box": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;",
+    "text-box-filled": "text;html=1;strokeColor=black;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;",
     "text-box-left-justified": "text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=nowrap;rounded=0;",
     "text-box-right-justified": "text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=nowrap;rounded=0;",
     "rect": "rounded=0;whiteSpace=wrap;html=1;",

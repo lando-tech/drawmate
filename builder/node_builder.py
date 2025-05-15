@@ -1,8 +1,7 @@
+from constants.matrix_constants import MatrixPorts
 from graph_objects.node import Node, NodeMetaData
 from graph_objects.rect import Rect
-from constants.constants import MX_GRAPH_XML_STYLES
 from constants.node_constants import NodePorts, NodeLabels, NodeAttributes
-from graph_objects.text_box import TextBox
 
 
 class NodeBuilder:
@@ -40,40 +39,10 @@ class NodeBuilder:
         return Rect(
             x=node.x,
             y=node.y,
-            width=NodeLabels.width,
+            width=int(node.attributes["width"]),
             height=NodeLabels.height,
             label=node.attributes["label"],
             _type="text-box",
-        )
-
-    def init_node_input_ports(self, x: int, y: int, height: int, label: str) -> TextBox:
-        input_x, input_y = self.calculate_input_offset(x, y, height)
-        if len(label) > NodePorts.width:
-            orientation = "right"
-        else:
-            orientation = "left"
-        return TextBox(
-            x=input_x,
-            y=input_y,
-            width=NodePorts.width,
-            height=NodePorts.height,
-            label=label,
-            _type="text-box",
-            style=MX_GRAPH_XML_STYLES[f"text-box-{orientation}-justified"],
-        )
-
-    def init_node_output_ports(
-        self, x: int, y: int, width: int, height: int, label: str
-    ) -> TextBox:
-        output_x, output_y = self.calculate_output_offset(x, y, height, width)
-        return TextBox(
-            x=output_x,
-            y=output_y,
-            width=NodePorts.width,
-            height=NodePorts.height,
-            label=label,
-            _type="text-box",
-            style=MX_GRAPH_XML_STYLES["text-box-right-justified"],
         )
 
     @staticmethod
@@ -81,19 +50,6 @@ class NodeBuilder:
         total_height = (
             (num_connections * NodePorts.height)
             + NodeLabels.height # Account for the label at the top
+            + NodeAttributes.y_spacing
         )
         return max(current_height, total_height)
-
-    @staticmethod
-    def calculate_input_offset(x: int, y: int, height: int) -> tuple[int, int]:
-        x = x + NodePorts.x_offset
-        y = y + (height - NodePorts.height)
-        return x, y
-
-    @staticmethod
-    def calculate_output_offset(
-        x: int, y: int, height: int, width: int
-    ) -> tuple[int, int]:
-        x = x + (width - NodePorts.width) - NodePorts.x_offset
-        y = y + (height - NodePorts.height)
-        return x, y

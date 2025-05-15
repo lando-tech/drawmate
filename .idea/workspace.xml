@@ -6,11 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builder/matrix_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/matrix_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/node_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/builder/port_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/port_builder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constants/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/matrix_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/matrix_constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constants/node_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants/node_constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_objects/node.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/node.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_objects/port.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/port.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layout_managers/container_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/container_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layout_managers/video_codec.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/video_codec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/builder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/builder_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_templates/xtp_crosspoint_6400.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/xtp_crosspoint_6400.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,30 +36,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.builder_test.executor": "Run",
-    "Python.connection_manager.executor": "Run",
-    "Python.drawmate_config.executor": "Run",
-    "Python.drawmate_master.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.matrix_builder.executor": "Run",
-    "Python.matrix_builder_test.executor": "Run",
-    "Python.matrix_constants.executor": "Run",
-    "Python.node_builder.executor": "Run",
-    "Python.node_builder_test.executor": "Run",
-    "Python.node_meta_builder.executor": "Run",
-    "Python.test.executor": "Run",
-    "Python.video_codec.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "test",
-    "last_opened_file_path": "/home/landotech/easyrok/drawmate",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.builder_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.connection_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.drawmate_config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.drawmate_master.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.matrix_builder.executor&quot;: &quot;Run&quot;,
+    &quot;Python.matrix_builder_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.matrix_constants.executor&quot;: &quot;Run&quot;,
+    &quot;Python.node_builder.executor&quot;: &quot;Run&quot;,
+    &quot;Python.node_builder_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.node_meta_builder.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.video_codec.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;test&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/landotech/easyrok/drawmate&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/builder" />

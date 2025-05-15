@@ -1,3 +1,4 @@
+from constants.constants import MX_GRAPH_XML_STYLES
 from constants.matrix_constants import MatrixDimensions, MatrixPorts, MatrixLabel
 from graph_objects.matrix import Matrix, MatrixMeta
 from builder.doc_builder import generate_id
@@ -49,7 +50,7 @@ class MatrixBuilder:
             matrix_x=self.matrix_dimensions.x, matrix_width=self.matrix_dimensions.width
         )
         # y = self.matrix_dimensions.y + MatrixPorts.y_offset
-        y = self.matrix_dimensions.y + MatrixLabel.height
+        y = self.matrix_dimensions.y + MatrixPorts.port_height
         for i in range(max_len):
             left_text_box = TextBox(
                 x=left_ports_x,
@@ -58,6 +59,7 @@ class MatrixBuilder:
                 height=MatrixPorts.port_height,
                 label=left_side[i],
                 _type="text-box",
+                style=MX_GRAPH_XML_STYLES["text-box-filled"]
             )
             right_text_box = TextBox(
                 x=right_ports_x,
@@ -66,6 +68,7 @@ class MatrixBuilder:
                 height=MatrixPorts.port_height,
                 label=right_side[i],
                 _type="text-box",
+                style=MX_GRAPH_XML_STYLES["text-box-filled"]
             )
             ports.append(left_text_box)
             ports.append(right_text_box)
