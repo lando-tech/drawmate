@@ -6,14 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builder/matrix_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/matrix_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builder/node_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/node_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/builder/port_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/port_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graph_objects/port.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/port.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layout_managers/container_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/container_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layout_managers/default_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/default_layout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layout_managers/video_codec.py" beforeDir="false" afterPath="$PROJECT_DIR$/layout_managers/video_codec.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_templates/mc_test_1.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/mc_test_1.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_objects/node.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_objects/node.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +87,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-348a24fa61fa-5312c7369657-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.23774.444" />
+        <option value="bundled-python-sdk-2ee2454479a3-9cdd278e9d02-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.25410.122" />
       </set>
     </attachedChunks>
   </component>

@@ -24,14 +24,6 @@ class NodeMetaData:
     __LABEL_INDEXES__: List[int] = field(default_factory=list)
 
 
-@dataclass
-class Bounds:
-    x: int
-    y: int
-    width: int
-    height: int
-
-
 class Node(Rect):
     """
     Summary: This is the child class of the Rect class. This class inherits the attributes dictionary.
