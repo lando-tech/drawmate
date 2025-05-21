@@ -1,7 +1,7 @@
 # from xml.dom.minidom import Element
 #
 # from constants.constants import MATRIX_CONNECTIONS
-# from drawmate_engine.drawmate_config import DrawmateConfig, MatrixDimensions
+# from drawmate_renderer.drawmate_config import DrawmateConfig, MatrixDimensions
 # from graph_objects.matrix import Matrix
 # from builder.matrix_builder import MatrixBuilder
 # from builder.mx_builder import MxBuilder

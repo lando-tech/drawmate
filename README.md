@@ -134,7 +134,7 @@ git checkout -b feature/my-new-template
 
 3. **Copy the `drawmate.py` Template:** Use the existing template as a starting point.
 ```bash
-cp drawmate_engine/drawmate.py drawmate_engine/my_custom_template.py
+cp drawmate_renderer/drawmate.py drawmate_renderer/my_custom_template.py
 ```
 
 4. **Modify the Logic:** Adapt the module to fit your custom template's requirements.

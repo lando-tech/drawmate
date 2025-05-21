@@ -1,14 +1,14 @@
 import sys
 import os
 
-from drawmate_engine.drawmate_config import DrawmateConfig
+from drawmate_renderer.drawmate_config import DrawmateConfig
 
 config_file = "/home/landotech/easyrok/drawmate/test_templates/mc_test_1.json"
 dc = DrawmateConfig(config_file)
 matrix_dims = dc.get_matrix_dimensions()
 nodes_left, nodes_right = dc.build_node_dict(matrix_dims.num_connections)
 
-sys.path.append(os.path.abspath("/home/landotech/CLionProjects/drawmate_plus/cmake-build-debug"))
+sys.path.append(os.path.abspath("/drawmate_lib/build"))
 import drawmate
 
 def set_layout_config(layout_config):
@@ -63,4 +63,27 @@ for k, v in nodes_left.items():
 
     graph.add_node(node_meta, port_labels_left, port_labels_right)
 
-graph.get_nodes()
+for k, v in nodes_right.items():
+
+    if v[0].strip() == "__SPAN__" or v[0].strip() == "":
+        continue
+
+    node_meta = {
+        "node-type": "appliance",
+        "node-label": v[0],
+        "node-orientation": "right"
+    }
+    if isinstance(v[1], list):
+        port_labels_left = v[1]
+    else:
+        port_labels_left = list(v[1])
+
+    if isinstance(v[2], list):
+        port_labels_right = v[2]
+    else:
+        port_labels_right = list(v[2])
+
+    graph.add_node(node_meta, port_labels_left, port_labels_right)
+
+node_ids = graph.get_node_ids()
+print(node_ids)
