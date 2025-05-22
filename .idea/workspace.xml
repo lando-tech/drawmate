@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b164eb6-9a45-4d9c-bbd4-6ce5cc93e1de" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/drawmate_renderer/drawmate_renderer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/drawmate.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/drawmate.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/builder/mx_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/builder/mx_builder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_renderer/drawmate_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/drawmate_renderer/drawmate_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_renderer/drawmate_master.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_renderer/drawmatemc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/drawmate_renderer/drawmatesc.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/test/builder_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/builder_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_templates/mc_test_2.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/mc_test_2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_templates/mc_test_4.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/mc_test_4.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_templates/mc_test_5.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_templates/mc_test_5.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

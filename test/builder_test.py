@@ -6,7 +6,7 @@ from drawmate_renderer.drawmate_config import DrawmateConfig
 from drawmate_renderer.drawmate_renderer import DrawmateRenderer
 
 drawmate_ren = DrawmateRenderer()
-config_file = "/home/landotech/easyrok/drawmate/test_templates/mc_test_1.json"
+config_file = "/home/landotech/easyrok/drawmate/test_templates/xtp_crosspoint_6400.json"
 output_file = "/home/landotech/Desktop/output.drawio"
 dc = DrawmateConfig(config_file)
 matrix_dims = dc.get_matrix_dimensions()
