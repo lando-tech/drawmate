@@ -16,16 +16,16 @@
     "first-level-left": {
         "labels": [
            [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
            ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -76,16 +76,16 @@
     "first-level-right": {
         "labels": [
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -136,9 +136,9 @@
     "second-level-left": {
         "labels": [
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -196,9 +196,129 @@
     "second-level-right": {
         "labels": [
             [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "__SPAN__",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
                 "",
                 "",
                 "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ]
+        ]
+    },
+    "third-level-left": {
+        "labels": [
+            [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "__SPAN__",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ]
+        ]
+    },
+    "third-level-right": {
+        "labels": [
+            [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],

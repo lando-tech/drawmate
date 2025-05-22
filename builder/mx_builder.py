@@ -1,9 +1,8 @@
-from graph_objects.arrow import Arrow
 from mx_graph_api.mxcell import MxCell
 from mx_graph_api.mxgeometry import MxGeometry
-from mx_graph_api.mxpoint import MxPoint
-from builder.doc_builder import generate_id
 from xml.dom.minidom import Element
+
+from mx_graph_api.mxpoint import MxPoint
 
 
 class MxBuilder:
@@ -109,44 +108,3 @@ class MxBuilder:
         )
         return source_element, target_element
 
-    def create_mxcell_waypoints(self, mx_points: tuple[Arrow]) -> list[Element] | None:
-        elements = []
-        for index, waypoint in enumerate(mx_points):
-            cell = MxCell()
-            # src_id = mx_points[0].meta.source_id
-            # tgt_id = mx_points[0].meta.target_id
-            cell.set_mxcell_values_point(
-                waypoint.attributes["style"],
-                "",
-                str(generate_id()),
-                src_id="",
-                tgt_id="",
-            )
-
-            # Append mxCell to mxObject
-            cell_elem = cell.create_xml_element("mxCell", cell.attributes)
-            cell.mxcell_object.appendChild(cell_elem)
-
-            # Create mxGeometry object
-            geo = MxGeometry()
-            geo.set_geometry_values_point()
-            geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
-
-            # Append mxGeometry to mxCell
-            cell_elem.appendChild(geo_elem)
-
-            source_point = MxPoint()
-            target_point = MxPoint()
-            source_point.set_mxpoint_source(waypoint.source_x, waypoint.source_y)
-            target_point.set_mxpoint_target(waypoint.target_x, waypoint.target_y)
-            source_point_elem = cell.create_xml_element(
-                "mxPoint", source_point.attributes
-            )
-            target_point_elem = cell.create_xml_element(
-                "mxPoint", target_point.attributes
-            )
-            geo_elem.appendChild(source_point_elem)
-            geo_elem.appendChild(target_point_elem)
-            elements.append(cell_elem)
-
-        return elements

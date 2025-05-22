@@ -145,7 +145,7 @@ class DrawmateConfig:
                     for label in value["labels"]:
                         if row_index_left >= num_connections:
                             row_index_left = 0
-                        object_key = f"{col_index_left}-{row_index_left}"
+                        object_key = f"L-{col_index_left}-{row_index_left}"
                         left_side[object_key] = label
                         row_index_left += 1
                     col_index_left += 1
@@ -155,7 +155,7 @@ class DrawmateConfig:
                     for label in value["labels"]:
                         if row_index_right >= num_connections:
                             row_index_right = 0
-                        object_key = f"{col_index_right}-{row_index_right}"
+                        object_key = f"R-{col_index_right}-{row_index_right}"
                         right_side[object_key] = label
                         row_index_right += 1
                     col_index_right += 1
