@@ -6,13 +6,13 @@ from drawmate_renderer.drawmate_config import DrawmateConfig
 from drawmate_renderer.drawmate_renderer import DrawmateRenderer
 
 drawmate_ren = DrawmateRenderer()
-config_file = "/home/landotech/easyrok/drawmate/test_templates/xtp_crosspoint_6400.json"
+config_file = "/home/landotech/easyrok/drawmate/test_templates/mc_test_4.json"
 output_file = "/home/landotech/Desktop/output.drawio"
 dc = DrawmateConfig(config_file)
 matrix_dims = dc.get_matrix_dimensions()
 nodes_left, nodes_right = dc.build_node_dict(matrix_dims.num_connections)
 
-sys.path.append(os.path.abspath("../drawmate_engine"))
+sys.path.append(os.path.abspath("/home/landotech/easyrok/drawmate/drawmate_engine"))
 import drawmate
 
 def init_graph():
@@ -53,13 +53,11 @@ def init_matrix(graph):
         "node-orientation": "center",
         "node-label": matrix_dims.label
     }
-
+    conn_indexes_left = [i for i in range(matrix_dims.num_connections)]
+    conn_indexes_right = [i for i in range(matrix_dims.num_connections)]
     matrix_ports_left, matrix_ports_right = dc.get_matrix_connection_labels()
 
-    graph.add_node(matrix_meta, matrix_ports_left, matrix_ports_right)
-
-def init_connection(graph, source_id, target_id, port_index_source, port_index_target):
-    graph.add_connection(source_id, target_id, port_index_source, port_index_target)
+    graph.add_node(matrix_meta, matrix_ports_left, matrix_ports_right, conn_indexes_left, conn_indexes_right)
 
 def init_nodes(graph):
     for k, v in nodes_left.items():
@@ -84,7 +82,17 @@ def init_nodes(graph):
         else:
             port_labels_right = [v[2]]
 
-        graph.add_node(node_meta, port_labels_left, port_labels_right)
+        if len(v[3]) > 1:
+            conn_indexes_left = v[3]
+        else:
+            conn_indexes_left = [0]
+
+        if len(v[4]) > 1:
+            conn_indexes_right = v[4]
+        else:
+            conn_indexes_right = [0]
+
+        graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right)
 
     for k, v in nodes_right.items():
 
@@ -109,21 +117,32 @@ def init_nodes(graph):
         else:
             port_labels_right = [v[2]]
 
-        graph.add_node(node_meta, port_labels_left, port_labels_right)
+        if len(v[3]) > 1:
+            conn_indexes_left = v[3]
+        else:
+            conn_indexes_left = [0]
 
+        if len(v[4]) > 1:
+            conn_indexes_right = v[4]
+        else:
+            conn_indexes_right = [0]
+
+        graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right)
+
+    graph.connect_nodes()
     nodes_export = graph.get_nodes()
     node_ids = graph.get_node_ids()
-    side = None
-    col = None
-    row = None
+    # side = None
+    # col = None
+    # row = None
     for i in node_ids:
         node = nodes_export.get(i)
-        if len(i) < 4:
-            pass
-        else:
-            side = i.split("-")[0]
-            col = i.split("-")[1]
-            row = i.split("-")[2]
+        # if len(i) < 4:
+        #     pass
+        # else:
+        #     side = i.split("-")[0]
+        #     col = i.split("-")[1]
+        #     row = i.split("-")[2]
             # graph.add_connection(i, "C-0", 0, 0)
             # links = graph.get_links()
             # for link in links:
@@ -168,10 +187,10 @@ def init_nodes(graph):
 
         for index, port in enumerate(node.ports_right):
 
-            if side and col and row:
-                if side == "L" and col == "0":
-                    graph.add_connection(i, "C-0", index, index)
-                    print("connection added")
+            # if side and col and row:
+            #     if side == "L" and col == "0":
+            #         graph.add_connection(i, "C-0", index, index)
+            #         print("connection added")
 
             port_attributes = {
                 "x": port.x,
@@ -193,6 +212,7 @@ def init_nodes(graph):
             "style": MX_GRAPH_XML_STYLES["arrow"],
             "label": ""
         }
+        print(link)
         drawmate_ren.draw_connection(link_attributes)
 
 
