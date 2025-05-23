@@ -79,7 +79,7 @@
                 "AV Appliance",
                 ["HDMI", "HDMI"],
                 ["HDMI", "HDMI"],
-                [0, 3],
+                ["NONE"],
                 ["NONE"]
             ],
             [
@@ -107,7 +107,7 @@
                 "AV Appliance",
                 ["HDMI", "HDMI"],
                 ["HDMI", "HDMI"],
-                [4, 6],
+                ["NONE"],
                 ["NONE"]
             ],
             [

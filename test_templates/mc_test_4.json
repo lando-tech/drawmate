@@ -30,9 +30,9 @@
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -58,9 +58,9 @@
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -105,8 +105,8 @@
             ],
             [
                 "AV Appliance",
-                ["HDMI", "HDMI"],
-                ["HDMI", "HDMI"],
+                ["HDMI", "HDMI", "HDMI", "HDMI"],
+                ["HDMI", "HDMI", "HDMI", "HDMI"],
                 [2, 5],
                 ["NONE"]
             ],
@@ -118,14 +118,14 @@
                 ["NONE"]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
                 ["NONE"]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -143,9 +143,9 @@
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],

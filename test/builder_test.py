@@ -1,19 +1,24 @@
 import sys
 import os
+import importlib.util
 
+sys.path.insert(0, "/home/landotech/drawmate-main/drawmate_lib/build")
+import drawmate # type: ignore
+
+sys.path.append(os.path.abspath("/home/landotech/drawmate-main/drawmate"))
 from constants.constants import MX_GRAPH_XML_STYLES
 from drawmate_renderer.drawmate_config import DrawmateConfig
 from drawmate_renderer.drawmate_renderer import DrawmateRenderer
 
 drawmate_ren = DrawmateRenderer()
-config_file = "/home/landotech/easyrok/drawmate/test_templates/mc_test_4.json"
+config_file = "/home/landotech/drawmate-main/drawmate/test_templates/mc_test_1.json"
 output_file = "/home/landotech/Desktop/output.drawio"
 dc = DrawmateConfig(config_file)
 matrix_dims = dc.get_matrix_dimensions()
-nodes_left, nodes_right = dc.build_node_dict(matrix_dims.num_connections)
 
-sys.path.append(os.path.abspath("/home/landotech/easyrok/drawmate/drawmate_engine"))
-import drawmate
+nodes_left, nodes_right = dc.build_node_dict(matrix_dims.num_connections) # type: ignore
+
+
 
 def init_graph():
     layout_config = drawmate.LayoutConfig(
@@ -62,8 +67,9 @@ def init_matrix(graph):
 def init_nodes(graph):
     for k, v in nodes_left.items():
 
-        # col = k.split("-")[1]
-        # row = k.split("-")[2]
+        col = int(k.split("-")[1])
+        row = int(k.split("-")[2])
+
         node_meta = {}
         if v[0].strip() == "__SPAN__" or v[0].strip() == "":
             node_meta["node-type"] = "__SPAN__"
@@ -85,19 +91,19 @@ def init_nodes(graph):
         if len(v[3]) > 1:
             conn_indexes_left = v[3]
         else:
-            conn_indexes_left = [0]
+            conn_indexes_left = [row]
 
         if len(v[4]) > 1:
             conn_indexes_right = v[4]
         else:
-            conn_indexes_right = [0]
+            conn_indexes_right = [row]
 
         graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right)
 
     for k, v in nodes_right.items():
 
-        # col = k.split("-")[1]
-        # row = k.split("-")[2]
+        col = int(k.split("-")[1])
+        row = int(k.split("-")[2])
         node_meta = {}
         if v[0].strip() == "__SPAN__" or v[0].strip() == "":
             node_meta["node-type"] = "__SPAN__"
@@ -120,12 +126,12 @@ def init_nodes(graph):
         if len(v[3]) > 1:
             conn_indexes_left = v[3]
         else:
-            conn_indexes_left = [0]
+            conn_indexes_left = [row]
 
         if len(v[4]) > 1:
             conn_indexes_right = v[4]
         else:
-            conn_indexes_right = [0]
+            conn_indexes_right = [row]
 
         graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right)
 
@@ -136,7 +142,10 @@ def init_nodes(graph):
     # col = None
     # row = None
     for i in node_ids:
-        node = nodes_export.get(i)
+        try:
+            node = nodes_export.get(i)
+        except IndexError:
+            continue
         # if len(i) < 4:
         #     pass
         # else:
@@ -169,7 +178,7 @@ def init_nodes(graph):
         # print(f"Node {i}: {node.label}:")
         # print(f"x = {node.x} y = {node.y}")
         # print()
-        print(i)
+        # print(i)
         drawmate_ren.draw_node(attributes)
         drawmate_ren.draw_node(label_attributes, has_label=True)
 
@@ -203,6 +212,7 @@ def init_nodes(graph):
             drawmate_ren.draw_node(port_attributes, has_label=True)
 
     links = graph.get_links()
+    print(links)
     for link in links:
         link_attributes = {
             "source_x": link.source_x,

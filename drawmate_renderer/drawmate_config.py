@@ -26,7 +26,7 @@ class DrawmateConfig:
         self.template_data = self.load_template()
         self.num_levels = 0
 
-    def load_template(self) -> dict | None:
+    def load_template(self) -> dict:
         try:
             with open(self.template_path, "r", encoding="utf-8") as template_file:
                 return json.load(template_file)
@@ -39,7 +39,7 @@ class DrawmateConfig:
                 is_error=True,
                 is_warning=False,
             )
-            return None
+            exit("Failed to find template file")
         except json.JSONDecodeError as json_error:
             log_data = (
                 f"Invalid JSON in template file: {self.template_path}\n"
@@ -52,7 +52,7 @@ class DrawmateConfig:
                 is_error=True,
                 is_warning=False,
             )
-            return None
+            exit("Failed to find template file")
 
     def get_graph_dimensions(self) -> GraphDimensions | None:
         if not self.template_data:
@@ -69,15 +69,15 @@ class DrawmateConfig:
             dimensions["height"],
         )
 
-    def get_matrix_dimensions(self) -> MatrixDimensions | None:
+    def get_matrix_dimensions(self) -> MatrixDimensions:
 
         if not self.template_data:
-            return None
+            exit("Failed to load config file for Matrix")
 
         dimensions = self.template_data.get("matrices")
 
         if not dimensions:
-            return None
+            exit("Failed to load matrix dimension")
 
         return MatrixDimensions(
             dimensions["labels"],
@@ -167,7 +167,7 @@ class DrawmateConfig:
     def get_matrix_connection_labels(self) -> tuple[list, list]:
         return self.template_data.get("connections-left"), self.template_data.get(
             "connections-right"
-        )
+        ) # type: ignore
 
     def get_matrix_label(self):
-        return self.template_data.get("matrices")["labels"]
+        return self.template_data.get("matrices")["labels"] # type: ignore
