@@ -2,16 +2,16 @@ import sys
 import os
 import importlib.util
 
-sys.path.insert(0, "/home/landotech/drawmate-main/drawmate_lib/build")
+sys.path.insert(0, "/home/landotech/easyrok/drawmate_lib/build")
 import drawmate # type: ignore
 
-sys.path.append(os.path.abspath("/home/landotech/drawmate-main/drawmate"))
+sys.path.append(os.path.abspath("/home/landotech/easyrok/drawmate"))
 from constants.constants import MX_GRAPH_XML_STYLES
 from drawmate_renderer.drawmate_config import DrawmateConfig
 from drawmate_renderer.drawmate_renderer import DrawmateRenderer
 
 drawmate_ren = DrawmateRenderer()
-config_file = "/home/landotech/drawmate-main/drawmate/test_templates/mc_test_1.json"
+config_file = "/home/landotech/easyrok/drawmate/test_templates/mc_test_1.json"
 output_file = "/home/landotech/Desktop/output.drawio"
 dc = DrawmateConfig(config_file)
 matrix_dims = dc.get_matrix_dimensions()
