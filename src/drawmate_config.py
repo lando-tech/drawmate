@@ -1,9 +1,9 @@
 import json
 from dataclasses import dataclass
 
-from constants.matrix_constants import MatrixDimensions
-from utils.pathfinder import PathFinder
-from utils.log_manager import LogManager
+from matrix_constants import MatrixDimensions
+from pathfinder import PathFinder
+from log_manager import LogManager
 
 
 pf = PathFinder()
@@ -54,13 +54,14 @@ class DrawmateConfig:
             )
             exit("Failed to find template file")
 
-    def get_graph_dimensions(self) -> GraphDimensions | None:
+    def get_graph_dimensions(self) -> GraphDimensions:
+
         if not self.template_data:
-            return None
+            exit("Failed to load template file: get_graph_dimensions()")
         dimensions = self.template_data.get("graph-dimensions")
 
         if not dimensions:
-            return None
+            exit("Failed to fetch graph dimensions: get_graph_dimensions()")
 
         return GraphDimensions(
             dimensions["dx"],
@@ -72,12 +73,12 @@ class DrawmateConfig:
     def get_matrix_dimensions(self) -> MatrixDimensions:
 
         if not self.template_data:
-            exit("Failed to load config file for Matrix")
+            exit("Failed to load template file: get_matrix_dimensions()")
 
         dimensions = self.template_data.get("matrices")
 
         if not dimensions:
-            exit("Failed to load matrix dimension")
+            exit("Failed to fetch matrix dimensions: get_matrix_dimensions()")
 
         return MatrixDimensions(
             dimensions["labels"],
@@ -117,7 +118,7 @@ class DrawmateConfig:
         else:
             return None
 
-    def build_node_dict(self, num_connections: int):
+    def build_node_dict(self, num_connections: int) -> tuple[dict[str, list[str] | str], dict[str, list[str] | str]]:
         left_side = {}
         right_side = {}
         levels = [
@@ -162,7 +163,7 @@ class DrawmateConfig:
 
             return left_side, right_side
         else:
-            return None
+            exit("Failed to load template file: build_node_dict()")
 
     def get_matrix_connection_labels(self) -> tuple[list, list]:
         return self.template_data.get("connections-left"), self.template_data.get(

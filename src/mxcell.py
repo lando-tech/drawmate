@@ -1,4 +1,4 @@
-from builder.doc_builder import DocBuilder, generate_id
+from doc_builder import DocBuilder, generate_id
 
 
 class MxCell(DocBuilder):
@@ -19,7 +19,7 @@ class MxCell(DocBuilder):
         }
         self.mxcell_object = self.new_xml.createElement("mxCell")
 
-    def set_mxcell_values(self, value: str, style: str, __id__: str = None):
+    def set_mxcell_values(self, value: str, style: str, __id__: str = ""):
         """_summary_
 
         Args:
@@ -41,9 +41,9 @@ class MxCell(DocBuilder):
         self,
         style: str,
         value: str,
-        __id__: str = None,
-        src_id: str = None,
-        tgt_id: str = None,
+        __id__: str = None, # type: ignore
+        src_id: str = None, # type: ignore
+        tgt_id: str = None, # type: ignore
     ):
         """_summary_
 

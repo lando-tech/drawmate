@@ -1,4 +1,4 @@
-from constants.constants import MX_ARRAY_ATTRIBUTES
+from constants import MX_ARRAY_ATTRIBUTES
 
 
 class MxArray:
@@ -8,7 +8,7 @@ class MxArray:
         self.attributes = MX_ARRAY_ATTRIBUTES
         self.mx_points = []
 
-    def set_array_values(self, as_relative: str = None, as_points: str = None):
+    def set_array_values(self, as_relative: str = "", as_points: str = ""):
         """
         Sets the value of the 'as' key in the attributes dictionary based on the provided arguments.
 

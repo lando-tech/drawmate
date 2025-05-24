@@ -6,9 +6,9 @@ import random
 
 # Imports the pathfinder class from the utils directory.
 # See the pathfinder.py for specific uses.
-from utils.pathfinder import PathFinder
-from utils.log_manager import LogManager
-from constants.constants import (
+from pathfinder import PathFinder
+from log_manager import LogManager
+from constants import (
     TOP_LEVEL_MX_CELL,
     MX_GRAPH_MODEL_ATTRIBUTES,
 )
@@ -17,6 +17,18 @@ from constants.constants import (
 pf = PathFinder()
 log_mgr = LogManager()
 
+
+def generate_id() -> int:
+    """
+    Summary:
+    Generates a unique id for each object.
+    Returns:
+        int: A unique id.
+    """
+    start = 100000000000000000
+    stop = 9999999999999999999
+    _id = random.randrange(start=start, stop=stop)
+    return _id
 
 def get_timestamp() -> str:
     """
@@ -71,7 +83,7 @@ class DocBuilder:
         # Append root to mxGraphModel
         self.mx_graph_model.appendChild(self.root)
         # Append diagram to top_level of document
-        self.top_level.appendChild(self.diagram)
+        self.top_level.appendChild(self.diagram) # type: ignore
 
     def set_graph_values(self, dx: int, dy: int, page_width: int, page_height: int):
         """
@@ -164,14 +176,3 @@ class DocBuilder:
             )
 
 
-def generate_id() -> int:
-    """
-    Summary:
-    Generates a unique id for each object.
-    Returns:
-        int: A unique id.
-    """
-    start = 100000000000000000
-    stop = 9999999999999999999
-    _id = random.randrange(start=start, stop=stop)
-    return _id

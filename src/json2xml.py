@@ -7,7 +7,7 @@ import os
 import sys
 import re
 from datetime import datetime
-from utils.pathfinder import PathFinder
+from pathfinder import PathFinder
 
 try:
     from lxml.etree import Element, ElementTree
@@ -79,7 +79,7 @@ class Json2Xml:
 
     def dict_to_xml(self, tag, d):
         """Convert a dictionary to XML, handling CDATA and preserving structure."""
-        elem = Element(tag)
+        elem = Element(tag) # type: ignore
         for key, val in d.items():
             # remove number id from mxCell and mxPoint
             if re.match(r"mxCell-\d+", key):

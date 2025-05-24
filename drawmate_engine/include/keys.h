@@ -1,0 +1,71 @@
+#ifndef KEYS_H
+#define KEYS_H
+
+#include <vector>
+#include <string>
+
+enum class PortOrientation;
+enum class NodeOrientation;
+enum class GridOrientation;
+
+struct NodeKey
+{
+    char orientation{};
+    int column{};
+    int row{};
+
+    bool operator==(const NodeKey &other) const
+    {
+        return orientation == other.orientation && column == other.column && row == other.row;
+    }
+};
+
+namespace std
+{
+    template <>
+    struct hash<NodeKey>
+    {
+        size_t operator()(const NodeKey &k) const
+        {
+            return (hash<char>()(k.orientation) << 1) ^
+                   (hash<int>()(k.column) << 3) ^
+                   (hash<int>()(k.row) << 3);
+        }
+    };
+}
+
+struct PortKey
+{
+    int column{};
+    int row{};
+};
+
+struct PortKeyHash
+{
+    std::size_t operator()(const PortKey &k) const
+    {
+        return std::hash<int>()(k.column) ^ (std::hash<int>()(k.row));
+    }
+};
+
+struct PortKeyEqual
+{
+    bool operator()(const PortKey &k1, const PortKey &k2) const
+    {
+        return k1.column == k2.column && k1.row == k2.row;
+    }
+};
+
+std::string generate_node_key(NodeOrientation node_orientation, const int column_count, const int row_count);
+std::string generate_port_key(const std::string &parent_node_key, PortOrientation port_orientation, int port_index);
+std::vector<std::string> split_string(const std::string &str, const char dilim);
+std::string get_adjacent_port_key(const std::string &key,
+                                  PortOrientation port_orientation,
+                                  NodeOrientation node_orientation);
+std::string get_adjacent_key(const std::string &key,
+                             NodeOrientation node_orientation,
+                             GridOrientation grid_orientation);
+std::string get_adjacent_key_from_center(NodeOrientation node_orientation,
+                                         int port_index);
+
+#endif // KEYS_H

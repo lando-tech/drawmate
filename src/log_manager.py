@@ -1,4 +1,4 @@
-from utils.pathfinder import PathFinder
+from pathfinder import PathFinder
 from datetime import datetime
 
 pf = PathFinder()

@@ -1,6 +1,6 @@
-from builder.doc_builder import DocBuilder
-from builder.doc_builder import generate_id
-from constants.constants import MX_OBJECT_ATTRIBUTES
+from doc_builder import DocBuilder
+from doc_builder import generate_id
+from constants import MX_OBJECT_ATTRIBUTES
 
 
 class MxObject(DocBuilder):
@@ -35,7 +35,7 @@ class MxObject(DocBuilder):
         # Append the object to the root element of the xml file
         self.root.appendChild(self.mx_object)
 
-    def set_object_values(self, label: str, _type: str, __id__: str = None):
+    def set_object_values(self, label: str, _type: str, __id__: str = None): # type: ignore
         """
         Summary: Sets the attributes for the object element.
         Each element contains a minimum of three values by default,

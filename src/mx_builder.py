@@ -1,8 +1,8 @@
-from mx_graph_api.mxcell import MxCell
-from mx_graph_api.mxgeometry import MxGeometry
+from mxcell import MxCell
+from mxgeometry import MxGeometry
 from xml.dom.minidom import Element
 
-from mx_graph_api.mxpoint import MxPoint
+from mxpoint import MxPoint
 
 
 class MxBuilder:
@@ -15,10 +15,10 @@ class MxBuilder:
 
     def create_mxcell(
         self,
-        data: dict = None,
+        data: dict,
         __id__: str = "",
         has_label: bool = True,
-    ) -> Element | None:
+    ) -> Element:
         """
         Creates an Mxcell element with geometry.
 
@@ -57,8 +57,8 @@ class MxBuilder:
         return cell_elem
 
     def create_mxcell_arrow(
-        self, data: dict = None, __id__: str = ""
-    ) -> Element | None:
+        self, data: dict, __id__: str = ""
+    ) -> Element:
         # Create mxCell object
         cell = MxCell()
         cell.set_mxcell_values_point(data["style"], data["label"], __id__)
@@ -82,7 +82,7 @@ class MxBuilder:
 
         return cell_elem
 
-    def create_mxpoint(self, mxcell_obj, data: dict) -> tuple[Element, Element] | None:
+    def create_mxpoint(self, mxcell_obj, data: dict) -> tuple[Element, Element]:
         """
         Creates source and target point elements for an MX cell.
 
