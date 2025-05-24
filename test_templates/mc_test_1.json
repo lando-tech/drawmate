@@ -16,9 +16,9 @@
     "first-level-left": {
         "labels": [
            [
-                "__SPAN__",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
            ],
@@ -118,16 +118,16 @@
                 ["NONE"]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ]
@@ -178,9 +178,9 @@
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -196,9 +196,9 @@
     "second-level-right": {
         "labels": [
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -245,9 +245,9 @@
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ]

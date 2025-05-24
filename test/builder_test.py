@@ -29,10 +29,10 @@ def init_graph():
         port_spacing=60.0
     )
     grid_config = drawmate.GridConfig(
-        columns_left=3,
-        columns_right=3,
-        rows_left=8,
-        rows_right=8
+        columns_left=dc.num_levels,
+        columns_right=dc.num_levels,
+        rows_left=matrix_dims.num_connections,
+        rows_right=matrix_dims.num_connections
     )
     central_node_config = drawmate.CentralNodeConfig(
         width=200.0,
