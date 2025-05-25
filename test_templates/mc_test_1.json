@@ -253,6 +253,126 @@
             ]
         ]
     },
+    "third-level-left": {
+        "labels": [
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "AV Appliance",
+                ["HDMI", "HDMI"],
+                ["HDMI", "HDMI"],
+                [4, 5],
+                [4, 5]
+            ],
+            [
+                "__SPAN__",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ]
+        ]
+    },
+    "third-level-right": {
+        "labels": [
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "AV Appliance",
+                ["HDMI", "HDMI"],
+                ["HDMI", "HDMI"],
+                [4, 5],
+                [4, 5]
+            ],
+            [
+                "__SPAN__",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "",
+                "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ]
+        ]
+    },
     "connections-left": [
         "HDMI",
         "HDMI",

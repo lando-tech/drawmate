@@ -28,7 +28,7 @@ namespace std
         size_t operator()(const NodeKey &k) const
         {
             return (hash<char>()(k.orientation) << 1) ^
-                   (hash<int>()(k.column) << 3) ^
+                   (hash<int>()(k.column) << 2) ^
                    (hash<int>()(k.row) << 3);
         }
     };
@@ -36,25 +36,29 @@ namespace std
 
 struct PortKey
 {
+    char orientatin{};
     int column{};
     int row{};
-};
 
-struct PortKeyHash
-{
-    std::size_t operator()(const PortKey &k) const
+    bool operator==(const PortKey &other) const
     {
-        return std::hash<int>()(k.column) ^ (std::hash<int>()(k.row));
+        return orientatin == other.orientatin && column == other.column && row == other.row;
     }
 };
 
-struct PortKeyEqual
+namespace std
 {
-    bool operator()(const PortKey &k1, const PortKey &k2) const
+    template <>
+    struct hash<PortKey>
     {
-        return k1.column == k2.column && k1.row == k2.row;
-    }
-};
+        size_t operator()(const PortKey &k) const
+        {
+            return (hash<char>()(k.orientatin) << 1) ^
+                   (hash<int>()(k.column) << 2) ^
+                   (hash<int>()(k.row) << 3);
+        }
+    };
+}
 
 std::string generate_node_key(NodeOrientation node_orientation, const int column_count, const int row_count);
 std::string generate_port_key(const std::string &parent_node_key, PortOrientation port_orientation, int port_index);

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(drawmate_plus
-    VERSION 1.0 DESCRIPTION "Backend for drawmate"
+    VERSION 1.1 DESCRIPTION "Backend for drawmate"
 )
 
 set(CMAKE_CXX_STANDARD 20)

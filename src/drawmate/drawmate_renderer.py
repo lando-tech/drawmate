@@ -4,7 +4,7 @@ from pathfinder import PathFinder
 
 pf = PathFinder()
 root_dir = pf.get_project_dir()
-sys.path.insert(0, f"{root_dir}/drawmate_engine/build")
+sys.path.insert(0, f"{root_dir}/build")
 import drawmate # type: ignore
 from mx_builder import MxBuilder
 from doc_builder import DocBuilder, generate_id
@@ -32,34 +32,34 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         self.root.appendChild(connection_elem)
 
     def init_graph(self):
-        layout_config = drawmate.LayoutConfig(
+        layout_config = drawmate.LayoutConfig( # type: ignore
             base_x=2000.0,
             base_y=2000.0,
             node_spacing_x_axis=250.0,
             node_spacing_y_axis=20.0,
             port_spacing=60.0
         )
-        grid_config = drawmate.GridConfig(
+        grid_config = drawmate.GridConfig( # type: ignore
             columns_left=self.config.num_levels,
             columns_right=self.config.num_levels,
             rows_left=self.matrix_dims.num_connections,
             rows_right=self.matrix_dims.num_connections
         )
-        central_node_config = drawmate.CentralNodeConfig(
+        central_node_config = drawmate.CentralNodeConfig( # type: ignore
             width=200.0,
             height=200.0,
             label_height=20.0
         )
-        node_config = drawmate.NodeConfig(
+        node_config = drawmate.NodeConfig( # type: ignore
             width=120.0,
             height=60.0,
             label_height=20.0,
         )
-        port_config = drawmate.PortConfig(
+        port_config = drawmate.PortConfig( # type: ignore
             port_width=60.0,
             port_height=20.0
         )
-        graph = drawmate.Graph(layout_config, grid_config, central_node_config, node_config, port_config)
+        graph = drawmate.Graph(layout_config, grid_config, central_node_config, node_config, port_config) # type: ignore
         return graph
 
     def init_matrix(self):
@@ -194,3 +194,4 @@ if __name__ == "__main__":
     draw.render_nodes()
     draw.link_nodes()
     draw.create_xml(output_file)
+    print(f"Template creation successful. File saved @ {output_file}")

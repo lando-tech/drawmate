@@ -10,8 +10,8 @@ from datetime import datetime
 from pathfinder import PathFinder
 
 try:
-    from lxml.etree import Element, ElementTree
-    from lxml import etree
+    from lxml.etree import Element, ElementTree # type: ignore
+    from lxml import etree # type: ignore
 except ModuleNotFoundError:
     print("lxml module not found")
 
