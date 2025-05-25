@@ -11,7 +11,7 @@ class MxCell(DocBuilder):
             "value": "",
             "style": "",
             "parent": "1",
-            "connectable": "",
+            "connectable": "1",
             "edge": "",
             "vertex": "",
             "source": "",

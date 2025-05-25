@@ -16,6 +16,7 @@ from constants import MX_GRAPH_XML_STYLES
 class DrawmateRenderer(DocBuilder, MxBuilder):
     def __init__(self, config_file):
         super().__init__()
+        self.set_graph_values(4000, 4000, 4000, 4000)
         self.config = DrawmateConfig(config_file)
         self.matrix_dims = self.config.get_matrix_dimensions()
         self.graph = self.init_graph()

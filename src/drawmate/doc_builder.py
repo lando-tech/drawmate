@@ -78,6 +78,8 @@ class DocBuilder:
         """
         Instantiates the appropriate parent/child elements to the file
         """
+        self.diagram.setAttribute(attname="name", value="Page-1")
+        self.diagram.setAttribute(attname="id", value=str(generate_id()))
         # Append mxGraphModel to diagram
         self.diagram.appendChild(self.mx_graph_model)
         # Append root to mxGraphModel

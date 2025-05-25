@@ -1,9 +1,91 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <random>
 #include "node.h"
 #include "graph_config.h"
 #include "keys.h"
+
+std::vector<char> get_alpha_upper()
+{
+  std::vector<char> alpha_upper{'A'};
+  for (int i = 1; i < 26; ++i)
+  {
+    alpha_upper.push_back(alpha_upper[0] + i);
+  }
+
+  return alpha_upper;
+}
+
+std::vector<char> get_alpha_lower()
+{
+  std::vector<char> alpha_lower{'a'};
+  for (int i = 1; i < 26; ++i)
+  {
+    alpha_lower.push_back(alpha_lower[0] + i);
+  }
+  return alpha_lower;
+}
+
+std::vector<char> get_alpha_upper_and_lower()
+{
+  std::vector<char> alpha{'A'};
+  for (int i = 1; i < 26; ++i)
+  {
+    alpha.push_back(alpha[0] + i);
+  }
+
+  alpha.push_back('a');
+  for (int i = 1; i < 26; ++i)
+  {
+    alpha.push_back('a' + i);
+  }
+  return alpha;
+}
+
+std::vector<char> get_alpha_numeric_vector()
+{
+  std::vector<char> alpha_numeric{'A'};
+
+  for (int i = 1; i < 26; ++i)
+  {
+    alpha_numeric.push_back('A' + i);
+  }
+
+  alpha_numeric.push_back('a');
+  for (int i = 1; i < 26; ++i)
+  {
+    alpha_numeric.push_back('a' + i);
+  }
+
+  alpha_numeric.push_back('0');
+  for (int i = 1; i < 10; ++i)
+  {
+    alpha_numeric.push_back('0' + i);
+  }
+  return alpha_numeric;
+}
+
+std::string generate_export_key(int key_size)
+{
+  /*
+   * A randomly generated key with a mix of alpha-numeric characters
+   */
+  std::vector<char> alpha{get_alpha_numeric_vector()};
+  size_t vec_size {alpha.size()};
+
+  std::random_device rand{};
+  std::mt19937 gen(rand());
+  std::uniform_int_distribution<> distrib(0, vec_size);
+
+  std::string export_key{};
+
+  for (int i = 0; i < key_size; ++i)
+  {
+    export_key.push_back(alpha.at(distrib(gen)));
+  }
+  return export_key;
+}
 
 std::string generate_node_key(NodeOrientation node_orientation, const int column_count, const int row_count)
 {
