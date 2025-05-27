@@ -36,13 +36,15 @@ namespace std
 
 struct PortKey
 {
-    char orientatin{};
+    char node_orientation{};
+    char port_orientation{};
+    int node_row{};
     int column{};
     int row{};
 
     bool operator==(const PortKey &other) const
     {
-        return orientatin == other.orientatin && column == other.column && row == other.row;
+        return node_orientation == other.node_orientation && port_orientation == other.port_orientation && node_row == other.node_row && column == other.column && row == other.row;
     }
 };
 
@@ -53,9 +55,11 @@ namespace std
     {
         size_t operator()(const PortKey &k) const
         {
-            return (hash<char>()(k.orientatin) << 1) ^
-                   (hash<int>()(k.column) << 2) ^
-                   (hash<int>()(k.row) << 3);
+            return (hash<char>()(k.node_orientation) << 1) ^
+                   (hash<char>()(k.port_orientation) << 2) ^
+                   (hash<int>()(k.node_row) << 3) ^
+                   (hash<int>()(k.column) << 4) ^
+                   (hash<int>()(k.row) << 5);
         }
     };
 }
@@ -68,6 +72,7 @@ std::vector<std::string> split_string(const std::string &str, const char dilim);
 std::string get_adjacent_port_key_string(const std::string &key,
                                   PortOrientation port_orientation,
                                   NodeOrientation node_orientation);
+PortKey get_adjacent_port_key(PortKey port_key);
 std::string get_adjacent_key_string(const std::string &key,
                              NodeOrientation node_orientation,
                              GridOrientation grid_orientation);

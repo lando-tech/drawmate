@@ -13,14 +13,14 @@ double get_midpoint_x(const double x1, const double x2)
     return (x1 + x2) / 2.0;
 }
 
-void Link::set_source_port(const std::string& source_port_id, const double source_x, const double source_y)
+void Link::set_source_port(PortKey source_port_id, const double source_x, const double source_y)
 {
     this->source_x = source_x;
     this->source_y = source_y;
     this->source_port_id_ = source_port_id;
 }
 
-void Link::set_target_port(const std::string& target_port_id, const double target_x, const double target_y)
+void Link::set_target_port(PortKey target_port_id, const double target_x, const double target_y)
 {
 
     this->target_x = target_x;
@@ -57,7 +57,7 @@ void Link::add_waypoints(const double source_x, const double source_y, const dou
 
 }
 
-void Link::add_link(const std::string& source_port_id, const std::string& target_port_id, const double source_x, const double source_y,
+void Link::add_link(PortKey source_port_id, PortKey target_port_id, const double source_x, const double source_y,
                     const double target_x, const double target_y)
 {
     set_source_port(source_port_id, source_x, source_y);

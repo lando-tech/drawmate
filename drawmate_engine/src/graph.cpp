@@ -127,10 +127,9 @@ double Graph::verify_node_height(const double port_count)
 double Graph::verify_node_height_test(const double port_count)
 {
   double actual_height{
-    (this->port_config_.port_height * port_count) + 
-    (this->layout_config_.port_spacing * (port_count - 1)) + 
-    (this->node_config_.label_height + this->port_config_.port_height)
-  };
+      (this->port_config_.port_height * port_count) +
+      (this->layout_config_.port_spacing * (port_count - 1)) +
+      (this->node_config_.label_height + this->port_config_.port_height)};
 
   double node_height{};
   if (actual_height > this->node_config_.height)
@@ -220,96 +219,6 @@ void Graph::increment_grid_column_right()
   }
 }
 
-void Graph::add_node_ports(NodeKey node_key_test,
-                           const std::vector<std::string> &port_labels_left,
-                           const std::vector<std::string> &port_labels_right,
-                           NodeOrientation node_orientation)
-{
-  const auto &node{this->nodes_test_.at(node_key_test)};
-  std::string node_key_str{generate_node_key_string(node_key_test.orientation, node_key_test.column, node_key_test.row)};
-  auto &node_export{this->node_exports_.at(node_key_str)};
-
-  double x_left{node->get_x()};
-  double y_left{node->get_y() + this->node_config_.label_height +
-                this->port_config_.port_height / 2};
-  double y_right{node->get_y() + this->node_config_.label_height +
-                 this->port_config_.port_height / 2};
-
-  int port_index_left{};
-  int port_index_right{};
-
-  if (node_orientation == NodeOrientation::CENTER)
-  {
-    port_index_left = 0;
-    port_index_right = 0;
-  }
-  else
-  {
-    port_index_left = node->get_row();
-    port_index_right = node->get_row();
-  }
-
-  for (const auto &it : port_labels_left)
-  {
-    std::string port_id{generate_port_key_string(node_key_str, PortOrientation::LEFT, port_index_left)};
-    if (this->ports.contains(port_id))
-    {
-      throw std::runtime_error("Attempting to overwrite port! add_node_ports() graph.cpp");
-    }
-    this->port_ids_left_.push_back(port_id);
-    this->ports[port_id] = std::make_unique<Port>(x_left, y_left, this->port_config_.port_width,
-                                                  this->port_config_.port_height, it, node_key_test,
-                                                  PortType::INPUT, PortOrientation::LEFT);
-
-    node_export.ports_left_.push_back(add_port_export(x_left, y_left, it));
-    y_left +=
-        this->port_config_.port_height + this->layout_config_.port_spacing;
-    port_index_left++;
-  }
-
-  for (const auto &it : port_labels_right)
-  {
-    double x_right{};
-    if (node_orientation == NodeOrientation::CENTER)
-    {
-      x_right = x_left + (this->central_node_config_.width) -
-                this->port_config_.port_width;
-    }
-    else
-    {
-      x_right = x_left + (this->node_config_.width / 2);
-    }
-    std::string port_id{generate_port_key_string(node_key_str, PortOrientation::RIGHT, port_index_right)};
-    if (this->ports.contains(port_id))
-    {
-      throw std::runtime_error("Attempting to overwrite port! add_node_ports() graph.cpp");
-    }
-    this->port_ids_right_.push_back(port_id);
-    this->ports[port_id] = std::make_unique<Port>(x_right, y_right, this->port_config_.port_width,
-                                                  this->port_config_.port_height, it, node_key_test,
-                                                  PortType::OUTPUT, PortOrientation::RIGHT),
-    node_export.ports_right_.push_back(add_port_export(x_right, y_right, it));
-    y_right +=
-        this->port_config_.port_height + this->layout_config_.port_spacing;
-    port_index_right++;
-  }
-}
-
-PortExport Graph::add_port_export(double x, double y, std::string port_label)
-{
-  std::string export_id{generate_export_key(this->key_size)};
-  export_id.append("-" + std::to_string(this->total_node_count_++));
-
-  auto port_export{PortExport()};
-  port_export.x = x;
-  port_export.y = y;
-  port_export.width = this->port_config_.port_width;
-  port_export.height = this->port_config_.port_height;
-  port_export.label = port_label;
-  port_export.source_id = export_id;
-  return port_export;
-}
-
 // External PYBIND11 Function
 void Graph::add_node(
     const std::unordered_map<std::string, std::string> &node_meta_data,
@@ -322,8 +231,7 @@ void Graph::add_node(
 
   NodeType node_type{verify_node_type(node_meta_data.at("node-type"))};
   NodeOrientation node_orientation{
-      verify_node_orientation(node_meta_data.at("node-orientation"))
-  };
+      verify_node_orientation(node_meta_data.at("node-orientation"))};
 
   if (node_type == NodeType::SPAN)
   {
@@ -335,79 +243,81 @@ void Graph::add_node(
     const double max_ports{
         get_max_ports(static_cast<double>(port_labels_left.size()),
                       static_cast<double>(port_labels_right.size()))};
-    NodeKey key{};
+    NodeKey internal_key{};
     std::string external_key{};
     if (node_orientation == NodeOrientation::LEFT)
     {
-      key = add_node_left_justified(max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
-      external_key = generate_node_key_string(key.orientation, key.column, key.row);
-      this->node_keys_left_.push_back(external_key);
+      internal_key = add_node_left_justified(
+          max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
+      external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
+      this->node_keys_left_external.push_back(external_key);
     }
     else if (node_orientation == NodeOrientation::RIGHT)
     {
-      key = add_node_right_justified(max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
-      external_key = generate_node_key_string(key.orientation, key.column, key.row);
-      this->node_keys_right_.push_back(external_key);
+      internal_key = add_node_right_justified(
+        max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
+      external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
+      this->node_keys_right_external.push_back(external_key);
     }
     else
     {
-      key = add_node_center_justified(max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
-      external_key = generate_node_key_string(key.orientation, key.column, key.row);
+      internal_key = add_node_center_justified(
+        max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
+      external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
     }
-    std::cout << "Export Key: " << external_key << "\n";
-    add_node_export(key);
-    add_node_ports(key, port_labels_left, port_labels_right, node_orientation);
-    this->node_keys_master_.push_back(external_key);
+    add_node_export(internal_key);
+    add_node_ports(internal_key, port_labels_left, port_labels_right, node_orientation);
+    this->node_keys_master_external.push_back(external_key);
   }
 }
 
 void Graph::add_node_spanning(NodeOrientation node_orientation)
 {
   if (node_orientation == NodeOrientation::LEFT)
+  {
+    increment_grid_column_left();
+    if (this->row_count_left == 0 && this->column_count_left > 0)
     {
-      increment_grid_column_left();
-      if (this->row_count_left == 0 && this->column_count_left > 0)
-      {
-        this->base_y_left = this->layout_config_.base_y;
-      }
-      else
-      {
-        increment_y_left(this->node_config_.height);
-      }
-      return;
+      this->base_y_left = this->layout_config_.base_y;
     }
     else
     {
-      increment_grid_column_right();
-      if (this->row_count_right == 0 && this->column_count_right > 0)
-      {
-        this->base_y_right = this->layout_config_.base_y;
-      }
-      else
-      {
-        increment_y_right(this->node_config_.height);
-      }
-      return;
+      increment_y_left(this->node_config_.height);
     }
+    return;
+  }
+  else
+  {
+    increment_grid_column_right();
+    if (this->row_count_right == 0 && this->column_count_right > 0)
+    {
+      this->base_y_right = this->layout_config_.base_y;
+    }
+    else
+    {
+      increment_y_right(this->node_config_.height);
+    }
+    return;
+  }
 }
 
-NodeKey Graph::add_node_left_justified(const double max_ports, 
-                                    NodeType node_type, 
-                                    const std::string& node_label, 
-                                    std::vector<int> connection_indexes_left, 
-                                    std::vector<int> connection_indexes_right)
+NodeKey Graph::add_node_left_justified(const double max_ports,
+                                       NodeType node_type,
+                                       const std::string &node_label,
+                                       std::vector<int> connection_indexes_left,
+                                       std::vector<int> connection_indexes_right)
 {
   NodeOrientation node_orientation{NodeOrientation::LEFT};
-  double node_width {this->node_config_.width};
-  double node_height {verify_node_height(max_ports)};
-  double x {calculate_x_left()};
-  double y {this->base_y_left};
+  double node_width{this->node_config_.width};
+  double node_height{verify_node_height(max_ports)};
+  double x{calculate_x_left()};
+  double y{this->base_y_left};
 
   NodeKey test_key{'L', this->column_count_left, this->row_count_left};
-  this->nodes_test_[test_key] = std::make_unique<Node>(
+  this->nodes_[test_key] = std::make_unique<Node>(
       x, y, node_width, node_height, node_type, node_orientation, node_label);
 
-  auto &curr_node{this->nodes_test_.at(test_key)};
+  auto &curr_node{this->nodes_.at(test_key)};
   curr_node->set_connection_indexes_left(connection_indexes_left);
   curr_node->set_connection_indexes_right(connection_indexes_right);
   curr_node->set_column(this->column_count_left);
@@ -418,57 +328,57 @@ NodeKey Graph::add_node_left_justified(const double max_ports,
   return test_key;
 }
 
-NodeKey Graph::add_node_right_justified(const double max_ports, 
-                                     NodeType node_type, 
-                                     const std::string& node_label, 
-                                     std::vector<int> connection_indexes_left, 
-                                     std::vector<int> connection_indexes_right)
+NodeKey Graph::add_node_right_justified(const double max_ports,
+                                        NodeType node_type,
+                                        const std::string &node_label,
+                                        std::vector<int> connection_indexes_left,
+                                        std::vector<int> connection_indexes_right)
 {
-    NodeOrientation node_orientation {NodeOrientation::RIGHT};
-    double node_width {this->node_config_.width};
-    double node_height {verify_node_height(max_ports)};
-    double x {calculate_x_right(this->central_node_config_.width)};
-    double y {this->base_y_right};
+  NodeOrientation node_orientation{NodeOrientation::RIGHT};
+  double node_width{this->node_config_.width};
+  double node_height{verify_node_height(max_ports)};
+  double x{calculate_x_right(this->central_node_config_.width)};
+  double y{this->base_y_right};
 
-    NodeKey test_key{'R', this->column_count_right, this->row_count_right};
-    this->nodes_test_[test_key] = std::make_unique<Node>(
-        x, y, node_width, node_height, node_type, node_orientation, node_label);
+  NodeKey test_key{'R', this->column_count_right, this->row_count_right};
+  this->nodes_[test_key] = std::make_unique<Node>(
+      x, y, node_width, node_height, node_type, node_orientation, node_label);
 
-    auto &curr_node{this->nodes_test_.at(test_key)};
-    curr_node->set_connection_indexes_left(connection_indexes_left);
-    curr_node->set_connection_indexes_right(connection_indexes_right);
-    curr_node->set_column(this->column_count_right);
-    curr_node->set_row(this->row_count_right);
+  auto &curr_node{this->nodes_.at(test_key)};
+  curr_node->set_connection_indexes_left(connection_indexes_left);
+  curr_node->set_connection_indexes_right(connection_indexes_right);
+  curr_node->set_column(this->column_count_right);
+  curr_node->set_row(this->row_count_right);
 
-    increment_grid_column_right();
-    increment_y_right(this->node_config_.height);
-    return test_key;
+  increment_grid_column_right();
+  increment_y_right(this->node_config_.height);
+  return test_key;
 }
 
-NodeKey Graph::add_node_center_justified(const double max_ports, 
-                                      NodeType node_type, 
-                                      const std::string& node_label, 
-                                      std::vector<int> connection_indexes_left, 
-                                      std::vector<int> connection_indexes_right)
+NodeKey Graph::add_node_center_justified(const double max_ports,
+                                         NodeType node_type,
+                                         const std::string &node_label,
+                                         std::vector<int> connection_indexes_left,
+                                         std::vector<int> connection_indexes_right)
 {
-    NodeOrientation node_orientation{NodeOrientation::CENTER};
-    double node_height {verify_node_height(max_ports)};
-    double x {this->layout_config_.base_x};
-    double y {this->layout_config_.base_y};
+  NodeOrientation node_orientation{NodeOrientation::CENTER};
+  double node_height{verify_node_height(max_ports)};
+  double x{this->layout_config_.base_x};
+  double y{this->layout_config_.base_y};
 
-    NodeKey test_key{'C', this->central_node_count++, 0};
-    this->nodes_test_[test_key] = std::make_unique<Node>(
-        x, y, this->central_node_config_.width, node_height, node_type, node_orientation, node_label);
+  NodeKey test_key{'C', this->central_node_count++, 0};
+  this->nodes_[test_key] = std::make_unique<Node>(
+      x, y, this->central_node_config_.width, node_height, node_type, node_orientation, node_label);
 
-    auto &curr_node{this->nodes_test_.at(test_key)};
-    curr_node->set_connection_indexes_left(connection_indexes_left);
-    curr_node->set_connection_indexes_right(connection_indexes_right);
-    return test_key;
+  auto &curr_node{this->nodes_.at(test_key)};
+  curr_node->set_connection_indexes_left(connection_indexes_left);
+  curr_node->set_connection_indexes_right(connection_indexes_right);
+  return test_key;
 }
 
 void Graph::add_node_export(NodeKey node_key)
 {
-  const auto &node{this->nodes_test_.at(node_key)};
+  const auto &node{this->nodes_.at(node_key)};
 
   std::string export_id{generate_export_key(this->key_size)};
   export_id.append("-" + std::to_string(this->total_node_count_++));
@@ -502,24 +412,116 @@ void Graph::add_node_export(NodeKey node_key)
   this->node_exports_[node_key_str] = node_export;
 }
 
+void Graph::add_node_ports(NodeKey node_key_test,
+                           const std::vector<std::string> &port_labels_left,
+                           const std::vector<std::string> &port_labels_right,
+                           NodeOrientation node_orientation)
+{
+  const auto &node{this->nodes_.at(node_key_test)};
+  std::string node_key_str{generate_node_key_string(node_key_test.orientation, node_key_test.column, node_key_test.row)};
+  auto &node_export{this->node_exports_.at(node_key_str)};
+
+  double x_left{node->get_x()};
+  double x_right{};
+
+  if (node_orientation == NodeOrientation::CENTER)
+  {
+    x_right = x_left + (this->central_node_config_.width) -
+              this->port_config_.port_width;
+  }
+  else
+  {
+    x_right = x_left + (this->node_config_.width / 2);
+  }
+
+  double y_left{node->get_y() + this->node_config_.label_height +
+                this->port_config_.port_height / 2};
+  double y_right{node->get_y() + this->node_config_.label_height +
+                 this->port_config_.port_height / 2};
+
+  int port_index_left{};
+  int port_index_right{};
+
+  if (node_orientation == NodeOrientation::CENTER)
+  {
+    port_index_left = 0;
+    port_index_right = 0;
+  }
+  else
+  {
+    port_index_left = node->get_row();
+    port_index_right = node->get_row();
+  }
+
+  add_node_ports_left_justified(port_labels_left, node_key_test, x_left, y_left, node_export, port_index_left);
+  add_node_ports_right_justified(port_labels_right, node_key_test, x_right, y_right, node_export, port_index_right);
+}
+
+void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport& node_export, int port_index)
+{
+  for (const auto &it : port_labels)
+  {
+    PortKey port_key {node_key.orientation, 'L', node_key.row, node_key.column, port_index};
+    this->ports_test_[port_key] = std::make_unique<Port>(x_left, y_left, this->port_config_.port_width,
+                                                  this->port_config_.port_height, it, node_key,
+                                                  PortType::INPUT, PortOrientation::LEFT);
+    this->port_ids_left_.push_back(port_key);                                              
+    node_export.ports_left_.push_back(add_port_export(x_left, y_left, it));
+    y_left +=
+        this->port_config_.port_height + this->layout_config_.port_spacing;
+    port_index++;
+  }
+}
+
+void Graph::add_node_ports_right_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_right, double y_right, NodeExport& node_export, int port_index)
+{
+  for (const auto &it : port_labels)
+  {
+    PortKey port_key {node_key.orientation, 'R', node_key.row, node_key.column, port_index};
+    this->ports_test_[port_key] = std::make_unique<Port>(x_right, y_right, this->port_config_.port_width,
+                                                  this->port_config_.port_height, it, node_key,
+                                                  PortType::OUTPUT, PortOrientation::RIGHT);
+    this->port_ids_right_.push_back(port_key);
+    node_export.ports_right_.push_back(add_port_export(x_right, y_right, it));
+    y_right +=
+        this->port_config_.port_height + this->layout_config_.port_spacing;
+    port_index++;
+  }
+}
+
+PortExport Graph::add_port_export(double x, double y, std::string port_label)
+{
+  std::string export_id{generate_export_key(this->key_size)};
+  export_id.append("-" + std::to_string(this->total_node_count_++));
+
+  auto port_export{PortExport()};
+  port_export.x = x;
+  port_export.y = y;
+  port_export.width = this->port_config_.port_width;
+  port_export.height = this->port_config_.port_height;
+  port_export.label = port_label;
+  port_export.source_id = export_id;
+  return port_export;
+}
+
 void Graph::add_link_outgoing()
 {
   for (auto it : this->port_ids_right_)
   {
-    const auto &outgoing_port{this->ports.at(it)};
-    const auto &parent_node{this->nodes_test_.at(outgoing_port->get_parent_id())};
+    const auto &outgoing_port{this->ports_test_.at(it)};
+    const auto &parent_node{this->nodes_.at(outgoing_port->get_parent_id())};
     NodeOrientation node_orientation{parent_node->get_node_orientation()};
     PortOrientation port_orientation{outgoing_port->get_port_orientation()};
 
-    std::string incoming_port_id{get_adjacent_port_key_string(it, port_orientation, node_orientation)};
+    PortKey incoming_port_id{get_adjacent_port_key(it)};
 
     if (this->outgoing_links_.contains(it))
     {
       throw std::runtime_error("Attempt to overwrite outgoing Port ID!");
     }
-    if (this->ports.contains(incoming_port_id))
+    if (this->ports_test_.contains(incoming_port_id))
     {
-      auto &incoming_port{this->ports.at(incoming_port_id)};
+      auto &incoming_port{this->ports_test_.at(incoming_port_id)};
       this->outgoing_links_[it] = std::make_unique<Link>();
 
       auto &link{this->outgoing_links_.at(it)};

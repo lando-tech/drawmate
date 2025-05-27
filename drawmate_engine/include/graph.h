@@ -14,6 +14,11 @@
 
 class Graph
 {
+  GridConfig grid_config_{};
+  LayoutConfig layout_config_{};
+  NodeConfig node_config_{};
+  CentralNodeConfig central_node_config_{};
+  PortConfig port_config_{};
 
   int central_node_count{0};
   int column_count_left{0};
@@ -32,31 +37,25 @@ class Graph
   double max_height_{0.0};
   double base_height_{0.0};
 
-  std::unordered_map<NodeKey, std::unique_ptr<Node>> nodes_test_{};
+  std::unordered_map<NodeKey, std::unique_ptr<Node>> nodes_{};
+
   std::unordered_map<PortKey, std::unique_ptr<Port>> ports_test_{};
-  // std::unordered_map<std::string, std::unique_ptr<Node>> nodes{};
   std::unordered_map<std::string, std::unique_ptr<Port>> ports{};
+  std::vector<PortKey> port_ids_left_{};
+  std::vector<PortKey> port_ids_right_{};
+
+  std::unordered_map<PortKey, std::unique_ptr<Link>> incoming_links_{};
+  std::unordered_map<PortKey, std::unique_ptr<Link>> outgoing_links_{};
+
+  // Exported containers for PYBIND11
   std::unordered_map<std::string, NodeExport> node_exports_{};
-
-  std::unordered_map<std::string, std::unique_ptr<Link>> incoming_links_{};
-  std::unordered_map<std::string, std::unique_ptr<Link>> outgoing_links_{};
-
   std::vector<LinkExport> link_exports_{};
+  std::vector<std::string> node_keys_master_external{};
+  std::vector<std::string> node_keys_left_external{};
+  std::vector<std::string> node_keys_right_external{};
 
-  std::vector<std::string> node_keys_master_{};
-  std::vector<std::string> node_keys_left_{};
-  std::vector<std::string> node_keys_right_{};
   std::vector<std::string> node_meta_valid_keys_{"node-label", "node-type",
                                                  "node-orientation"};
-
-  std::vector<std::string> port_ids_left_{};
-  std::vector<std::string> port_ids_right_{};
-
-  GridConfig grid_config_{};
-  LayoutConfig layout_config_{};
-  NodeConfig node_config_{};
-  CentralNodeConfig central_node_config_{};
-  PortConfig port_config_{};
 
   NodeKey add_node_left_justified(const double max_ports, 
                                NodeType node_type, 
@@ -84,6 +83,10 @@ class Graph
                       const std::vector<std::string> &port_labels_left,
                       const std::vector<std::string> &port_labels_right,
                       NodeOrientation node_orientation);
+
+  void add_node_ports_left_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport& node_export, int port_index);
+
+  void add_node_ports_right_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport& node_export, int port_index);
 
   PortExport add_port_export(double x, double y, std::string port_label);
 
@@ -160,15 +163,15 @@ public:
 
   std::vector<std::string> get_node_ids() const
   {
-    return this->node_keys_master_;
+    return this->node_keys_master_external;
   }
   std::vector<std::string> get_node_ids_left() const
   {
-    return this->node_keys_left_;
+    return this->node_keys_left_external;
   }
   std::vector<std::string> get_node_ids_right() const
   {
-    return this->node_keys_right_;
+    return this->node_keys_right_external;
   }
 };
 
