@@ -255,14 +255,14 @@ void Graph::add_node(
     else if (node_orientation == NodeOrientation::RIGHT)
     {
       internal_key = add_node_right_justified(
-        max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
+          max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
       external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
       this->node_keys_right_external.push_back(external_key);
     }
     else
     {
       internal_key = add_node_center_justified(
-        max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
+          max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
       external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
     }
     add_node_export(internal_key);
@@ -457,15 +457,15 @@ void Graph::add_node_ports(NodeKey node_key_test,
   add_node_ports_right_justified(port_labels_right, node_key_test, x_right, y_right, node_export, port_index_right);
 }
 
-void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport& node_export, int port_index)
+void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport &node_export, int port_index)
 {
   for (const auto &it : port_labels)
   {
-    PortKey port_key {node_key.orientation, 'L', node_key.row, node_key.column, port_index};
+    PortKey port_key{node_key.orientation, 'L', node_key.row, node_key.column, port_index};
     this->ports_test_[port_key] = std::make_unique<Port>(x_left, y_left, this->port_config_.port_width,
-                                                  this->port_config_.port_height, it, node_key,
-                                                  PortType::INPUT, PortOrientation::LEFT);
-    this->port_ids_left_.push_back(port_key);                                              
+                                                         this->port_config_.port_height, it, node_key,
+                                                         PortType::INPUT, PortOrientation::LEFT);
+    this->port_ids_left_.push_back(port_key);
     node_export.ports_left_.push_back(add_port_export(x_left, y_left, it));
     y_left +=
         this->port_config_.port_height + this->layout_config_.port_spacing;
@@ -473,14 +473,14 @@ void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels, 
   }
 }
 
-void Graph::add_node_ports_right_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_right, double y_right, NodeExport& node_export, int port_index)
+void Graph::add_node_ports_right_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_right, double y_right, NodeExport &node_export, int port_index)
 {
   for (const auto &it : port_labels)
   {
-    PortKey port_key {node_key.orientation, 'R', node_key.row, node_key.column, port_index};
+    PortKey port_key{node_key.orientation, 'R', node_key.row, node_key.column, port_index};
     this->ports_test_[port_key] = std::make_unique<Port>(x_right, y_right, this->port_config_.port_width,
-                                                  this->port_config_.port_height, it, node_key,
-                                                  PortType::OUTPUT, PortOrientation::RIGHT);
+                                                         this->port_config_.port_height, it, node_key,
+                                                         PortType::OUTPUT, PortOrientation::RIGHT);
     this->port_ids_right_.push_back(port_key);
     node_export.ports_right_.push_back(add_port_export(x_right, y_right, it));
     y_right +=
@@ -508,6 +508,7 @@ void Graph::add_link_outgoing()
 {
   for (auto it : this->port_ids_right_)
   {
+    std::cout << "Port ID: " << it.node_orientation << "-" << it.column << "-" << it.node_row << "-" << it.port_orientation << "-" << it.row << "\n";
     const auto &outgoing_port{this->ports_test_.at(it)};
     const auto &parent_node{this->nodes_.at(outgoing_port->get_parent_id())};
     NodeOrientation node_orientation{parent_node->get_node_orientation()};
