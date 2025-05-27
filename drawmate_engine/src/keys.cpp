@@ -87,10 +87,10 @@ std::string generate_export_key(int key_size)
   return export_key;
 }
 
-std::string generate_node_key(NodeOrientation node_orientation, const int column_count, const int row_count)
+std::string generate_node_key_string(char node_orientation, const int column_count, const int row_count)
 {
   std::string key{};
-  if (node_orientation == NodeOrientation::LEFT)
+  if (node_orientation == 'L')
   {
     // "L-0-0"
     key.append("L-");
@@ -98,7 +98,7 @@ std::string generate_node_key(NodeOrientation node_orientation, const int column
     key.append("-");
     key.append(std::to_string(row_count));
   }
-  else if (node_orientation == NodeOrientation::RIGHT)
+  else if (node_orientation == 'R')
   {
     key.append("R-");
     key.append(std::to_string(column_count));
@@ -114,7 +114,7 @@ std::string generate_node_key(NodeOrientation node_orientation, const int column
   return key;
 }
 
-std::string generate_port_key(const std::string &parent_node_key, PortOrientation port_orientation, int port_index)
+std::string generate_port_key_string(const std::string &parent_node_key, PortOrientation port_orientation, int port_index)
 {
   std::string key_copy{parent_node_key};
   std::vector<std::string> key_toks{split_string(key_copy, '-')};
@@ -149,7 +149,7 @@ std::vector<std::string> split_string(const std::string &str, char delim)
   return tokens;
 }
 
-std::string get_adjacent_port_key(const std::string &key, PortOrientation port_orientation, NodeOrientation node_orientation)
+std::string get_adjacent_port_key_string(const std::string &key, PortOrientation port_orientation, NodeOrientation node_orientation)
 {
   std::vector<std::string> key_toks{split_string(key, '-')};
   int column{};
@@ -276,7 +276,7 @@ std::string get_adjacent_port_key(const std::string &key, PortOrientation port_o
                            "get_adjacent_port_key(const std::string& key, PortOrientation port_orientation, NodeOrientation node_orientation)");
 }
 
-std::string get_adjacent_key(const std::string &key,
+std::string get_adjacent_key_string(const std::string &key,
                              NodeOrientation node_orientation,
                              GridOrientation grid_orientation)
 {
@@ -341,7 +341,7 @@ std::string get_adjacent_key(const std::string &key,
                            "get_adjacent_key(const std::string& key)");
 }
 
-std::string get_adjacent_key_from_center(NodeOrientation node_orientation,
+std::string get_adjacent_key_string_from_center(NodeOrientation node_orientation,
                                          int port_index)
 {
   /*

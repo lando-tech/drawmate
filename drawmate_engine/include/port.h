@@ -5,6 +5,7 @@
 #ifndef PORT_H
 #define PORT_H
 #include <iostream>
+#include "keys.h"
 #include "graph_object.h"
 
 class Node;
@@ -23,7 +24,7 @@ enum class PortOrientation
 
 class Port : public GraphObject
 {
-    std::string parent_node_id_{};
+    NodeKey parent_node_id_{};
     PortType port_type{};
     PortOrientation port_orientation_{};
     std::string label{};
@@ -31,10 +32,10 @@ class Port : public GraphObject
     friend class Link;
 
 public:
-    Port(double x, double y, int width, int height, const std::string &label, const std::string& parent_id, PortType port_type,
+    Port(double x, double y, int width, int height, const std::string &label, const NodeKey parent_id, PortType port_type,
          PortOrientation port_orientation);
 
-    void set_parent_id(const std::string& parent_id) { this->parent_node_id_ = parent_id; }
+    void set_parent_id(NodeKey parent_id) { this->parent_node_id_ = parent_id; }
     void set_port_type(const PortType port_type) { this->port_type = port_type; }
     void set_port_orientation(const PortOrientation port_orientation)
     { this->port_orientation_ = port_orientation; }
@@ -43,7 +44,7 @@ public:
     [[nodiscard]] PortType get_port_type() const { return this->port_type; }
     [[nodiscard]] PortOrientation get_port_orientation() const { return this->port_orientation_; }
     [[nodiscard]] std::string get_port_label() const { return this->label; }
-    [[nodiscard]] std::string get_parent_id() const { return this->parent_node_id_; }
+    [[nodiscard]] NodeKey get_parent_id() const { return this->parent_node_id_; }
 
 };
 

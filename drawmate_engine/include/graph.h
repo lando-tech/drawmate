@@ -34,7 +34,7 @@ class Graph
 
   std::unordered_map<NodeKey, std::unique_ptr<Node>> nodes_test_{};
   std::unordered_map<PortKey, std::unique_ptr<Port>> ports_test_{};
-  std::unordered_map<std::string, std::unique_ptr<Node>> nodes{};
+  // std::unordered_map<std::string, std::unique_ptr<Node>> nodes{};
   std::unordered_map<std::string, std::unique_ptr<Port>> ports{};
   std::unordered_map<std::string, NodeExport> node_exports_{};
 
@@ -58,19 +58,19 @@ class Graph
   CentralNodeConfig central_node_config_{};
   PortConfig port_config_{};
 
-  std::string add_node_left_justified(const double max_ports, 
+  NodeKey add_node_left_justified(const double max_ports, 
                                NodeType node_type, 
                                const std::string &node_label, 
                                std::vector<int> connection_indexes_left, 
                                std::vector<int> connection_indexes_right);
 
-  std::string add_node_right_justified(const double max_ports, 
+  NodeKey add_node_right_justified(const double max_ports, 
                                 NodeType node_type, 
                                 const std::string &node_label, 
                                 std::vector<int> connection_indexes_left, 
                                 std::vector<int> connection_indexes_right);
 
-  std::string add_node_center_justified(const double max_ports,
+  NodeKey add_node_center_justified(const double max_ports,
                                  NodeType node_type, 
                                  const std::string &node_label, 
                                  std::vector<int> connection_indexes_left, 
@@ -78,9 +78,9 @@ class Graph
 
   void add_node_spanning(NodeOrientation node_orientation);
 
-  void add_node_export(const std::string &node_key);
+  void add_node_export(NodeKey node_key);
 
-  void add_node_ports(const std::string &node_key,
+  void add_node_ports(NodeKey node_key_test,
                       const std::vector<std::string> &port_labels_left,
                       const std::vector<std::string> &port_labels_right,
                       NodeOrientation node_orientation);

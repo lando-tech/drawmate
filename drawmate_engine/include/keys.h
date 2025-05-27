@@ -61,16 +61,17 @@ namespace std
 }
 
 std::string generate_export_key(int key_size);
-std::string generate_node_key(NodeOrientation node_orientation, const int column_count, const int row_count);
-std::string generate_port_key(const std::string &parent_node_key, PortOrientation port_orientation, int port_index);
+NodeKey convert_node_key_internal(const std::string& node_key_str);
+std::string generate_node_key_string(char node_orientation, const int column_count, const int row_count);
+std::string generate_port_key_string(const std::string &parent_node_key, PortOrientation port_orientation, int port_index);
 std::vector<std::string> split_string(const std::string &str, const char dilim);
-std::string get_adjacent_port_key(const std::string &key,
+std::string get_adjacent_port_key_string(const std::string &key,
                                   PortOrientation port_orientation,
                                   NodeOrientation node_orientation);
-std::string get_adjacent_key(const std::string &key,
+std::string get_adjacent_key_string(const std::string &key,
                              NodeOrientation node_orientation,
                              GridOrientation grid_orientation);
-std::string get_adjacent_key_from_center(NodeOrientation node_orientation,
+std::string get_adjacent_key_string_from_center(NodeOrientation node_orientation,
                                          int port_index);
 
 #endif // KEYS_H
