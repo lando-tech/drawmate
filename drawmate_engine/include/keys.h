@@ -60,7 +60,7 @@ namespace std
     };
 }
 
-std::string generate_export_key();
+std::string generate_export_key(int key_size);
 std::string generate_node_key(NodeOrientation node_orientation, const int column_count, const int row_count);
 std::string generate_port_key(const std::string &parent_node_key, PortOrientation port_orientation, int port_index);
 std::vector<std::string> split_string(const std::string &str, const char dilim);

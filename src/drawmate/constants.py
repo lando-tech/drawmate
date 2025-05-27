@@ -1,6 +1,7 @@
 """
 These are the different xml styles used to control the type of object being placed on the graph.
 """
+
 MX_GRAPH_XML_STYLES = {
     "text-box": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;",
     "text-box-filled": "text;html=1;strokeColor=black;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;",

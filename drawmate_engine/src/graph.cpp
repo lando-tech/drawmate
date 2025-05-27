@@ -94,7 +94,7 @@ void Graph::verify_node_meta_key(
 double Graph::verify_node_height(const double port_count)
 {
   /*
-   * Verifies the height of each port and ensures it has room to house
+   * Verifies the height of each node and ensures it has room to house
    * all of the ports, based on the max number of ports either left/right.
    */
   double node_height{};
@@ -114,6 +114,34 @@ double Graph::verify_node_height(const double port_count)
     node_height = (this->node_config_.height * port_count) +
                   (this->port_config_.port_height * (port_count - 1));
     this->base_height_ = node_height;
+  }
+
+  if (this->base_height_ > this->max_height_)
+  {
+    this->max_height_ = this->base_height_;
+  }
+
+  return node_height;
+}
+
+double Graph::verify_node_height_test(const double port_count)
+{
+  double actual_height{
+    (this->port_config_.port_height * port_count) + 
+    (this->layout_config_.port_spacing * (port_count - 1)) + 
+    (this->node_config_.label_height + this->port_config_.port_height)
+  };
+
+  double node_height{};
+  if (actual_height > this->node_config_.height)
+  {
+    node_height = actual_height;
+    this->base_height_ = actual_height;
+  }
+  else
+  {
+    node_height = this->node_config_.height;
+    this->base_height_ = this->node_config_.height;
   }
 
   if (this->base_height_ > this->max_height_)
@@ -268,12 +296,16 @@ void Graph::add_node_ports(const std::string &node_key,
 
 PortExport Graph::add_port_export(double x, double y, std::string port_label)
 {
+  std::string export_id{generate_export_key(this->key_size)};
+  export_id.append("-" + std::to_string(this->total_node_count_++));
+
   auto port_export{PortExport()};
   port_export.x = x;
   port_export.y = y;
   port_export.width = this->port_config_.port_width;
   port_export.height = this->port_config_.port_height;
   port_export.label = port_label;
+  port_export.source_id = export_id;
   return port_export;
 }
 
@@ -347,7 +379,7 @@ void Graph::add_node_internal(const std::string &node_label,
   const double max_ports{
       get_max_ports(static_cast<double>(port_labels_left.size()),
                     static_cast<double>(port_labels_right.size()))};
-  double node_height{verify_node_height(max_ports)};
+  double node_height{verify_node_height_test(max_ports)};
   double node_width{this->node_config_.width};
   double x{};
   double y{};
@@ -413,19 +445,23 @@ void Graph::add_node_internal(const std::string &node_label,
   }
   add_node_export(key);
   add_node_ports(key, port_labels_left, port_labels_right, node_orientation);
-  // pretty_print_node_data(key, node_height);
   this->node_keys_master_.push_back(key);
 }
 
 void Graph::add_node_export(const std::string &node_key)
 {
   const auto &node{this->nodes.at(node_key)};
+
+  std::string export_id{generate_export_key(this->key_size)};
+  export_id.append("-" + std::to_string(this->total_node_count_++));
+
   NodeExport node_export{};
   node_export.x = node->get_x();
   node_export.y = node->get_y();
   node_export.width = node->get_width();
   node_export.height = node->get_height();
   node_export.name = node->get_label();
+  node_export.source_id = export_id;
 
   LabelExport label{};
   label.x = node_export.x;
@@ -488,6 +524,7 @@ void Graph::add_link_export(double src_x, double src_y, double tgt_x,
                             double tgt_y, bool has_waypoints,
                             std::vector<WaypointLinks> waypoints)
 {
+  std::string export_id{generate_export_key(this->key_size)};
   LinkExport link_export{};
   link_export.source_x = src_x + this->port_config_.port_width;
   link_export.source_y = src_y + this->port_config_.port_height / 2.0;

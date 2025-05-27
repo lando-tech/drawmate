@@ -16,7 +16,16 @@ protected:
     double height{};
     std::string id{};
 
+    /*
+     * These ID's are specific to drawio's ID interface and are 
+     * used to export source and target ID's to the final xml document. 
+     */
+    std::string source_id{};
+    std::string target_id{};
+
     void set_id(const std::string& id) { this->id = id; }
+    void set_source_id(const std::string& source_id) { this->source_id = source_id; }
+    void set_target_id(const std::string& target_id) { this->target_id = target_id; }
     friend class Graph;
 
 public:
@@ -37,6 +46,10 @@ public:
     [[nodiscard]] double get_height() const { return this->height; }
 
     [[nodiscard]] std::string get_id() const { return this->id; }
+
+    [[nodiscard]] std::string get_source_id() const { return this->source_id; }
+
+    [[nodiscard]] std::string get_target_id() const { return this->target_id; }
 
     [[nodiscard]] std::tuple<double, double> get_x_y_tuple() const
     { return std::make_tuple(this->x, this->y); }

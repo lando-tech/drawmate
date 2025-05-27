@@ -11,6 +11,8 @@ struct LinkExport
     double source_y{};
     double target_x{};
     double target_y{};
+    std::string source_id{};
+    std::string target_id{};
     bool has_waypoints{};
     std::vector<WaypointLinks> waypoints{};
 };
@@ -18,6 +20,8 @@ struct LinkExport
 struct PortExport
 {
     std::string label{};
+    std::string source_id{};
+    std::string target_id{};
     double x{};
     double y{};
     double width{};
@@ -36,6 +40,8 @@ struct LabelExport
 struct NodeExport
 {
     std::string name{};
+    std::string source_id{};
+    std::string target_id{};
     double x{};
     double y{};
     double width{};

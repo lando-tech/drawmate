@@ -76,7 +76,7 @@ std::string generate_export_key(int key_size)
 
   std::random_device rand{};
   std::mt19937 gen(rand());
-  std::uniform_int_distribution<> distrib(0, vec_size);
+  std::uniform_int_distribution<> distrib(0, vec_size - 1);
 
   std::string export_key{};
 
@@ -92,6 +92,7 @@ std::string generate_node_key(NodeOrientation node_orientation, const int column
   std::string key{};
   if (node_orientation == NodeOrientation::LEFT)
   {
+    // "L-0-0"
     key.append("L-");
     key.append(std::to_string(column_count));
     key.append("-");

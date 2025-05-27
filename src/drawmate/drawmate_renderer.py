@@ -12,7 +12,6 @@ from drawmate_config import DrawmateConfig
 from constants import MX_GRAPH_XML_STYLES
 
 
-
 class DrawmateRenderer(DocBuilder, MxBuilder):
     def __init__(self, config_file):
         super().__init__()
@@ -37,8 +36,8 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             base_x=2000.0,
             base_y=2000.0,
             node_spacing_x_axis=250.0,
-            node_spacing_y_axis=20.0,
-            port_spacing=60.0
+            node_spacing_y_axis=23.33,
+            port_spacing=70.0
         )
         grid_config = drawmate.GridConfig( # type: ignore
             columns_left=self.config.num_levels,
@@ -49,16 +48,16 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         central_node_config = drawmate.CentralNodeConfig( # type: ignore
             width=200.0,
             height=200.0,
-            label_height=20.0
+            label_height=23.33
         )
         node_config = drawmate.NodeConfig( # type: ignore
             width=120.0,
-            height=60.0,
-            label_height=20.0,
+            height=70.0,
+            label_height=23.33,
         )
         port_config = drawmate.PortConfig( # type: ignore
             port_width=60.0,
-            port_height=20.0
+            port_height=23.33
         )
         graph = drawmate.Graph(layout_config, grid_config, central_node_config, node_config, port_config) # type: ignore
         return graph

@@ -13,6 +13,29 @@
         "y": 2000,
         "num_connections": 8
     },
+
+    "connections-left": [
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI"
+    ],
+
+    "connections-right": [
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI"
+    ],
+
     "first-level-left": {
         "labels": [
            [
@@ -23,9 +46,9 @@
                 ["NONE"]
            ],
             [
-                "__SPAN__",
-                "",
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -37,7 +60,7 @@
                 ["NONE"]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -47,13 +70,6 @@
                 "AV Appliance",
                 ["HDMI", "HDMI", "HDMI"],
                 ["HDMI", "HDMI", "HDMI"],
-                [4, 5, 6],
-                [4, 5, 6]
-            ],
-            [
-                "__SPAN__",
-                "",
-                "",
                 ["NONE"],
                 ["NONE"]
             ],
@@ -65,7 +81,14 @@
                 ["NONE"]
             ],
             [
+                "__SPAN__",
                 "",
+                "",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -90,7 +113,7 @@
                 ["NONE"]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -136,28 +159,28 @@
     "second-level-left": {
         "labels": [
             [
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
-                ["NONE"],
-                ["NONE"]
-            ],
-            [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
                 ["NONE"]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -185,7 +208,7 @@
                 ["NONE"]
             ],
             [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -203,21 +226,21 @@
                 ["NONE"]
             ],
             [
-                "",
+                "AV Appliance",
+                "HDMI",
+                "HDMI",
+                ["NONE"],
+                ["NONE"]
+            ],
+            [
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
                 ["NONE"]
             ],
             [
-                "",
-                "",
-                "",
-                ["NONE"],
-                ["NONE"]
-            ],
-            [
-                "",
+                "__SPAN__",
                 "",
                 "",
                 ["NONE"],
@@ -372,26 +395,5 @@
                 ["NONE"]
             ]
         ]
-    },
-    "connections-left": [
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI"
-    ],
-    "connections-right": [
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI",
-        "HDMI"
-    ]
-
+    }
 }

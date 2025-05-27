@@ -21,6 +21,9 @@ class Graph
   int column_count_right{0};
   int row_count_right{0};
 
+  int total_node_count_{0};
+  const int key_size{20};
+
   double base_y_left{};
   double base_x_left{};
   double base_y_right{};
@@ -87,6 +90,8 @@ class Graph
       const std::unordered_map<std::string, std::string> &node_meta_data) const;
 
   double verify_node_height(double port_count);
+
+  double verify_node_height_test(double port_count);
 
   double calculate_x_left() const;
 
