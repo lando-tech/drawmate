@@ -33,6 +33,7 @@ class Graph
   double base_height_{0.0};
 
   std::unordered_map<NodeKey, std::unique_ptr<Node>> nodes_test_{};
+  std::unordered_map<PortKey, std::unique_ptr<Port>> ports_test_{};
   std::unordered_map<std::string, std::unique_ptr<Node>> nodes{};
   std::unordered_map<std::string, std::unique_ptr<Port>> ports{};
   std::unordered_map<std::string, NodeExport> node_exports_{};
@@ -57,12 +58,25 @@ class Graph
   CentralNodeConfig central_node_config_{};
   PortConfig port_config_{};
 
-  void add_node_internal(const std::string &node_label,
-                         std::vector<std::string> port_labels_left,
-                         std::vector<std::string> port_labels_right,
-                         NodeType node_type, NodeOrientation node_orientation,
-                         const std::vector<int> connection_indexes_left,
-                         const std::vector<int> connection_indexes_right);
+  std::string add_node_left_justified(const double max_ports, 
+                               NodeType node_type, 
+                               const std::string &node_label, 
+                               std::vector<int> connection_indexes_left, 
+                               std::vector<int> connection_indexes_right);
+
+  std::string add_node_right_justified(const double max_ports, 
+                                NodeType node_type, 
+                                const std::string &node_label, 
+                                std::vector<int> connection_indexes_left, 
+                                std::vector<int> connection_indexes_right);
+
+  std::string add_node_center_justified(const double max_ports,
+                                 NodeType node_type, 
+                                 const std::string &node_label, 
+                                 std::vector<int> connection_indexes_left, 
+                                 std::vector<int> connection_indexes_right);
+
+  void add_node_spanning(NodeOrientation node_orientation);
 
   void add_node_export(const std::string &node_key);
 
@@ -75,9 +89,9 @@ class Graph
 
   void add_link_export(double src_x, double src_y, double tgt_x, double tgt_y, bool has_waypoints, std::vector<WaypointLinks> waypoints);
 
-  void add_connection_incoming();
+  void add_link_incoming();
 
-  void add_connection_outgoing();
+  void add_link_outgoing();
 
   void connect_central_node();
 
@@ -95,10 +109,10 @@ class Graph
 
   double calculate_x_left() const;
 
-  void increment_y_left(double node_height);
-
   // TODO account for central node, add fallback if none exists
   double calculate_x_right(double central_width) const;
+
+  void increment_y_left(double node_height);
 
   void increment_y_right(double node_height);
 
@@ -127,13 +141,22 @@ public:
            const std::vector<int> connection_indexes_left,
            const std::vector<int> connection_indexes_right);
 
-  void connect_nodes();
+  void connect_nodes()
+  {
+    this->add_link_outgoing();
+  };
 
   void debug_print_node_data() const;
 
-  std::unordered_map<std::string, NodeExport> get_nodes();
+  std::unordered_map<std::string, NodeExport> get_nodes()
+  {
+    return this->node_exports_;
+  };
 
-  std::vector<LinkExport> get_links() { return this->link_exports_; }
+  std::vector<LinkExport> get_links()
+  {
+    return this->link_exports_;
+  }
 
   std::vector<std::string> get_node_ids() const
   {

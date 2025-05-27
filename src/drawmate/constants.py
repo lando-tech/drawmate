@@ -12,6 +12,7 @@ MX_GRAPH_XML_STYLES = {
     "arrow2": "edgeStyle=loopEdgeStyle;strokeColor=#55A1FF;orthogonalloop=0;rounded=0;jettySize=auto;html=1",
     "arrow3": "edgeStyle=none;html=1",
     "arrow4": "edgeStyle=none;html=1;exitX=1;exitY=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;",
+    "blue-arrow": "edgeStyle=none;html=1;exitX=1;exitY=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#6a00ff;strokeColor=#3700CC",
     "hidden_arrow_start": "edgeStyle=none;startArrow=none;html=1;",
     "hidden_arrow_end": "edgeStyle=none;endArrow=none;html=1;",
     "hidden_arrow": "edgeStyle=none;html=1;startArrow=none;endArrow=none",
