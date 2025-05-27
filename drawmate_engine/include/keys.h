@@ -72,7 +72,8 @@ std::vector<std::string> split_string(const std::string &str, const char dilim);
 std::string get_adjacent_port_key_string(const std::string &key,
                                   PortOrientation port_orientation,
                                   NodeOrientation node_orientation);
-PortKey get_adjacent_port_key(PortKey port_key);
+PortKey get_adjacent_port_key_right(PortKey port_key);
+PortKey get_adjacent_port_key_left(PortKey port_key);
 std::string get_adjacent_key_string(const std::string &key,
                              NodeOrientation node_orientation,
                              GridOrientation grid_orientation);

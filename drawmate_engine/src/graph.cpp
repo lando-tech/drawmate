@@ -513,7 +513,7 @@ void Graph::add_link_outgoing()
     NodeOrientation node_orientation{parent_node->get_node_orientation()};
     PortOrientation port_orientation{outgoing_port->get_port_orientation()};
 
-    PortKey incoming_port_id{get_adjacent_port_key(it)};
+    PortKey incoming_port_id{get_adjacent_port_key_right(it)};
 
     if (this->outgoing_links_.contains(it))
     {

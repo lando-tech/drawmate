@@ -276,63 +276,35 @@ std::string get_adjacent_port_key_string(const std::string &key, PortOrientation
                            "get_adjacent_port_key(const std::string& key, PortOrientation port_orientation, NodeOrientation node_orientation)");
 }
 
-PortKey get_adjacent_port_key(PortKey port_key)
+PortKey get_adjacent_port_key_right(PortKey port_key)
 {
   char node_orientation{port_key.node_orientation};
   char port_orientation{port_key.port_orientation};
+  int node_row{port_key.node_row};
   int column{port_key.column};
   int row{port_key.row};
 
   PortKey adjacent_port_key{};
   adjacent_port_key.row = row;
 
-  if (column == 0 && node_orientation != 'C')
+  if (node_orientation == 'C')
   {
-    adjacent_port_key.node_orientation = 'C';
+    adjacent_port_key.node_orientation = 'R';
+    adjacent_port_key.port_orientation = 'L';
+    adjacent_port_key.node_row = node_row;
     adjacent_port_key.column = column;
-    if (port_orientation == 'L')
-    {
-      adjacent_port_key.port_orientation = 'R';
-    }
-    else
-    {
-      adjacent_port_key.port_orientation = 'L';
-    }
+    adjacent_port_key.row = row;
+
   }
   else if (node_orientation == 'L')
   {
     adjacent_port_key.node_orientation = 'L';
-    if (port_orientation == 'L')
-    {
-      adjacent_port_key.column = column - 1;
-    }
-    else
-    {
-      adjacent_port_key.column = column + 1;
-    }
-  }
-  else if (node_orientation == 'R')
-  {
-    adjacent_port_key.node_orientation = 'R';
-    if (port_orientation == 'L')
-    {
-      adjacent_port_key.column = column + 1;
-    }
-    else
-    {
-      adjacent_port_key.column = column - 1;
-    }
-  }
-  else
-  {
-    adjacent_port_key.node_orientation = node_orientation;
-    adjacent_port_key.port_orientation = port_orientation;
-    adjacent_port_key.column = column;
-    adjacent_port_key.row = row;
+    adjacent_port_key.port_orientation = 'L';
+    adjacent_port_key.node_row = port_key.row;
   }
 
-  return adjacent_port_key;
 }
+
 
 std::string get_adjacent_key_string(const std::string &key,
                              NodeOrientation node_orientation,
