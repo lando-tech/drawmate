@@ -73,7 +73,7 @@ std::string generate_export_key(int key_size)
    * A randomly generated key with a mix of alpha-numeric characters
    */
   std::vector<char> alpha{get_alpha_numeric_vector()};
-  size_t vec_size {alpha.size()};
+  size_t vec_size{alpha.size()};
 
   std::random_device rand{};
   std::mt19937 gen(rand());
@@ -238,11 +238,55 @@ PortKey get_adjacent_port_key(const PortKey port_key)
       }
       else
       {
-        adjacent_port_key.port_orientation = 'L'; 
+        adjacent_port_key.port_orientation = 'L';
         adjacent_port_key.column = port_key.column + 1;
         adjacent_port_key.row = port_key.row;
       }
     }
     return adjacent_port_key;
   }
+}
+
+std::string convert_node_key_internal(NodeKey node_key_internal)
+{
+  std::string external{};
+  external.push_back(node_key_internal.orientation);
+  external.append("-" + std::to_string(node_key_internal.column));
+  external.append("-" + std::to_string(node_key_internal.row));
+  return external;
+}
+
+std::string convert_port_key_internal(PortKey port_key_internal)
+{
+  std::string external{};
+  external.push_back(port_key_internal.node_orientation);
+  external.append(std::to_string(port_key_internal.column) + "-");
+  external.push_back(port_key_internal.port_orientation);
+  external.append("-" + std::to_string(port_key_internal.row));
+  return external;
+}
+
+NodeKey convert_node_key_external(const std::string &node_key_external)
+{
+  NodeKey node_key_internal{};
+  std::vector<std::string> key_toks{split_string(node_key_external, '-')};
+  assert(key_toks[0][0] == 1);
+  node_key_internal.orientation = key_toks[0][0];
+  node_key_internal.column = std::stoi(key_toks[1]);
+  node_key_internal.row = std::stoi(key_toks[2]);
+  return node_key_internal;
+}
+
+PortKey convert_port_key_external(const std::string &port_key_external)
+{
+  PortKey port_key_internal{};
+  std::vector<std::string> key_toks{split_string(port_key_external, '-')};
+  assert(key_toks[0][0] == 1); 
+  port_key_internal.node_orientation = key_toks[0][0];
+  assert(key_toks[0][2] == 1);
+  port_key_internal.port_orientation = key_toks[0][2];
+
+  port_key_internal.column = std::stoi(key_toks[1]);
+  port_key_internal.row = std::stoi(key_toks[3]);
+  return port_key_internal;
 }

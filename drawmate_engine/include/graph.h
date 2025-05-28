@@ -38,9 +38,7 @@ class Graph
   double base_height_{0.0};
 
   std::unordered_map<NodeKey, std::unique_ptr<Node>> nodes_{};
-
-  std::unordered_map<PortKey, std::unique_ptr<Port>> ports_test_{};
-  std::unordered_map<std::string, std::unique_ptr<Port>> ports{};
+  std::unordered_map<PortKey, std::unique_ptr<Port>> ports_{};
 
   std::vector<PortKey> port_ids_left_{};
   std::vector<PortKey> port_ids_right_{};
@@ -50,7 +48,9 @@ class Graph
 
   // Exported containers for PYBIND11
   std::unordered_map<std::string, NodeExport> node_exports_{};
+  std::unordered_map<std::string, PortExport> port_exports_{};
   std::vector<LinkExport> link_exports_{};
+
   std::vector<std::string> node_keys_master_external{};
   std::vector<std::string> node_keys_left_external{};
   std::vector<std::string> node_keys_right_external{};
@@ -78,9 +78,10 @@ class Graph
 
   void add_node_spanning(NodeOrientation node_orientation);
 
-  void add_node_export(NodeKey node_key);
+  void add_node_export(NodeKey node_key_internal, const std::string& node_key_external);
 
-  void add_node_ports(NodeKey node_key_test,
+  void add_node_ports(NodeKey node_key_internal,
+                      const std::string& node_key_external,
                       const std::vector<std::string> &port_labels_left,
                       const std::vector<std::string> &port_labels_right,
                       NodeOrientation node_orientation);
@@ -101,17 +102,13 @@ class Graph
 
   PortExport add_port_export(double x, double y, std::string port_label);
 
-  void add_link_export(double src_x, double src_y, double tgt_x, double tgt_y, bool has_waypoints, std::vector<WaypointLinks> waypoints);
+  void add_port_target_id(PortKey source_port_key, PortKey target_port_key);
+
+  void add_link_export(const std::string& source_id, const std::string& target_id, double src_x, double src_y, double tgt_x, double tgt_y, bool has_waypoints, std::vector<WaypointLinks> waypoints);
 
   void add_link_incoming();
 
   void add_link_outgoing();
-
-  void connect_central_node();
-
-  void connect_nodes_internal();
-
-  void set_node_colum_row(const std::string &node_key);
 
   // TODO add better error message for invalid keys
   void verify_node_meta_key(
@@ -166,6 +163,11 @@ public:
   {
     return this->node_exports_;
   };
+
+  std::unordered_map<std::string, PortExport> get_ports()
+  {
+    return this->port_exports_;
+  }
 
   std::vector<LinkExport> get_links()
   {

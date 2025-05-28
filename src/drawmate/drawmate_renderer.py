@@ -23,8 +23,12 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         self.left_nodes = self.node_meta_tuple[0]
         self.right_nodes = self.node_meta_tuple[1]
 
-    def draw_node(self, attributes: dict, has_label: bool = False):
+    def draw_node(self, attributes: dict, _id:str, has_label: bool = False):
         node_elem = self.create_mxcell(attributes, str(generate_id()), has_label)
+        self.root.appendChild(node_elem)
+    
+    def draw_node_with_target(self, attributes: dict, __id__: str, source_id: str, target_id: str, has_label: bool = False):
+        node_elem = self.create_mxcell_with_target(attributes, __id__, source_id, target_id)
         self.root.appendChild(node_elem)
 
     def draw_connection(self, attributes: dict, has_label: bool = False):
@@ -139,6 +143,8 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 node = nodes_export.get(i)
             except IndexError:
                 continue
+            
+            print(node.source_id)
 
             attributes = {
                 "x": node.x,
@@ -157,31 +163,32 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 "style": MX_GRAPH_XML_STYLES["text-box-filled"]
             }
 
-            self.draw_node(attributes)
-            self.draw_node(label_attributes, has_label=True)
+            self.draw_node(attributes, node.source_id)
+            self.draw_node(label_attributes, node.label.source_id, has_label=True)
 
-            for port in node.ports_left:
+        ports = self.graph.get_ports()
+        for key, port in ports.items():
 
-                port_attributes = {
-                    "x": port.x,
-                    "y": port.y,
-                    "label": port.name,
-                    "width": port.width,
-                    "height": port.height,
-                    "style": MX_GRAPH_XML_STYLES["text-box"]
-                }
-                self.draw_node(port_attributes, has_label=True)
+            port_attributes = {
+                "x": port.x,
+                "y": port.y,
+                "label": port.name,
+                "width": port.width,
+                "height": port.height,
+                "style": MX_GRAPH_XML_STYLES["text-box"]
+            }
+            # print(port.source_id)
+            self.draw_node(port_attributes, port.source_id, has_label=True)
 
-            for index, port in enumerate(node.ports_right):
-                port_attributes = {
-                    "x": port.x,
-                    "y": port.y,
-                    "label": port.name,
-                    "width": port.width,
-                    "height": port.height,
-                    "style": MX_GRAPH_XML_STYLES["text-box"]
-                }
-                self.draw_node(port_attributes, has_label=True)
+    def test_nodes(self):
+        # for key, node in self.graph.get_nodes().items():
+        #     print(key, node)
+        
+        self.graph.connect_nodes()
+        links = self.graph.get_links()
+        for link in links:
+            print(link.source_id, link.target_id)
+            
 
 
 if __name__ == "__main__":
@@ -191,7 +198,8 @@ if __name__ == "__main__":
     draw.init_matrix()
     draw.init_nodes("left")
     draw.init_nodes("right")
-    draw.render_nodes()
-    draw.link_nodes()
-    draw.create_xml(output_file)
-    print(f"Template creation successful. File saved @ {output_file}")
+    draw.test_nodes()
+    # draw.render_nodes()
+    # draw.link_nodes()
+    # draw.create_xml(output_file)
+    # print(f"Template creation successful. File saved @ {output_file}")

@@ -43,7 +43,10 @@ struct PortKey
 
     bool operator==(const PortKey &other) const
     {
-        return node_orientation == other.node_orientation && port_orientation == other.port_orientation && column == other.column && row == other.row;
+        return node_orientation == other.node_orientation && 
+               port_orientation == other.port_orientation && 
+               column == other.column && 
+               row == other.row;
     }
 };
 
@@ -71,20 +74,15 @@ namespace std
 }
 
 std::string generate_export_key(int key_size);
-NodeKey convert_node_key_internal(const std::string& node_key_str);
 std::string generate_node_key_string(char node_orientation, const int column_count, const int row_count);
 std::string generate_port_key_string(const std::string &parent_node_key, PortOrientation port_orientation, int port_index);
 std::vector<std::string> split_string(const std::string &str, const char dilim);
-std::string get_adjacent_port_key_string(const std::string &key,
-                                  PortOrientation port_orientation,
-                                  NodeOrientation node_orientation);
-PortKey get_adjacent_port_key(PortKey port_key);
-std::string get_adjacent_key_string(const std::string &key,
-                             NodeOrientation node_orientation,
-                             GridOrientation grid_orientation);
-std::string get_adjacent_key_string_from_center(NodeOrientation node_orientation,
-                                         int port_index);
 
-NodeKey convert_node_key_str(const std::string& node_key_str);
+PortKey get_adjacent_port_key(PortKey port_key);
+
+std::string convert_node_key_internal(NodeKey node_key_internal);
+std::string convert_port_key_internal(PortKey port_key_internal);
+NodeKey convert_node_key_external(const std::string& node_key_external);
+PortKey convert_port_key_external(const std::string& port_key_external);
 
 #endif // KEYS_H

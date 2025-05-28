@@ -54,7 +54,7 @@ class MxCell(DocBuilder):
             style (str): The xml style for the object
             value (str): The value will be the label on the object once drawn.
         """
-        self.attributes["vertex"] = ""
+        self.attributes["vertex"] = "1"
         self.attributes["value"] = value
         self.attributes["style"] = style
         self.attributes["edge"] = "1"

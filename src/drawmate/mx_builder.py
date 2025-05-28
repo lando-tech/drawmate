@@ -55,6 +55,28 @@ class MxBuilder:
         cell_elem.appendChild(geo_elem)
 
         return cell_elem
+    
+    def create_mxcell_with_target(self, attributes: dict, __id__:str, source_id: str, target_id: str, has_label: bool = False):
+        cell = MxCell()
+        if not has_label:
+            cell.set_mxcell_values_point(value="", style=attributes["style"], __id__=__id__, src_id=source_id, tgt_id=target_id)
+        else:
+            cell.set_mxcell_values_point(
+               style=attributes["style"], value=attributes["label"], __id__= __id__, src_id=source_id, tgt_id=target_id
+            )
+        # Append mxCell to mxObject
+        cell_elem = cell.create_xml_element("mxCell", cell.attributes)
+        cell.mxcell_object.appendChild(cell_elem)
+
+        # Create mxGeometry object
+        # geo = MxGeometry()
+        # geo.set_geometry_values(attributes["x"], attributes["y"], attributes["width"], attributes["height"])
+
+        # # Append mxGeometry to mxCell
+        # geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
+        # cell_elem.appendChild(geo_elem)
+
+        return cell_elem       
 
     def create_mxcell_arrow(
         self, data: dict, __id__: str = ""

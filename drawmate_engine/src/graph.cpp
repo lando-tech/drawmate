@@ -254,24 +254,24 @@ void Graph::add_node(
     {
       internal_key = add_node_left_justified(
           max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
-      external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
+      external_key = convert_node_key_internal(internal_key);
       this->node_keys_left_external.push_back(external_key);
     }
     else if (node_orientation == NodeOrientation::RIGHT)
     {
       internal_key = add_node_right_justified(
           max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
-      external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
+      external_key = convert_node_key_internal(internal_key);
       this->node_keys_right_external.push_back(external_key);
     }
     else
     {
       internal_key = add_node_center_justified(
           max_ports, node_type, node_meta_data.at("node-label"), connection_indexes_left, connection_indexes_right);
-      external_key = generate_node_key_string(internal_key.orientation, internal_key.column, internal_key.row);
+      external_key = convert_node_key_internal(internal_key);
     }
-    add_node_export(internal_key);
-    add_node_ports(internal_key, port_labels_left, port_labels_right, node_orientation);
+    add_node_export(internal_key, external_key);
+    add_node_ports(internal_key, external_key, port_labels_left, port_labels_right, node_orientation);
     this->node_keys_master_external.push_back(external_key);
   }
 }
@@ -381,50 +381,59 @@ NodeKey Graph::add_node_center_justified(const double max_ports,
   return test_key;
 }
 
-void Graph::add_node_export(NodeKey node_key)
+void Graph::add_node_export(NodeKey node_key_internal, const std::string& node_key_external)
 {
-  const auto &node{this->nodes_.at(node_key)};
-
-  std::string export_id{generate_export_key(this->key_size)};
-  export_id.append("-" + std::to_string(this->total_node_count_++));
-
-  NodeExport node_export{};
-  node_export.x = node->get_x();
-  node_export.y = node->get_y();
-  node_export.width = node->get_width();
-  node_export.height = node->get_height();
-  node_export.name = node->get_label();
-  node_export.source_id = export_id;
-
-  LabelExport label{};
-  label.x = node_export.x;
-  label.y = node_export.y;
-
-  if (node->get_node_orientation() == NodeOrientation::CENTER)
+  if (this->nodes_.contains(node_key_internal))
   {
-    label.width = this->central_node_config_.width;
+    const auto &node{this->nodes_.at(node_key_internal)};
+    std::string node_export_id{generate_export_key(this->key_size)};
+    node_export_id.append("-" + std::to_string(this->total_node_count_++));
+
+    std::string label_export_id{generate_export_key(this->key_size)};
+    label_export_id.append("-" + std::to_string(this->total_node_count_++));
+
+    NodeExport node_export{};
+    node_export.x = node->get_x();
+    node_export.y = node->get_y();
+    node_export.width = node->get_width();
+    node_export.height = node->get_height();
+    node_export.name = node->get_label();
+    node_export.source_id = node_export_id;
+
+    LabelExport label{};
+    label.x = node_export.x;
+    label.y = node_export.y;
+
+    if (node->get_node_orientation() == NodeOrientation::CENTER)
+    {
+      label.width = this->central_node_config_.width;
+    }
+    else
+    {
+      label.width = this->node_config_.width;
+    }
+
+    label.height = this->node_config_.label_height;
+    label.name = node_export.name;
+    label.source_id = label_export_id;
+
+    node_export.label = label;
+    this->node_exports_[node_key_external] = node_export;
   }
   else
   {
-    label.width = this->node_config_.width;
+    throw std::runtime_error("Error at <add_node_export>, key does not exist");
   }
-
-  label.height = this->node_config_.label_height;
-  label.name = node_export.name;
-
-  node_export.label = label;
-  std::string node_key_str{generate_node_key_string(node_key.orientation, node_key.column, node_key.row)};
-  this->node_exports_[node_key_str] = node_export;
 }
 
 void Graph::add_node_ports(NodeKey node_key,
+                           const std::string& node_key_external,
                            const std::vector<std::string> &port_labels_left,
                            const std::vector<std::string> &port_labels_right,
                            NodeOrientation node_orientation)
 {
   const auto &node{this->nodes_.at(node_key)};
-  std::string node_key_str{generate_node_key_string(node_key.orientation, node_key.column, node_key.row)};
-  auto &node_export{this->node_exports_.at(node_key_str)};
+  auto &node_export{this->node_exports_.at(node_key_external)};
 
   double x_left{node->get_x()};
   double x_right{};
@@ -474,11 +483,11 @@ void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels,
   for (const auto &it : port_labels)
   {
     PortKey port_key{node_key.orientation, 'L', node_key.column, port_index};
-    this->ports_test_[port_key] = std::make_unique<Port>(x_left, y_left, this->port_config_.port_width,
+    this->ports_[port_key] = std::make_unique<Port>(x_left, y_left, this->port_config_.port_width,
                                                          this->port_config_.port_height, it, node_key,
                                                          PortType::INPUT, PortOrientation::LEFT);
     this->port_ids_left_.push_back(port_key);
-    node_export.ports_left_.push_back(add_port_export(x_left, y_left, it));
+    this->port_exports_[convert_port_key_internal(port_key)] = add_port_export(x_left, y_left, it);
     y_left +=
         this->port_config_.port_height + this->layout_config_.port_spacing;
     port_index++;
@@ -495,11 +504,11 @@ void Graph::add_node_ports_right_justified(std::vector<std::string> port_labels,
   for (const auto &it : port_labels)
   {
     PortKey port_key{node_key.orientation, 'R', node_key.column, port_index};
-    this->ports_test_[port_key] = std::make_unique<Port>(x_right, y_right, this->port_config_.port_width,
+    this->ports_[port_key] = std::make_unique<Port>(x_right, y_right, this->port_config_.port_width,
                                                          this->port_config_.port_height, it, node_key,
                                                          PortType::INPUT, PortOrientation::LEFT);
     this->port_ids_right_.push_back(port_key);
-    node_export.ports_right_.push_back(add_port_export(x_right, y_right, it));
+    this->port_exports_[convert_port_key_internal(port_key)] = add_port_export(x_right, y_right, it);
     y_right +=
         this->port_config_.port_height + this->layout_config_.port_spacing;
     port_index++;
@@ -525,8 +534,9 @@ void Graph::add_link_outgoing()
 {
   for (auto it : this->port_ids_right_)
   {
-    const auto &outgoing_port{this->ports_test_.at(it)};
+    const auto &outgoing_port{this->ports_.at(it)};
     const auto &parent_node{this->nodes_.at(outgoing_port->get_parent_id())};
+
     NodeOrientation node_orientation{parent_node->get_node_orientation()};
     PortOrientation port_orientation{outgoing_port->get_port_orientation()};
 
@@ -535,32 +545,46 @@ void Graph::add_link_outgoing()
     {
       throw std::runtime_error("Attempt to overwrite outgoing Port ID!");
     }
-    if (this->ports_test_.contains(incoming_port_id))
+    if (this->ports_.contains(incoming_port_id))
     {
-      auto &incoming_port{this->ports_test_.at(incoming_port_id)};
+      add_port_target_id(it, incoming_port_id);
+      auto &incoming_port{this->ports_.at(incoming_port_id)};
       this->outgoing_links_[it] = std::make_unique<Link>();
 
       auto &link{this->outgoing_links_.at(it)};
       link->add_link(it, incoming_port_id,
                      outgoing_port->get_x(), outgoing_port->get_y(),
                      incoming_port->get_x(), incoming_port->get_y());
-      this->add_link_export(outgoing_port->get_x(), outgoing_port->get_y(),
+      this->add_link_export(convert_port_key_internal(it), convert_port_key_internal(incoming_port_id), 
+                            outgoing_port->get_x(), outgoing_port->get_y(),
                             incoming_port->get_x(), incoming_port->get_y(),
                             link->has_waypoints, link->vec_waypoint_links);
     }
   }
 }
 
-void Graph::add_link_export(double src_x, double src_y, double tgt_x,
+void Graph::add_port_target_id(PortKey source_port_key, PortKey target_port_key)
+{
+  auto& source_port {this->port_exports_.at(convert_port_key_internal(source_port_key))};
+  auto& target_port {this->port_exports_.at(convert_port_key_internal(target_port_key))};
+  source_port.target_id = target_port.source_id;
+}
+
+void Graph::add_link_export(const std::string& source_id, const std::string& target_id, 
+                            double src_x, double src_y, double tgt_x,
                             double tgt_y, bool has_waypoints,
                             std::vector<WaypointLinks> waypoints)
 {
   std::string export_id{generate_export_key(this->key_size)};
+  export_id.append("-" + std::to_string(this->total_node_count_++));
   LinkExport link_export{};
   link_export.source_x = src_x + this->port_config_.port_width;
   link_export.source_y = src_y + this->port_config_.port_height / 2.0;
   link_export.target_x = tgt_x;
   link_export.target_y = src_y + this->port_config_.port_height / 2.0;
+  link_export.source_id = source_id;
+  link_export.target_id = target_id;
+  link_export._id = export_id;
   if (has_waypoints)
   {
     link_export.has_waypoints = true;

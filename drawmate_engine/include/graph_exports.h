@@ -11,6 +11,7 @@ struct LinkExport
     double source_y{};
     double target_x{};
     double target_y{};
+    std::string _id{};
     std::string source_id{};
     std::string target_id{};
     bool has_waypoints{};
@@ -31,6 +32,8 @@ struct PortExport
 struct LabelExport
 {
     std::string name{};
+    std::string source_id{};
+    std::string target_id{};
     double x{};
     double y{};
     double width{};
@@ -47,8 +50,6 @@ struct NodeExport
     double width{};
     double height{};
     LabelExport label{};
-    std::vector<PortExport> ports_left_{};
-    std::vector<PortExport> ports_right_{};
 };
 
 #endif // GRAPH_EXPORTS_H
