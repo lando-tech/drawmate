@@ -5,15 +5,7 @@ from constants import MX_OBJECT_ATTRIBUTES
 
 class MxObject(DocBuilder):
     """
-    Summary: The MxObject class is a child of the DocBuilder class. Its main function is to
-    facilitate the proper structure for each xml element and ensure that the proper nesting
-    of each xml element is managed accordingly. For instance: The object is the top level tag,
-    followed by mxCell, mxGeometry, mxPoint, and mxArray (if any). The MxObject class can be
-    instantiated as much as needed to create a new object on the graph, ensuring the structure
-    is accurate and consistent throughout template/diagram creation. It is crucial that only
-    one instance of the doc builder class exists since MxObject inherits the top level structure of the file.
-    Otherwise, the object might be added to the wrong instance of a DocBuilder object, resulting
-    in inaccurate xml structure.
+    _summary_
     """
 
     def __init__(self) -> None:
