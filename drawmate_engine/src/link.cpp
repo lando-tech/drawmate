@@ -57,7 +57,7 @@ void Link::add_waypoints(const double source_x, const double source_y, const dou
 
 }
 
-void Link::add_link(PortKey source_port_id, PortKey target_port_id, const double source_x, const double source_y,
+void Link::add_link(const PortKey source_port_id, const PortKey target_port_id, const double source_x, const double source_y,
                     const double target_x, const double target_y)
 {
     set_source_port(source_port_id, source_x, source_y);

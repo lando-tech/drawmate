@@ -232,6 +232,11 @@ void Graph::add_node(
   NodeType node_type{verify_node_type(node_meta_data.at("node-type"))};
   NodeOrientation node_orientation{
       verify_node_orientation(node_meta_data.at("node-orientation"))};
+  
+  if (this->nodes_.empty() && node_orientation != NodeOrientation::CENTER)
+  {
+    throw std::runtime_error("First node must be center aligned!");
+  }
 
   if (node_type == NodeType::SPAN)
   {
@@ -412,13 +417,13 @@ void Graph::add_node_export(NodeKey node_key)
   this->node_exports_[node_key_str] = node_export;
 }
 
-void Graph::add_node_ports(NodeKey node_key_test,
+void Graph::add_node_ports(NodeKey node_key,
                            const std::vector<std::string> &port_labels_left,
                            const std::vector<std::string> &port_labels_right,
                            NodeOrientation node_orientation)
 {
-  const auto &node{this->nodes_.at(node_key_test)};
-  std::string node_key_str{generate_node_key_string(node_key_test.orientation, node_key_test.column, node_key_test.row)};
+  const auto &node{this->nodes_.at(node_key)};
+  std::string node_key_str{generate_node_key_string(node_key.orientation, node_key.column, node_key.row)};
   auto &node_export{this->node_exports_.at(node_key_str)};
 
   double x_left{node->get_x()};
@@ -453,15 +458,22 @@ void Graph::add_node_ports(NodeKey node_key_test,
     port_index_right = node->get_row();
   }
 
-  add_node_ports_left_justified(port_labels_left, node_key_test, x_left, y_left, node_export, port_index_left);
-  add_node_ports_right_justified(port_labels_right, node_key_test, x_right, y_right, node_export, port_index_right);
+  add_node_ports_left_justified(
+      port_labels_left, node_key, x_left, y_left, node_export, port_index_left);
+  add_node_ports_right_justified(
+      port_labels_right, node_key, x_right, y_right, node_export, port_index_right);
 }
 
-void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport &node_export, int port_index)
+void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels,
+                                          const NodeKey node_key,
+                                          double x_left,
+                                          double y_left,
+                                          NodeExport &node_export,
+                                          int port_index)
 {
   for (const auto &it : port_labels)
   {
-    PortKey port_key{node_key.orientation, 'L', node_key.row, node_key.column, port_index};
+    PortKey port_key{node_key.orientation, 'L', node_key.column, port_index};
     this->ports_test_[port_key] = std::make_unique<Port>(x_left, y_left, this->port_config_.port_width,
                                                          this->port_config_.port_height, it, node_key,
                                                          PortType::INPUT, PortOrientation::LEFT);
@@ -473,14 +485,19 @@ void Graph::add_node_ports_left_justified(std::vector<std::string> port_labels, 
   }
 }
 
-void Graph::add_node_ports_right_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_right, double y_right, NodeExport &node_export, int port_index)
+void Graph::add_node_ports_right_justified(std::vector<std::string> port_labels,
+                                           const NodeKey node_key,
+                                           double x_right,
+                                           double y_right,
+                                           NodeExport &node_export,
+                                           int port_index)
 {
   for (const auto &it : port_labels)
   {
-    PortKey port_key{node_key.orientation, 'R', node_key.row, node_key.column, port_index};
+    PortKey port_key{node_key.orientation, 'R', node_key.column, port_index};
     this->ports_test_[port_key] = std::make_unique<Port>(x_right, y_right, this->port_config_.port_width,
                                                          this->port_config_.port_height, it, node_key,
-                                                         PortType::OUTPUT, PortOrientation::RIGHT);
+                                                         PortType::INPUT, PortOrientation::LEFT);
     this->port_ids_right_.push_back(port_key);
     node_export.ports_right_.push_back(add_port_export(x_right, y_right, it));
     y_right +=
@@ -508,14 +525,12 @@ void Graph::add_link_outgoing()
 {
   for (auto it : this->port_ids_right_)
   {
-    std::cout << "Port ID: " << it.node_orientation << "-" << it.column << "-" << it.node_row << "-" << it.port_orientation << "-" << it.row << "\n";
     const auto &outgoing_port{this->ports_test_.at(it)};
     const auto &parent_node{this->nodes_.at(outgoing_port->get_parent_id())};
     NodeOrientation node_orientation{parent_node->get_node_orientation()};
     PortOrientation port_orientation{outgoing_port->get_port_orientation()};
 
-    PortKey incoming_port_id{get_adjacent_port_key_right(it)};
-
+    PortKey incoming_port_id{get_adjacent_port_key(it)};
     if (this->outgoing_links_.contains(it))
     {
       throw std::runtime_error("Attempt to overwrite outgoing Port ID!");
@@ -553,20 +568,6 @@ void Graph::add_link_export(double src_x, double src_y, double tgt_x,
   }
   this->link_exports_.push_back(link_export);
 }
-
-// void Graph::debug_print_node_data() const
-// {
-//   for (const auto &id : this->node_keys_master_)
-//   {
-//     const auto &node{this->nodes_test_.at(id)};
-//     std::cout << "\nNode     ID: " << id << "\n";
-//     printf("Node      x: %.2f\n", node->get_x());
-//     printf("Node      y: %.2f\n", node->get_y());
-//     printf("Node  width: %.2f\n", node->get_width());
-//     printf("Node height: %.2f\n", node->get_height());
-//     printf("\n======================\n");
-//   }
-// }
 
 Graph::Graph(const LayoutConfig &layout_config, const GridConfig &grid_config,
              const CentralNodeConfig &central_node_config,

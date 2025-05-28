@@ -5,6 +5,7 @@
 #include "node.h"
 #include "graph_config.h"
 #include "keys.h"
+#include <cassert>
 
 std::vector<char> get_alpha_upper()
 {
@@ -149,241 +150,99 @@ std::vector<std::string> split_string(const std::string &str, char delim)
   return tokens;
 }
 
-std::string get_adjacent_port_key_string(const std::string &key, PortOrientation port_orientation, NodeOrientation node_orientation)
+PortKey get_adjacent_port_key(const PortKey port_key)
 {
-  std::vector<std::string> key_toks{split_string(key, '-')};
-  int column{};
-  int row{};
-  int index{};
-  std::string adjacent_key{};
-  try
-  {
-    column = std::stoi(key_toks[1]);
-    row = std::stoi(key_toks[3]);
-    if (column == 0)
-    {
-      switch (node_orientation)
-      {
-      case NodeOrientation::LEFT:
-        switch (port_orientation)
-        {
-        case PortOrientation::LEFT:
-          adjacent_key.append("L-" + std::to_string(column + 1));
-          adjacent_key.append("-R-" + std::to_string(row));
-          break;
-        case PortOrientation::RIGHT:
-          adjacent_key.append("C-" + std::to_string(column));
-          adjacent_key.append("-L-" + std::to_string(row));
-          break;
-        default:
-          throw std::runtime_error("Port Orientation must be defined! get_adjacent_port_key line 52");
-        }
-        break;
-      case NodeOrientation::RIGHT:
-        switch (port_orientation)
-        {
-        case PortOrientation::LEFT:
-          adjacent_key.append("C-" + std::to_string(column));
-          adjacent_key.append("-R-" + std::to_string(row));
-          break;
-        case PortOrientation::RIGHT:
-          adjacent_key.append("R-" + std::to_string(column + 1));
-          adjacent_key.append("-L-" + std::to_string(row));
-          break;
-        default:
-          throw std::runtime_error("Port Orientation must be defined! get_adjacent_port_key line 69");
-        }
-        break;
-      case NodeOrientation::CENTER:
-        switch (port_orientation)
-        {
-        case PortOrientation::LEFT:
-          adjacent_key.append("L-");
-          adjacent_key.append(std::to_string(column));
-          adjacent_key.append("-R-");
-          adjacent_key.append(std::to_string(row));
-          break;
-        case PortOrientation::RIGHT:
-          adjacent_key.append("R-");
-          adjacent_key.append(std::to_string(column));
-          adjacent_key.append("-L-");
-          adjacent_key.append(std::to_string(row));
-          break;
-        default:
-          throw std::runtime_error("Port Orientation must be defined! get_adjacent_port_key line 93");
-        }
-        break;
-      default:
-        throw std::runtime_error("Node Orientation must be defined! get_adjacent_port_key line 97");
-      }
-    }
-    else
-    {
-      switch (node_orientation)
-      {
-      case NodeOrientation::LEFT:
-        adjacent_key.append("L-");
-        switch (port_orientation)
-        {
-        case PortOrientation::LEFT:
-          adjacent_key.append(std::to_string(column + 1));
-          adjacent_key.append("-R-");
-          adjacent_key.append(std::to_string(row));
-          break;
-        case PortOrientation::RIGHT:
-          adjacent_key.append(std::to_string(column - 1));
-          adjacent_key.append("-L-");
-          adjacent_key.append(std::to_string(row));
-          break;
-        default:
-          throw std::runtime_error("Port Orientation must be defined! get_adjacent_port_key line 120");
-        }
-        break;
-      case NodeOrientation::RIGHT:
-        adjacent_key.append("R-");
-        switch (port_orientation)
-        {
-        case PortOrientation::LEFT:
-          adjacent_key.append(std::to_string(column - 1));
-          adjacent_key.append("-R-");
-          adjacent_key.append(std::to_string(row));
-          break;
-        case PortOrientation::RIGHT:
-          adjacent_key.append(std::to_string(column + 1));
-          adjacent_key.append("-L-");
-          adjacent_key.append(std::to_string(row));
-          break;
-        default:
-          throw std::runtime_error("Port Orientation must be defined! get_adjacent_port_key Node orientation: Right line 137");
-        }
-        break;
-      default:
-        throw std::runtime_error("Node Orientation must be defined! get_adjacent_port_key line 140");
-      }
-    }
-    return adjacent_key;
-  }
-  catch (const std::invalid_argument &e)
-  {
-    throw std::runtime_error("Invalid argument for key index: get_adjacent_port_key");
-  }
-  catch (const std::out_of_range &e)
-  {
-    throw std::runtime_error("Argument of out range");
-  }
-
-  throw std::runtime_error("Unexpected error occured during function: "
-                           "get_adjacent_port_key(const std::string& key, PortOrientation port_orientation, NodeOrientation node_orientation)");
-}
-
-PortKey get_adjacent_port_key_right(PortKey port_key)
-{
-  char node_orientation{port_key.node_orientation};
-  char port_orientation{port_key.port_orientation};
-
-  int node_row{port_key.node_row};
-  int column{port_key.column};
-  int row{port_key.row};
-
   PortKey adjacent_port_key{};
-  adjacent_port_key.node_orientation = 'R';
-  adjacent_port_key.port_orientation = 'L';
-  adjacent_port_key.row = row;
 
-  if (node_orientation == 'C')  
+  if (port_key.column == 0)
   {
-    adjacent_port_key.column = column;
-    adjacent_port_key.node_row = row;
-  }
-
-  std::cout << "Adjacent Port ID: " << adjacent_port_key.node_orientation << "-" << adjacent_port_key.column << "-" << adjacent_port_key.node_row << "-" << adjacent_port_key.port_orientation << "-" << adjacent_port_key.row << "\n";
-  return adjacent_port_key;
-}
-
-
-std::string get_adjacent_key_string(const std::string &key,
-                             NodeOrientation node_orientation,
-                             GridOrientation grid_orientation)
-{
-  /*
-   * Takes in the current key, current node orientation, and the adjacency of the neighbor
-   * as described in the Grid Orientation enum class. It will return the adjacent key, and
-   * ensure the conversion of stoi is handled properly.
-   */
-  std::vector<std::string> key_toks{split_string(key, '-')};
-  int column{};
-  int row{};
-  std::string adjacent_key{};
-  try
-  {
-    column = std::stoi(key_toks[1]);
-    row = std::stoi(key_toks[2]);
-    if (node_orientation == NodeOrientation::LEFT)
+    if (port_key.node_orientation == 'C')
     {
-      adjacent_key.append("L-");
+      if (port_key.port_orientation == 'L')
+      {
+        adjacent_port_key.node_orientation = 'L';
+        adjacent_port_key.port_orientation = 'R';
+        adjacent_port_key.column = port_key.column;
+        adjacent_port_key.row = port_key.row;
+      }
+      else
+      {
+        adjacent_port_key.node_orientation = 'R';
+        adjacent_port_key.port_orientation = 'L';
+        adjacent_port_key.column = port_key.column;
+        adjacent_port_key.row = port_key.row;
+      }
     }
-    else if (node_orientation == NodeOrientation::RIGHT)
+    else if (port_key.node_orientation == 'L')
     {
-      adjacent_key.append("R-");
+      if (port_key.port_orientation == 'L')
+      {
+        adjacent_port_key.node_orientation = 'L';
+        adjacent_port_key.port_orientation = 'R';
+        adjacent_port_key.column = port_key.column + 1;
+        adjacent_port_key.row = port_key.row;
+      }
+      else
+      {
+        adjacent_port_key.node_orientation = 'C';
+        adjacent_port_key.port_orientation = 'L';
+        adjacent_port_key.column = port_key.column;
+        adjacent_port_key.row = port_key.row;
+      }
+    }
+    else if (port_key.node_orientation == 'R')
+    {
+      if (port_key.port_orientation == 'L')
+      {
+        adjacent_port_key.node_orientation = 'C';
+        adjacent_port_key.port_orientation = 'R';
+        adjacent_port_key.column = port_key.column;
+        adjacent_port_key.row = port_key.row;
+      }
+      else
+      {
+        adjacent_port_key.node_orientation = 'R';
+        adjacent_port_key.port_orientation = 'L';
+        adjacent_port_key.column = port_key.column + 1;
+        adjacent_port_key.row = port_key.row;
+      }
+    }
+    return adjacent_port_key;
+  }
+  else
+  {
+    if (port_key.node_orientation == 'L')
+    {
+      adjacent_port_key.node_orientation = 'L';
+      if (port_key.port_orientation == 'L')
+      {
+        adjacent_port_key.port_orientation = 'R';
+        adjacent_port_key.column = port_key.column + 1;
+        adjacent_port_key.row = port_key.row;
+      }
+      else
+      {
+        adjacent_port_key.port_orientation = 'L';
+        adjacent_port_key.column = port_key.column - 1;
+        adjacent_port_key.row = port_key.row;
+      }
     }
     else
     {
-      adjacent_key.append("C-");
+      adjacent_port_key.node_orientation = 'R';
+      if (port_key.port_orientation == 'L')
+      {
+        adjacent_port_key.port_orientation = 'R';
+        adjacent_port_key.column = port_key.column - 1;
+        adjacent_port_key.row = port_key.row;
+      }
+      else
+      {
+        adjacent_port_key.port_orientation = 'L'; 
+        adjacent_port_key.column = port_key.column + 1;
+        adjacent_port_key.row = port_key.row;
+      }
     }
-
-    if (grid_orientation == GridOrientation::LEFT)
-    {
-      adjacent_key.append(std::to_string(column + 1));
-      adjacent_key.append("-" + std::to_string(row));
-    }
-    else if (grid_orientation == GridOrientation::RIGHT)
-    {
-      adjacent_key.append(std::to_string(column - 1));
-      adjacent_key.append("-" + std::to_string(row));
-    }
-    else if (grid_orientation == GridOrientation::ABOVE)
-    {
-      adjacent_key.append(std::to_string(column) + "-");
-      adjacent_key.append(std::to_string(row - 1));
-    }
-    else if (grid_orientation == GridOrientation::BELOW)
-    {
-      adjacent_key.append(std::to_string(column) + "-");
-      adjacent_key.append(std::to_string(row + 1));
-    }
-    return adjacent_key;
+    return adjacent_port_key;
   }
-  catch (const std::invalid_argument &e)
-  {
-    throw std::runtime_error("Invalid argument for key index");
-  }
-  catch (const std::out_of_range &e)
-  {
-    throw std::runtime_error("Argument of out range");
-  }
-
-  throw std::runtime_error("Unexpected error occured during function: "
-                           "get_adjacent_key(const std::string& key)");
-}
-
-std::string get_adjacent_key_string_from_center(NodeOrientation node_orientation,
-                                         int port_index)
-{
-  /*
-   * Takes in the port index of the desired node, and the orientation of the desired node.
-   * It will always return a node at column 0, because directly adjacent nodes, in
-   * reference to the matrix, are always at column 0. Port indexes are set to match
-   * the row of the parent node.
-   */
-  std::string adjacent_key{};
-  if (node_orientation == NodeOrientation::LEFT)
-  {
-    adjacent_key.append("L-0-" + std::to_string(port_index));
-  }
-  else if (node_orientation == NodeOrientation::RIGHT)
-  {
-    adjacent_key.append("R-0-" + std::to_string(port_index));
-  }
-
-  return adjacent_key;
 }

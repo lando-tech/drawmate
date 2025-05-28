@@ -38,28 +38,34 @@ struct PortKey
 {
     char node_orientation{};
     char port_orientation{};
-    int node_row{};
     int column{};
     int row{};
 
     bool operator==(const PortKey &other) const
     {
-        return node_orientation == other.node_orientation && port_orientation == other.port_orientation && node_row == other.node_row && column == other.column && row == other.row;
+        return node_orientation == other.node_orientation && port_orientation == other.port_orientation && column == other.column && row == other.row;
     }
 };
 
+template <typename T>
+inline void hash_combine(std::size_t& seed, const T& val)
+{
+    seed ^= std::hash<T>{}(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
 namespace std
 {
-    template <>
+    template<>
     struct hash<PortKey>
     {
-        size_t operator()(const PortKey &k) const
+        std::size_t operator()(const PortKey &k) const
         {
-            return (hash<char>()(k.node_orientation) << 1) ^
-                   (hash<char>()(k.port_orientation) << 2) ^
-                   (hash<int>()(k.node_row) << 3) ^
-                   (hash<int>()(k.column) << 4) ^
-                   (hash<int>()(k.row) << 5);
+            std::size_t h{0};
+            hash_combine(h, k.node_orientation);
+            hash_combine(h, k.port_orientation);
+            hash_combine(h, k.column);
+            hash_combine(h, k.row);
+            return h;
         }
     };
 }
@@ -72,12 +78,13 @@ std::vector<std::string> split_string(const std::string &str, const char dilim);
 std::string get_adjacent_port_key_string(const std::string &key,
                                   PortOrientation port_orientation,
                                   NodeOrientation node_orientation);
-PortKey get_adjacent_port_key_right(PortKey port_key);
-PortKey get_adjacent_port_key_left(PortKey port_key);
+PortKey get_adjacent_port_key(PortKey port_key);
 std::string get_adjacent_key_string(const std::string &key,
                              NodeOrientation node_orientation,
                              GridOrientation grid_orientation);
 std::string get_adjacent_key_string_from_center(NodeOrientation node_orientation,
                                          int port_index);
+
+NodeKey convert_node_key_str(const std::string& node_key_str);
 
 #endif // KEYS_H

@@ -32,10 +32,10 @@ class Port : public GraphObject
     friend class Link;
 
 public:
-    Port(double x, double y, int width, int height, const std::string &label, const NodeKey parent_id, PortType port_type,
+    Port(double x, double y, int width, int height, const std::string &label, NodeKey parent_id, PortType port_type,
          PortOrientation port_orientation);
 
-    void set_parent_id(NodeKey parent_id) { this->parent_node_id_ = parent_id; }
+    void set_parent_id(const NodeKey parent_id) { this->parent_node_id_ = parent_id; }
     void set_port_type(const PortType port_type) { this->port_type = port_type; }
     void set_port_orientation(const PortOrientation port_orientation)
     { this->port_orientation_ = port_orientation; }

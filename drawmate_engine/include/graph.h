@@ -41,6 +41,7 @@ class Graph
 
   std::unordered_map<PortKey, std::unique_ptr<Port>> ports_test_{};
   std::unordered_map<std::string, std::unique_ptr<Port>> ports{};
+
   std::vector<PortKey> port_ids_left_{};
   std::vector<PortKey> port_ids_right_{};
 
@@ -84,9 +85,19 @@ class Graph
                       const std::vector<std::string> &port_labels_right,
                       NodeOrientation node_orientation);
 
-  void add_node_ports_left_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport& node_export, int port_index);
+  void add_node_ports_left_justified(std::vector<std::string> port_labels,
+                                     const NodeKey node_key, 
+                                     double x_left, 
+                                     double y_left, 
+                                     NodeExport& node_export, 
+                                     int port_index);
 
-  void add_node_ports_right_justified(std::vector<std::string> port_labels, NodeKey node_key, double x_left, double y_left, NodeExport& node_export, int port_index);
+  void add_node_ports_right_justified(std::vector<std::string> port_labels, 
+                                      const NodeKey node_key, 
+                                      double x_left, 
+                                      double y_left, 
+                                      NodeExport& node_export, 
+                                      int port_index);
 
   PortExport add_port_export(double x, double y, std::string port_label);
 

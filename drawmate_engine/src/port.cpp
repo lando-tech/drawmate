@@ -10,7 +10,7 @@ Port::Port(
     const int width,
     const int height,
     const std::string& label,
-    NodeKey parent_id,
+    const NodeKey parent_id,
     const PortType port_type,
     const PortOrientation port_orientation
     )
