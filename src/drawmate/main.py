@@ -15,6 +15,7 @@ def main():
     drawmate.render_nodes()
     drawmate.link_nodes()
     drawmate.create_xml(args.output_file) # type: ignore
+    print(f"Template file saved: @ {args.output_file}")
 
 if __name__ == "__main__":
     main()

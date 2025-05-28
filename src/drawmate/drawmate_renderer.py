@@ -7,7 +7,7 @@ root_dir = pf.get_project_dir()
 sys.path.insert(0, f"{root_dir}/build")
 import drawmate # type: ignore
 from mx_builder import MxBuilder
-from doc_builder import DocBuilder, generate_id
+from doc_builder import DocBuilder
 from drawmate_config import DrawmateConfig
 from constants import MX_GRAPH_XML_STYLES
 
@@ -24,15 +24,15 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         self.right_nodes = self.node_meta_tuple[1]
 
     def draw_node(self, attributes: dict, _id:str, has_label: bool = False):
-        node_elem = self.create_mxcell(attributes, str(generate_id()), has_label)
+        node_elem = self.create_mxcell(attributes, _id, has_label)
         self.root.appendChild(node_elem)
     
     def draw_node_with_target(self, attributes: dict, __id__: str, source_id: str, target_id: str, has_label: bool = False):
         node_elem = self.create_mxcell_with_target(attributes, __id__, source_id, target_id)
         self.root.appendChild(node_elem)
 
-    def draw_connection(self, attributes: dict, has_label: bool = False):
-        connection_elem = self.create_mxcell_arrow(attributes, str(generate_id()))
+    def draw_connection(self, attributes: dict, __id__: str, has_label: bool = False):
+        connection_elem = self.create_mxcell_arrow(attributes, __id__=__id__)
         self.root.appendChild(connection_elem)
 
     def init_graph(self):
@@ -133,7 +133,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 "style": MX_GRAPH_XML_STYLES["arrow"],
                 "label": ""
             }
-            self.draw_connection(link_attributes)
+            self.draw_connection(link_attributes, link._id)
 
     def render_nodes(self):
         nodes_export = self.graph.get_nodes()
@@ -144,7 +144,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             except IndexError:
                 continue
             
-            print(node.source_id)
+            # print(node.source_id)
 
             attributes = {
                 "x": node.x,
@@ -198,8 +198,8 @@ if __name__ == "__main__":
     draw.init_matrix()
     draw.init_nodes("left")
     draw.init_nodes("right")
-    draw.test_nodes()
-    # draw.render_nodes()
-    # draw.link_nodes()
-    # draw.create_xml(output_file)
-    # print(f"Template creation successful. File saved @ {output_file}")
+    # draw.test_nodes()
+    draw.render_nodes()
+    draw.link_nodes()
+    draw.create_xml(output_file)
+    print(f"Template creation successful. File saved @ {output_file}")
