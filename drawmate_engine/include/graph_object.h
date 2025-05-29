@@ -7,21 +7,23 @@
 #include <iostream>
 #include <tuple>
 
+/** GraphObject class
+ * The GraphObject class is used as a base class for all objects
+ * on the Graph. This was implemented to reduce boilerplate functions
+ * for common behavior/usages of Nodes on the Graph. The member functions are almost 
+ * exclusively getters and setters pertaining to attributes like x, y, width, and height.
+ */
 class GraphObject
 {
 protected:
-    double x{};
-    double y{};
-    double width{};
-    double height{};
-    std::string id{};
+    double x{};                           /**< double x */
+    double y{};                           /**< double y */
+    double width{};                    /** double width */
+    double height{};                 /**< double height */
+    std::string id{};               /**< std::string id */
 
-    /*
-     * These ID's are specific to drawio's ID interface and are 
-     * used to export source and target ID's to the final xml document. 
-     */
-    std::string source_id{};
-    std::string target_id{};
+    std::string source_id{}; /**< std::string source_id */
+    std::string target_id{}; /**< std::string target_id */
 
     void set_id(const std::string& id) { this->id = id; }
     void set_source_id(const std::string& source_id) { this->source_id = source_id; }

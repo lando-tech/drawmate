@@ -1,6 +1,5 @@
 import argparse
 from pathfinder import print_system_info
-
     
 
 def drawmate_render(input_file: str, output_file: str):

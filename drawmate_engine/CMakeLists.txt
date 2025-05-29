@@ -30,16 +30,16 @@ set(PYBIND11_FINDPYTHON ON)
 
 find_package(pybind11 CONFIG REQUIRED)
 
-pybind11_add_module(drawmate bindings.cpp)
+pybind11_add_module(drawmate_engine bindings.cpp)
 
 # set_target_properties(drawmate PROPERTIES
 #   INSTALL_RPATH "$ORIGIN"
 #   BUILD_WITH_INSTALL_RPATH TRUE
 # )
 
-install(TARGETS drawmate DESTINATION .)
+install(TARGETS drawmate_engine DESTINATION .)
 
-target_link_libraries(drawmate PUBLIC drawmate_lib)
+target_link_libraries(drawmate_engine PUBLIC drawmate_lib)
 
 # add_custom_command(TARGET drawmate POST_BUILD
 #     COMMAND ${CMAKE_COMMAND} -E copy

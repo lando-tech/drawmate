@@ -1,4 +1,0 @@
-Welcome to the drawmate template builder!
-This tool will create a blank JSON template in the appropriate format for drawmate to use.
-If you use this option, you will need to fill out Node labels, connection labels, etc...
-Optionally, it will guide you in creating the entire diagram (exported via XML), if you so choose.

@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/home/landotech/drawmate/drawmate_engine"
+    "cmake.sourceDirectory": "${workspaceFolder}/drawmate_engine",
+    "cmake.buildDirectory": "${workspaceFolder}/drawmate_engine/build"
 }

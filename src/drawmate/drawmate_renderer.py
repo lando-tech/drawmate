@@ -4,8 +4,8 @@ from pathfinder import PathFinder
 
 pf = PathFinder()
 root_dir = pf.get_project_dir()
-sys.path.insert(0, f"{root_dir}/build")
-import drawmate # type: ignore
+sys.path.insert(0, f"{root_dir}/drawmate_engine/build")
+import drawmate_engine # type: ignore
 from mx_builder import MxBuilder
 from doc_builder import DocBuilder
 from drawmate_config import DrawmateConfig
@@ -36,34 +36,34 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         self.root.appendChild(connection_elem)
 
     def init_graph(self):
-        layout_config = drawmate.LayoutConfig( # type: ignore
+        layout_config = drawmate_engine.LayoutConfig( # type: ignore
             base_x=2000.0,
             base_y=2000.0,
             node_spacing_x_axis=250.0,
             node_spacing_y_axis=23.33,
             port_spacing=70.0
         )
-        grid_config = drawmate.GridConfig( # type: ignore
+        grid_config = drawmate_engine.GridConfig( # type: ignore
             columns_left=self.config.num_levels,
             columns_right=self.config.num_levels,
             rows_left=self.matrix_dims.num_connections,
             rows_right=self.matrix_dims.num_connections
         )
-        central_node_config = drawmate.CentralNodeConfig( # type: ignore
+        central_node_config = drawmate_engine.CentralNodeConfig( # type: ignore
             width=200.0,
             height=200.0,
             label_height=23.33
         )
-        node_config = drawmate.NodeConfig( # type: ignore
+        node_config = drawmate_engine.NodeConfig( # type: ignore
             width=120.0,
             height=70.0,
             label_height=23.33,
         )
-        port_config = drawmate.PortConfig( # type: ignore
+        port_config = drawmate_engine.PortConfig( # type: ignore
             port_width=60.0,
             port_height=23.33
         )
-        graph = drawmate.Graph(layout_config, grid_config, central_node_config, node_config, port_config) # type: ignore
+        graph = drawmate_engine.Graph(layout_config, grid_config, central_node_config, node_config, port_config) # type: ignore
         return graph
 
     def init_matrix(self):
@@ -149,7 +149,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             attributes = {
                 "x": node.x,
                 "y": node.y,
-                "label": node.label,
+                "label": node.name,
                 "width": node.width,
                 "height": node.height,
                 "style": MX_GRAPH_XML_STYLES["rect"]
