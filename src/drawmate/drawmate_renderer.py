@@ -1,15 +1,17 @@
 # from xml.dom.minidom import Element
-import sys
-from pathfinder import PathFinder
+# import sys
+# import os
+from .pathfinder import PathFinder
 
-pf = PathFinder()
-root_dir = pf.get_project_dir()
-sys.path.insert(0, f"{root_dir}/drawmate_engine/build")
-import drawmate_engine # type: ignore
-from mx_builder import MxBuilder
-from doc_builder import DocBuilder
-from drawmate_config import DrawmateConfig
-from constants import MX_GRAPH_XML_STYLES
+# pf = PathFinder()
+# root_dir = pf.get_project_dir()
+# sys.path.insert(0, f"{root_dir}/engine/build")
+# os.path.join(os.path.dirname(__file__), 'drawmate_engine.cpython-313-x86_64-linux-gnu.so')
+from drawmate_engine import drawmate_engine # type: ignore
+from .mx_builder import MxBuilder
+from .doc_builder import DocBuilder
+from .drawmate_config import DrawmateConfig
+from .constants import MX_GRAPH_XML_STYLES
 
 
 class DrawmateRenderer(DocBuilder, MxBuilder):
@@ -117,7 +119,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             else:
                 conn_indexes_right = [row]
 
-            self.graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right)
+            self.graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right) # type: ignore
     
     def link_nodes(self):
         # Only call after all nodes have been added to the graph
@@ -146,25 +148,25 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             
             # print(node.source_id)
 
-            attributes = {
-                "x": node.x,
-                "y": node.y,
-                "label": node.name,
-                "width": node.width,
-                "height": node.height,
+            attributes = { 
+                "x": node.x, # type: ignore
+                "y": node.y, # type: ignore
+                "label": node.name, # type: ignore
+                "width": node.width, # type: ignore
+                "height": node.height, # type: ignore
                 "style": MX_GRAPH_XML_STYLES["rect"]
             }
             label_attributes = {
-                "x": node.label.x,
-                "y": node.label.y,
-                "label": node.label.name,
-                "width": node.label.width,
-                "height": node.label.height,
+                "x": node.label.x, # type: ignore
+                "y": node.label.y, # type: ignore
+                "label": node.label.name, # type: ignore
+                "width": node.label.width, # type: ignore
+                "height": node.label.height, # type: ignore
                 "style": MX_GRAPH_XML_STYLES["text-box-filled"]
             }
 
-            self.draw_node(attributes, node.source_id)
-            self.draw_node(label_attributes, node.label.source_id, has_label=True)
+            self.draw_node(attributes, node.source_id) # type: ignore
+            self.draw_node(label_attributes, node.label.source_id, has_label=True) # type: ignore
 
         ports = self.graph.get_ports()
         for key, port in ports.items():
@@ -191,15 +193,15 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             
 
 
-if __name__ == "__main__":
-    config_file = f"{root_dir}/test_templates/mc_test_1.json"
-    output_file = "/home/landotech/Desktop/output.drawio"
-    draw = DrawmateRenderer(config_file)
-    draw.init_matrix()
-    draw.init_nodes("left")
-    draw.init_nodes("right")
-    # draw.test_nodes()
-    draw.render_nodes()
-    draw.link_nodes()
-    draw.create_xml(output_file)
-    print(f"Template creation successful. File saved @ {output_file}")
+# if __name__ == "__main__":
+#     config_file = f"{root_dir}/test_templates/mc_test_1.json"
+#     output_file = "/home/landotech/Desktop/output.drawio"
+#     draw = DrawmateRenderer(config_file)
+#     draw.init_matrix()
+#     draw.init_nodes("left")
+#     draw.init_nodes("right")
+#     # draw.test_nodes()
+#     draw.render_nodes()
+#     draw.link_nodes()
+#     draw.create_xml(output_file)
+#     print(f"Template creation successful. File saved @ {output_file}")

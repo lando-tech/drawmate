@@ -1,9 +1,9 @@
 import argparse
-from pathfinder import print_system_info
+from .pathfinder import print_system_info
     
 
 def drawmate_render(input_file: str, output_file: str):
-    from drawmate_renderer import DrawmateRenderer
+    from .drawmate_renderer import DrawmateRenderer
     drawmate = DrawmateRenderer(input_file) # type: ignore
     drawmate.init_matrix()
     drawmate.init_nodes("left")
@@ -15,7 +15,7 @@ def drawmate_render(input_file: str, output_file: str):
 
 
 def build():
-    from template_builder import init_template_builder
+    from .template_builder import init_template_builder
     init_template_builder()
 
 

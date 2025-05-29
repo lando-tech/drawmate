@@ -1,4 +1,4 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}/drawmate_engine",
-    "cmake.buildDirectory": "${workspaceFolder}/drawmate_engine/build"
+    "cmake.sourceDirectory": "${workspaceFolder}/engine",
+    "cmake.buildDirectory": "${workspaceFolder}/engine/build"
 }

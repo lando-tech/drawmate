@@ -6,16 +6,16 @@ import random
 
 # Imports the pathfinder class from the utils directory.
 # See the pathfinder.py for specific uses.
-from pathfinder import PathFinder
-from log_manager import LogManager
+# from pathfinder import PathFinder
+# from log_manager import LogManager
 from constants import (
     TOP_LEVEL_MX_CELL,
     MX_GRAPH_MODEL_ATTRIBUTES,
 )
 
 # Instance of the pathfinder class for directory navigation
-pf = PathFinder()
-log_mgr = LogManager()
+# pf = PathFinder()
+# log_mgr = LogManager()
 
 
 def generate_id() -> int:
@@ -43,9 +43,9 @@ def get_timestamp() -> str:
     return formatted_timestamp
 
 
-TEMPLATE_STORAGE_PATH = (
-    f"{pf.xml_template_dir}builder_template__{get_timestamp()}.drawio"
-)
+# TEMPLATE_STORAGE_PATH = (
+#     f"{pf.xml_template_dir}builder_template__{get_timestamp()}.drawio"
+# )
 
 
 class DocBuilder:
@@ -148,13 +148,15 @@ class DocBuilder:
                 #     # print(self.newXML.childNodes[0].toprettyxml(indent="  "))
         except IOError as e:
             error_message = f"Error saving template file" + f"\nError message: {e}"
-            log_mgr.add_log(
-                object_log="doc_builder",
-                message=error_message,
-                line_number="225",
-                is_error=True,
-                is_warning=False,
-            )
+            print(error_message)
+            exit()
+            # log_mgr.add_log(
+            #     object_log="doc_builder",
+            #     message=error_message,
+            #     line_number="225",
+            #     is_error=True,
+            #     is_warning=False,
+            # )
 
         # try:
         #     with open(TEMPLATE_STORAGE_PATH, "w", encoding="utf-8") as temp_file:

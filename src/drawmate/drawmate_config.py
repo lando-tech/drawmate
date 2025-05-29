@@ -2,11 +2,11 @@ import json
 from dataclasses import dataclass
 
 from matrix_constants import MatrixDimensions
-from pathfinder import PathFinder
-from log_manager import LogManager
+# from pathfinder import PathFinder
+# from log_manager import LogManager
 
 
-pf = PathFinder()
+# pf = PathFinder()
 
 
 @dataclass
@@ -21,8 +21,8 @@ class DrawmateConfig:
 
     def __init__(self, template_path: str):
         self.template_path = template_path
-        self.pf = PathFinder()
-        self.log_mgr = LogManager()
+        # self.pf = PathFinder()
+        # self.log_mgr = LogManager()
         self.template_data = self.load_template()
         self.num_levels = 0
 
