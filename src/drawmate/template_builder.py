@@ -47,15 +47,17 @@ class TemplateBuilder:
         self.template_dict["matrices"] = {
             "labels": matrix_label,
             "width": matrix_width,
+            "height": num_connections * 100,
             "x": self.page_width // 2,
             "y": self.page_height // 2,
             "num_connections": num_connections,
         }
+
+        self.template_dict["connections-left"] = []
+        self.template_dict["connections-right"] = []
         for i in range(self.num_connections):
-            self.template_dict["connections-left"] = []
-            self.template_dict["connections-right"] = []
-            self.template_dict["connections-left"].append("")
-            self.template_dict["connections-right"].append("")
+            self.template_dict["connections-left"].append("NONE")
+            self.template_dict["connections-right"].append("NONE")
     
     def init_nodes(self, num_columns):
         self.num_columns = num_columns
@@ -74,8 +76,8 @@ class TemplateBuilder:
 
 
 def print_welcome_message():
-    msg = ("Welcome to the drawmate template builder!\n"
-           "This tool will guid you through building a basic JSON template.\n"
+    msg = ("\n\nWelcome to the drawmate template builder!\n"
+           "This tool will guide you through building a basic JSON template for drawmate.\n"
            "Please follow the prompts below:\n")
     print(msg)
 
@@ -173,7 +175,7 @@ def get_matrix_width() -> int:
     return matrix_width
 
 
-if __name__ == "__main__":
+def init_template_builder():
     template_builder = TemplateBuilder()
     print_welcome_message()
 

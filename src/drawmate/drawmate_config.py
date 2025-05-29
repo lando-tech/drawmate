@@ -31,28 +31,28 @@ class DrawmateConfig:
             with open(self.template_path, "r", encoding="utf-8") as template_file:
                 return json.load(template_file)
         except FileNotFoundError:
-            log_data = f"Template file not found: {self.template_path}\n"
-            self.log_mgr.add_log(
-                object_log="drawmate",
-                message=log_data,
-                line_number="460",
-                is_error=True,
-                is_warning=False,
-            )
+            # log_data = f"Template file not found: {self.template_path}\n"
+            # self.log_mgr.add_log(
+            #     object_log="drawmate",
+            #     message=log_data,
+            #     line_number="460",
+            #     is_error=True,
+            #     is_warning=False,
+            # )
             exit("Failed to find template file")
         except json.JSONDecodeError as json_error:
-            log_data = (
-                f"Invalid JSON in template file: {self.template_path}\n"
-                + f"Json error: {json_error}"
-            )
-            self.log_mgr.add_log(
-                object_log="drawmate",
-                message=log_data,
-                line_number="468",
-                is_error=True,
-                is_warning=False,
-            )
-            exit("Failed to find template file")
+            # log_data = (
+            #     f"Invalid JSON in template file: {self.template_path}\n"
+            #     + f"Json error: {json_error}"
+            # )
+            # self.log_mgr.add_log(
+            #     object_log="drawmate",
+            #     message=log_data,
+            #     line_number="468",
+            #     is_error=True,
+            #     is_warning=False,
+            # )
+            exit("Failed to parse JSON template!")
 
     def get_graph_dimensions(self) -> GraphDimensions:
 

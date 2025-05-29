@@ -20,8 +20,12 @@ PROCESSOR = get_processor()
 ARCHITECTURE = get_architecture()
 PYTHON_VERSION = get_python_version() 
 
-print(f"\nOperating System: {OS_NAME}_{PROCESSOR}")
-print(f"Python Version: {PYTHON_VERSION}\n")
+
+def print_system_info():
+    print(f"\nOperating System: {OS_NAME}_{PROCESSOR}")
+    # print(f"Architecture: {ARCHITECTURE}")
+    print(f"Python Version: {PYTHON_VERSION}")
+    print("drawmate v1.2.0")
 
 
 class PathFinder:

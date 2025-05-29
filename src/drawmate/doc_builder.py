@@ -133,19 +133,19 @@ class DocBuilder:
         try:
             with open(output_file_path, "w", encoding="utf-8") as file:
                 file.write(xml_data)
-                if file:
-                    log_data = f"Export-Template file saved: {output_file_path}"
-                    log_mgr.add_log(
-                        object_log="doc_builder",
-                        message=log_data,
-                        line_number="216",
-                        is_error=False,
-                        is_warning=False,
-                    )
-                else:
-                    print("File not saved")
-                    # Print statement used for debugging. This will print the raw xml string
-                    # print(self.newXML.childNodes[0].toprettyxml(indent="  "))
+                # if file:
+                #     log_data = f"Export-Template file saved: {output_file_path}"
+                #     log_mgr.add_log(
+                #         object_log="doc_builder",
+                #         message=log_data,
+                #         line_number="216",
+                #         is_error=False,
+                #         is_warning=False,
+                #     )
+                # else:
+                #     print("File not saved")
+                #     # Print statement used for debugging. This will print the raw xml string
+                #     # print(self.newXML.childNodes[0].toprettyxml(indent="  "))
         except IOError as e:
             error_message = f"Error saving template file" + f"\nError message: {e}"
             log_mgr.add_log(
@@ -156,25 +156,25 @@ class DocBuilder:
                 is_warning=False,
             )
 
-        try:
-            with open(TEMPLATE_STORAGE_PATH, "w", encoding="utf-8") as temp_file:
-                temp_file.write(xml_data)
-                success_msg = f"Storage-Template file saved: {TEMPLATE_STORAGE_PATH}"
-                log_mgr.add_log(
-                    object_log="doc_builder",
-                    message=success_msg,
-                    line_number="230",
-                    is_error=False,
-                    is_warning=False,
-                )
-        except IOError as e:
-            error_message = f"Error saving template file" + f"\nError message: {e}"
-            log_mgr.add_log(
-                object_log="doc_builder",
-                message=error_message,
-                line_number="239",
-                is_error=True,
-                is_warning=False,
-            )
+        # try:
+        #     with open(TEMPLATE_STORAGE_PATH, "w", encoding="utf-8") as temp_file:
+        #         temp_file.write(xml_data)
+        #         # success_msg = f"Storage-Template file saved: {TEMPLATE_STORAGE_PATH}"
+        #         # log_mgr.add_log(
+        #         #     object_log="doc_builder",
+        #         #     message=success_msg,
+        #         #     line_number="230",
+        #         #     is_error=False,
+        #         #     is_warning=False,
+        #         # )
+        # except IOError as e:
+        #     error_message = f"Error saving template file" + f"\nError message: {e}"
+        #     log_mgr.add_log(
+        #         object_log="doc_builder",
+        #         message=error_message,
+        #         line_number="239",
+        #         is_error=True,
+        #         is_warning=False,
+        #     )
 
 
