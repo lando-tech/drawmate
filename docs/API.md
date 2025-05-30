@@ -1,14 +1,45 @@
 # 🧩 API Reference
 
-This document outlines both the **Single Connection** and **Multi-Connection** JSON APIs used to define topologies in DrawMate.
+This document outlines the **Multi-Connection JSON API** used to define topologies in drawmate, as well as the command-line interface for rendering and template building.
+
 
 ---
 
-## 🔄 Major Changes in Multi-Connection Mode (`-mc` flag)
+## 🚀 Command-Line Usage
 
-In multi-connection mode, each node can map to **multiple matrix ports** using indexed routing logic.
+drawmate is operated via its main script (soon will be installable via pip):
+- ***Note***: until I have dsitrubuted wheels you will have to build from source. See ```BUILD.md``` in the ```docs``` directory for detailed instructions.
+- In the future, you will `pip install drawmate` and just run 
+```
+drawmate [input-file] [output-file]
+```
+- You are also free to use the ```legacy``` branch if you want to run the script without building from source, however, this version is no longer maintained and may lack functionality.
 
-### 🆕 Multi-Connection Format Example:
+```sh
+python main.py [input_file] [output_file] [options]
+```
+
+### **Arguments:**
+
+- `input_file`: Path to your input JSON template.
+- `output_file`: Path where the rendered output (e.g., XML) will be saved.
+
+### **Options:**
+
+- `-v`, `--version`  
+  Print drawmate version and system information.
+
+- `-b`, `--build-template`  
+  Launch an interactive guide to build a starter JSON template.
+
+---
+
+## 🔄 Multi-Connection JSON Format
+
+drawmate now exclusively supports **multi-connection mode**. Each node can map to **multiple matrix ports** using indexed routing logic. You can still draw single connection nodes, but the multi-connection JSON format must be used. See ```README.md``` or below for examples.
+
+### Example Node Definition
+
 ```json
 "first-level-left": {
   "labels": [
@@ -17,7 +48,7 @@ In multi-connection mode, each node can map to **multiple matrix ports** using i
       ["HDMI", "HDMI"],        // Input port labels (left side)
       ["HDMI", "HDMI"],        // Output port labels (right side)
       [0, 1],                  // Matrix indexes to connect FROM (left side)
-      ["NONE"]                // Matrix indexes to connect TO (right side)
+      [0, 1]                 // Matrix indexes to connect TO (right side)
     ],
     [
       "__SPAN__",
@@ -25,61 +56,30 @@ In multi-connection mode, each node can map to **multiple matrix ports** using i
       "",
       ["NONE"],
       ["NONE"]
-    ]
-  ]
-}
-```
-
-### 🔹 Key Behavior:
-- The array `[0, 1]` defines the **port positions** this node occupies vertically relative to the matrix
-- `__SPAN__` *must* be placed directly beneath any multi-connection node to define a visual gap where the node expands across ports
-- `"NONE"` (in all caps) is used to explicitly mark **unused sides**, and must be present even in single-direction connections
-
----
-
-## 🧷 Single Connection Format (with `-mc` flag)
-
-Even when using the `-mc` flag, single-connection nodes are supported with minimal changes:
-
-```json
-"first-level-left": {
-  "labels": [
-    [
-      "AV Appliance",
-      "HDMI",
-      "HDMI",
-      ["NONE"],
-      ["NONE"]
     ],
-    [
-      "",
-      "",
-      "",
+      "AV Appliance", // Single connection node
+      "HDMI",
+      "HDMI",
       ["NONE"],
       ["NONE"]
-    ]
   ]
 }
 ```
 
-### Differences from Legacy:
-- Two new list entries have been added to maintain schema compatibility with multi-connection mode
-- These must always be present as either actual indexes or `"NONE"`
+### 🔹 Key Behavior
+
+- The array `[0, 1]` defines the **port positions** this node occupies vertically relative to the matrix.
+- `__SPAN__` *must* be placed directly beneath any multi-connection node to define a visual gap where the node expands across ports.
+- `"NONE"` (in all caps) is used to as a placeholder, and the engine will infer an adjacent connection. In the future, you will be able to specify specific indexes/ports via the index system.
+- All nodes must use this structure, even if only connecting to a single port.
 
 ---
 
 ## ⚠️ Notes
 
-- When using **multi-connection mode**, you must:
-  - Add the appropriate matrix index list to the node (`[0, 1]`, `[2, 3]`, etc.)
-  - Optionally include ```["NONE"]``` if you wish to skip a connection on one side
-  - Include `__SPAN__` under any node that spans more than one port
-  - Ensure the lists of indexes (even `"NONE"`) are correct and consistently placed
-
-- The default (non-`-mc`) mode uses the original, simpler structure with:
-  - One label per node
-  - One input and one output
-  - No indexing required
+- You must:
+  - Include `__SPAN__` under any node that spans more than one port.
+- Legacy fields like `matrices`, `graph-dimensions`, and `connections-left/right` remain unchanged.
 
 ---
 
@@ -87,7 +87,7 @@ Even when using the `-mc` flag, single-connection nodes are supported with minim
 
 Predefined example templates are located in:
 ```
-drawmate/test/
+drawmate/test_templates/
 ```
 
 These include:
@@ -100,17 +100,18 @@ Feel free to duplicate and modify these templates for your own use.
 
 ---
 
-## 🧠 Reminder
+## ✅ Summary
 
-- Legacy fields like `matrices`, `graph-dimensions`, and `connections-left/right` remain unchanged
-- Multi-connection mode requires **strict structure** in the `labels` array — especially index placement and `__SPAN__` usage
-- Only up to **2 connections per side** are currently supported in a single node
+| Mode               | Supports Multiple Ports | Requires `__SPAN__` | Requires Indexing | Backward Compatible      |
+|--------------------|------------------------|---------------------|-------------------|--------------------------|
+| Multi-Connection   | ✅                     | ✅                  | ✅                | ✅ (with updated format) |
 
 ---
 
-## ✅ Summary
+## ℹ️ Version & System Info
 
-| Mode               |Supports Multiple Ports | Requires `__SPAN__`  | Requires Indexing  | Backward Compatible      |
-|--------------------|------------------------|----------------------|--------------------|--------------------------|
-| Default (legacy)   | ❌                     | ❌                   | ❌                 | ✅                       |
-| `-mc` Enabled      | ✅                     | ✅                   | ✅                 | ✅ (with updated format) |
+To print version and system info, run:
+
+```sh
+python main.py --version
+```

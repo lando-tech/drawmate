@@ -18,7 +18,6 @@
 
 ## **Key Features**
 - 🚀 **Automated Wiremap Generation:** Generate network diagrams quickly using the JSON API.
-- 🔧 **Extensible Scripting:** Use the base `DocBuilder` and `Rect` classes to script complex structures beyond the default templates.
 - 🌐 **Versatile Use Cases:** Ideal for network architecture visualization, infrastructure mapping, and dynamic diagram creation.
 
 ## **How It Works**
@@ -39,7 +38,11 @@
     - Example: If the `Matrix` has 4 connections but only 3 appliances, include 4 connections in the list with a blank string representing the gap.
 - **Connection/Flow:** The arrows/connection currently flow left to right, but this is also easily adjusted.
 - **Label Entries:** Label entries follow this basic structure
-  - `["Label of appliance", "input/output", "input/output"]`
+  - `["Label of appliance", "input/output", "input/output", ["connection-indexes"], ["connection-indexes"]]`
+  - ```connection-indexes``` refers to the index location of the ports. Indexes follow the 0 indexing system, 
+    so if you have a Node at index 0, but it has two ports on each side, the indexes would be ```[0, 1]```.
+  - You can alternatively pass in ```["NONE"]``` and the engine will infer an adjacent connection based on the position of the Node/Port.
+    I kept this design to allow for different routing mechanisms in the future.
   - `"connections-left"` refers to the connections on the matrix itself
 - **Add more levels:** To add more levels/columns, just use the same naming convention `second-level-left`, `third-level-left` and so on.
 - **IMPORTANT:** Make sure the value of `num_connections` matches the number of appliances in each entry.
@@ -62,18 +65,18 @@
     },
     "first-level-left": {
         "labels": [
-            ["AV Appliance", "HDMI", "HDMI"],
-            ["AV Appliance", "HDMI", "HDMI"],
-            ["AV Appliance", "HDMI", "HDMI"],
-            ["AV Appliance", "HDMI", "HDMI"]
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]]
         ]
     },
     "first-level-right": {
         "labels": [
-            ["AV Audio", "MIC-IN", "OUT"],
+            ["AV Audio", "MIC-IN", "OUT", ["NONE"], ["NONE"]],
             ["", "", ""],  // 🚫 Gap between appliances
-            ["AV Appliance", "HDMI", "HDMI"],
-            ["AV Appliance", "HDMI", "HDMI"]
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]]
         ]
     },
     "connections-left": [
