@@ -1,6 +1,6 @@
 # 🚨 **BREAKING CHANGES** 🚨
 
-- The original Python-only version of Drawmate has been moved to the [`legacy-python`](https://github.com/youruser/drawmate/tree/legacy-python) branch. If you need the old behavior, please continue using that branch.
+- The original Python-only version of Drawmate has been moved to the [`legacy-python`](https://github.com/lando-tech/drawmate/tree/legacy) branch. If you need the old behavior, please continue using that branch.
 - **New architecture:** Drawmate now uses a C++ backend via `pybind11`, bundled into a wheel for easier installation.
 - **Upcoming releases:** I’ll be pushing wheels for multiple architectures and Python versions via GitHub Releases over the coming weeks.
 - **No changes to the JSON API** — existing JSON templates and workflows are still fully compatible.
