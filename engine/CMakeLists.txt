@@ -46,6 +46,6 @@ set_target_properties(drawmate_engine PROPERTIES
     MACOSX_RPATH ON
 )
 
-install(TARGETS drawmate_engine DESTINATION .)
+install(TARGETS drawmate_engine drawmate_lib DESTINATION .)
 
 target_link_libraries(drawmate_engine PUBLIC drawmate_lib)
