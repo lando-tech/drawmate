@@ -10,7 +10,7 @@
 - ```make```
 - ```conda (required for pybind11)```
 - ```pybind11```
-- ```python3```
+- ```>= python3.11```
 
 ## Installing Conda
 - First you will need to download conda on your local machine:
