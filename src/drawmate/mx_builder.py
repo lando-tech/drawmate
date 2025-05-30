@@ -1,8 +1,8 @@
-from mxcell import MxCell
-from mxgeometry import MxGeometry
+from .mxcell import MxCell
+from .mxgeometry import MxGeometry
 from xml.dom.minidom import Element
 
-from mxpoint import MxPoint
+from .mxpoint import MxPoint
 
 
 class MxBuilder:

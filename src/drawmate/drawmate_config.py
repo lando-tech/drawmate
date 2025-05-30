@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass
 
-from matrix_constants import MatrixDimensions
+from .matrix_constants import MatrixDimensions
 # from pathfinder import PathFinder
 # from log_manager import LogManager
 

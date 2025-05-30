@@ -7,7 +7,7 @@ from .pathfinder import PathFinder
 # root_dir = pf.get_project_dir()
 # sys.path.insert(0, f"{root_dir}/engine/build")
 # os.path.join(os.path.dirname(__file__), 'drawmate_engine.cpython-313-x86_64-linux-gnu.so')
-from drawmate_engine import drawmate_engine # type: ignore
+import drawmate_engine
 from .mx_builder import MxBuilder
 from .doc_builder import DocBuilder
 from .drawmate_config import DrawmateConfig

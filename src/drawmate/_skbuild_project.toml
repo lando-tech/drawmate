@@ -1,0 +1,2 @@
+[include]
+files = ["libdrawmate_lib.so"]

@@ -1,4 +1,4 @@
-from doc_builder import DocBuilder, generate_id
+from .doc_builder import DocBuilder, generate_id
 
 
 class MxCell(DocBuilder):

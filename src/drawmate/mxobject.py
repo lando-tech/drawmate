@@ -1,6 +1,6 @@
-from doc_builder import DocBuilder
-from doc_builder import generate_id
-from constants import MX_OBJECT_ATTRIBUTES
+from .doc_builder import DocBuilder
+from .doc_builder import generate_id
+from .constants import MX_OBJECT_ATTRIBUTES
 
 
 class MxObject(DocBuilder):

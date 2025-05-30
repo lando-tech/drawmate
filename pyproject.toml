@@ -18,6 +18,7 @@ dependencies = []
 drawmate = "drawmate.main:main"
 
 [tool.scikit-build]
-wheel.packages = ["src/drawmate", "src/drawmate_engine"]
+wheel.packages = ["src/drawmate"]
+sdist.include = ["src", "engine", "README.md", "anchor.toml"]
 cmake.minimum-version = "3.15"
 cmake.build-type = "Release"

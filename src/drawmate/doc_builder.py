@@ -8,7 +8,7 @@ import random
 # See the pathfinder.py for specific uses.
 # from pathfinder import PathFinder
 # from log_manager import LogManager
-from constants import (
+from .constants import (
     TOP_LEVEL_MX_CELL,
     MX_GRAPH_MODEL_ATTRIBUTES,
 )

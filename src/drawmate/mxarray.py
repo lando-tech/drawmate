@@ -1,4 +1,4 @@
-from constants import MX_ARRAY_ATTRIBUTES
+from .constants import MX_ARRAY_ATTRIBUTES
 
 
 class MxArray:
