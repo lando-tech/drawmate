@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(drawmate_plus
+project(drawmate_engine
     VERSION 1.1 DESCRIPTION "Backend for drawmate"
 )
 
@@ -53,7 +53,6 @@ endif()
 if (LINUX)
     set_target_properties(drawmate_lib PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
-        PREFIX ""
         INSTALL_RPATH "$ORIGIN"
         BUILD_RPATH "$ORIGIN"
     )
