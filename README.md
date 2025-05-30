@@ -5,7 +5,7 @@
 - **Upcoming releases:** I’ll be pushing wheels for multiple architectures and Python versions via GitHub Releases over the coming weeks.
 - **No changes to the JSON API** — existing JSON templates and workflows are still fully compatible.
 - **Now pip-installable!** 🎉  
-  You can install the new version directly with:
+  Once I have built the wheels, you'll be able to install the new version directly with:
   
   ```
   pip install drawmate
