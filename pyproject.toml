@@ -11,7 +11,7 @@ authors = [
   { name = "Aaron Newman", email = "aaron@landotech.net" }
 ]
 license = { file = "LICENSE" }
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = []
 
 [project.scripts]
