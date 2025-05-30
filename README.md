@@ -126,44 +126,6 @@ The `drawmate.py` module `drawmate_engine/drawmate.py` is the primary entry poin
 
 ---
 
-### 🧬 **Creating New Templates**
-
-Interested in contributing? A great way to get started is by creating new template modules or checkout the Issues page:
-
-1. **Clone the Repository:**
-```bash
-git clone https://github.com/lando-tech/drawmate.git
-```
-
-2. **Create a New Branch:** Name the branch after your new template.
-```bash
-git checkout -b feature/my-new-template
-```
-
-3. **Copy the `drawmate.py` Template:** Use the existing template as a starting point.
-```bash
-cp drawmate_renderer/drawmate.py drawmate_renderer/my_custom_template.py
-```
-
-4. **Modify the Logic:** Adapt the module to fit your custom template's requirements.
-- 🛠️ **Add Custom Logic:** Implement new layouts or connection strategies.
-- 📑 **Update `main.py`:** Adjust the parameter to point to your new template.
-- ✅ **Test Your Module:**
-```bash
-python main.py config/example.json output/custom_template_output.drawio
-```
-
-5. **Submit a Pull Request:** Make sure to describe the new template and its use case clearly.
-```bash
-git add .
-git commit -m "Add new template for custom diagram generation"
-git push origin feature/my-new-template
-```
-
-6. **Open a Pull Request:** Submit your changes on GitHub, providing a detailed description of your template and any special instructions.
-
----
-
 ## Author
 
 + Aaron Newman
