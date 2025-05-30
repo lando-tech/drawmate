@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 project(drawmate_plus
     VERSION 1.1 DESCRIPTION "Backend for drawmate"
@@ -34,17 +34,45 @@ find_package(pybind11 CONFIG REQUIRED)
 
 pybind11_add_module(drawmate_engine bindings.cpp)
 
-set_target_properties(drawmate_lib PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
-)
+if (APPLE)
+    set_target_properties(drawmate_lib PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+        MACOSX_RPATH ON
+        INSTALL_NAME_DIR "@rpath"
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "@loader_path"
+    )
+    set_target_properties(drawmate_engine PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+        MACOSX_RPATH ON
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "@loader_path"
+    )
+endif()
 
-set_target_properties(drawmate_engine PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
-    PREFIX ""
-    BUILD_RPATH "$ORIGIN"
-    INSTALL_RPATH "$ORIGIN"
-    MACOSX_RPATH ON
-)
+if (LINUX)
+    set_target_properties(drawmate_lib PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+        PREFIX ""
+        INSTALL_RPATH "$ORIGIN"
+        BUILD_RPATH "$ORIGIN"
+    )
+    set_target_properties(drawmate_engine PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+        PREFIX ""
+        INSTALL_RPATH "$ORIGIN"
+        BUILD_RPATH "$ORIGIN"
+    )
+endif()
+
+if (WIN32)
+    set_target_properties(drawmate_lib PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+    )
+    set_target_properties(drawmate_engine PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+    )
+endif()
 
 install(TARGETS drawmate_engine drawmate_lib DESTINATION .)
 
