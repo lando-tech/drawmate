@@ -1,7 +1,15 @@
-# ** CHANGES **
-- Please refer to the CHANGELOG.md and docs/API.md for updates on the new API.
-- The legacy API is still available, please refer to the docs or open a discussion if you have any questions!
+# 🚨 **BREAKING CHANGES** 🚨
 
+- The original Python-only version of Drawmate has been moved to the [`legacy-python`](https://github.com/youruser/drawmate/tree/legacy-python) branch. If you need the old behavior, please continue using that branch.
+- **New architecture:** Drawmate now uses a C++ backend via `pybind11`, bundled into a wheel for easier installation.
+- **Upcoming releases:** I’ll be pushing wheels for multiple architectures and Python versions via GitHub Releases over the coming weeks.
+- **No changes to the JSON API** — existing JSON templates and workflows are still fully compatible.
+- **Now pip-installable!** 🎉  
+  You can install the new version directly with:
+  
+  ```
+  pip install drawmate
+  ```
 ---
 
 ## **Drawmate: Automate Wiremaps and Diagrams with Draw.io**
