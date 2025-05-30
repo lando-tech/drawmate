@@ -59,10 +59,10 @@ conda activate drawmate_lib
 
 ## Building via cmake/make
 - With your ```conda env``` activated, you are now ready to build the project!
-- You'll need to make a build directory: ```mkdir build && cd build```.
+- You'll need to make a build directory at the root of the project: ```mkdir build && cd build```.
 - Once inside of build, run: 
 ```bash
-cmake --build .
+cmake build ..
 ``` 
 - and then 
 ```bash
@@ -71,7 +71,7 @@ make
 - If the environment is setup properly, it will compile and generate two ```.so``` files.
     - On my machine the ```drawmate_engine.so``` looks like this: 
     ```bash
-    drawmate_engine.cpython-310-x86_64-linux-gnu.so
+    src/drawmate/drawmate_engine.cpython-310-x86_64-linux-gnu.so
     ```
 
 - If for some reason you don't see ```cpython``` attatched to the ```.so``` then something likely failed. This must be present
@@ -97,9 +97,13 @@ You should see something like this:
 drawmate_engine.cpython-310-x86_64-linux-gnu.so libdrawmate_lib.so
 ```
 - Ensure that the `python/system/arch` version matches your machine.
-- Once you have these two files, you can copy them to:
+- Once you have these two files, they should automatically be place in:
 ```bash
 drawmate/src/drawmate/
+```
+- If for some reason they failed to build to the right directory, you can manually copy them to:
+```
+src/drawmate/
 ```
 - Your directory structure should now look like this:
 ```bash
@@ -132,7 +136,7 @@ drawmate/src/drawmate/
 ```bash
 conda deactivate drawmate_lib
 ```
-- Once conda is deactivated, you will need to build a clean virtual environment. Make sure you change back to the root directory of the project and run:
+- Once conda is deactivated, you will need to build a clean virtual environment (make sure the python version of your venv matches the one on your system!!). Make sure you change back to the root directory of the project and run:
 ```bash
 python -m venv .venv
 ```
