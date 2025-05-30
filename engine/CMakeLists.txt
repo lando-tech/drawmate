@@ -39,12 +39,12 @@ find_package(pybind11 CONFIG REQUIRED)
 
 pybind11_add_module(drawmate_engine bindings.cpp)
 
-# set_target_properties(drawmate_lib PROPERTIES
-#     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
-# )
+set_target_properties(drawmate_lib PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+)
 
 set_target_properties(drawmate_engine PROPERTIES
-    # LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/drawmate"
     PREFIX ""
     BUILD_RPATH "$ORIGIN"
     INSTALL_RPATH "$ORIGIN"
