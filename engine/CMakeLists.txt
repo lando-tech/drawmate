@@ -8,11 +8,13 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_INSTALL_RPATH "$ORIGIN")
 set(CMAKE_BUILD_RPATH "$ORIGIN")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
+set(CMAKE_MACOSX_RPATH ON)
 
 
 add_library(drawmate_lib SHARED
@@ -22,14 +24,7 @@ add_library(drawmate_lib SHARED
         src/keys.cpp
         src/node.cpp
         src/port.cpp
-        include/graph_config.h
-        include/graph_exports.h
-        include/graph_object.h
-        include/link.h
-        include/keys.h
-        include/node.h
-        include/port.h
-        include/graph.h)
+)
 
 target_include_directories(drawmate_lib PUBLIC include)
 

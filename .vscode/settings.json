@@ -1,4 +1,4 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}/engine",
-    "cmake.buildDirectory": "${workspaceFolder}/engine/build"
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.buildDirectory": "${workspaceFolder}/build"
 }
