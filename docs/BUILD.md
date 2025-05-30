@@ -61,11 +61,11 @@ conda activate drawmate_lib
 - With your ```conda env``` activated, you are now ready to build the project!
 - You'll need to make a build directory: ```mkdir build && cd build```.
 - Once inside of build, run: 
-```
+```bash
 cmake --build .
 ``` 
 - and then 
-```
+```bash
 make
 ```
 - If the environment is setup properly, it will compile and generate two ```.so``` files.
