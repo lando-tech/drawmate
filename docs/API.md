@@ -8,7 +8,7 @@ This document outlines the **Multi-Connection JSON API** used to define topologi
 ## 🚀 Command-Line Usage
 
 drawmate is operated via its main script (soon will be installable via pip):
-- ***Note***: until I have dsitrubuted wheels you will have to build from source. See ```BUILD.md``` in the ```docs``` directory for detailed instructions.
+- ***Note***: until I have dsitrubuted wheels you will have to build from source. See `BUILD.md` in the ```docs``` directory for detailed instructions.
 - In the future, you will `pip install drawmate` and just run 
 ```
 drawmate [input-file] [output-file]
@@ -25,12 +25,41 @@ python main.py [input_file] [output_file] [options]
 - `output_file`: Path where the rendered output (e.g., XML) will be saved.
 
 ### **Options:**
+- Usage: 
 
-- `-v`, `--version`  
-  Print drawmate version and system information.
+```man
+usage: drawmate [-h] [-v] [-b] [-t] [-l] [-gt] [input_file] [output_file]
 
-- `-b`, `--build-template`  
-  Launch an interactive guide to build a starter JSON template.
+positional arguments:
+  input_file            The path to the JSON template file. See API documentation for how
+                        to format the input file. Alternatively, pass in the '-b' or '--
+                        build-template' flag to get a blank starter template in the correct
+                        format
+  output_file           The path to the drawio.xml output file. Acceptable file extensions
+                        are ['.drawio', '.xml', '.drawio.xml']. Drawio will accept any of
+                        those three. You can also pass in the '-t' or '--timestamp' flag to
+                        append a timestamp to the file.
+
+options:
+  -h, --help            show this help message and exit
+  -v, --version         Print drawmate version, as well as system information
+  -b, --build-template  Interactive guide to build a starter JSON template. The template
+                        will leave node data blank, but it will configure a valid JSON
+                        template will all of the appropriate key/value pairs. This is
+                        especially helpful if you require a large template with many
+                        columns/rows
+  -t, --timestamp       Add a timestamp to the output file
+  -l, --link-label      Boolean flag to add labels to each Link using the column/row of the
+                        connecting node. Ex: Link @ column 0 row 0 would be '0001' Link @
+                        column 1 row 0 would be '0101' The second digit is the column of
+                        the node and the last digit is the row. Even though the rows are
+                        zero indexed, it seemed cleaner and more readable to add +1 to each
+                        row to avoid all zeros on the first node. Otherwise the first node
+                        would be '0000'.
+  -gt, --generate-test  Generates a test JSON template and exports to drawio. Test will be
+                        saved inside ~/.config/drawmate/tests
+
+```
 
 ---
 
@@ -114,4 +143,8 @@ To print version and system info, run:
 
 ```sh
 python main.py --version
+```
+- Or if running after pip installing:
+```bash
+drawmate --version
 ```

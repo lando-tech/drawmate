@@ -14,14 +14,14 @@
 
 ## Installing Conda
 - First you will need to download conda on your local machine:
-    - navigate to ```https://www.anaconda.com/download``` and download the installer for your system.
+    - navigate to [anaconda-download](https://www.anaconda.com/download) and download the installer for your system.
     - I would suggest allowing ```conda``` to autostart on shell launch, as this makes it easier to run.
 
 ## Installing cmake, make, and C/C++ compiler
 - Next you will need to make sure you have ```cmake```, ```make```, and ```gcc``` or another C/C++ compiler (I used GCC, but if you're on ```macOS``` I would use clang/llvm).
     - Example on my machine ```sudo apt install cmake make gcc``` or via ```brew install cmake make llvm``` if you're on ```macOS```.
 - For this tutorial I'm assuming you already have a working version of Python on your system, so I won't go through that step.
-  However, if anyone reading this needs help doing so, here is a link: ```https://www.python.org/downloads/```.
+  However, if anyone reading this needs help doing so, here is a link: [python-download](https://www.python.org/downloads/).
 
 ## Setting up Conda env
 - Next you will need to navigate to the source directory of the project: 

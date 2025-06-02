@@ -1,29 +1,24 @@
 # Changelog
 
+## Pip Install
+- I am currently working on building wheels for different platforms, however, the delivery timeframe is TBD.
+- Once I have them built you can simple download the wheel or the tarball and pip install `drawmate`.
+- If you want to build from source, see `BUILD.md`.
+
 ## Features
-- Added `-mc` flag to main.py to toggle between standard and improved connection routing
-- Implemented enhanced connection routing algorithm for multiple connections between nodes
-- Current implementation supports each node to have up to two connections on each side (2x INPUT/OUTPUT)
-- Added support for dynamic offset calculation to prevent overlapping connections
+- Template Builder module for building JSON templates.
+- Test module for building test diagrams.
+- Optional flag for adding labels on connections/links.
 
 ## Improvements
-- Refactored MxGraph API into dedicated module for better code organization
-- Refactored drawmate_engine to include separate (Sc)Single-Connection/(Mc)Multi-Connection modules (Sc is the Stable Version)
-- Optimized connection creation logic with more robust waypoint generation
-- Added metadata tracking for connection endpoints and nodes
+- `drawmate` now uses a C++ backend via [pybind11](https://github.com/pybind/pybind11).
+- Node placement is now much more accurate and predictable.
+- Node spacing is uniform and consistent, even on very large diagrams.
+- Links/Connections are now the proper length, no more unappealing offsets.
+- Labels and ports are now uniformly centered on Nodes.
+- Each Node can support N amount of connections (equal to the matrix/center appliance)
 
 ## Bug Fixes
-- Fixed issues with duplicate connections creating visual artifacts
-- Resolved problems with connection routing when multiple paths exist between nodes
-- Fixed inconsistent connection offsets when connecting to matrix objects
-- Prevented creation of connections to/from empty labels
-
-## Note
-- The -mc flag is still in beta, feedback would be appreciated!
-- Due to the routing algorithm, I omitted connection labels, I am working to restore these in the future
-
-## Upcoming Features (TBD)
-- Adding support for N amount of connections per node
-- Drawmate JSON helper module to assist in creating custom templates
-- Input validation helper to assist with troubleshooting JSON formats
-- CSV to JSON module to allow for CSV files as input
+- Fixed freezing issue caused by ID mismatches. Drawio expects specific ID's that are now compatible.
+- Fixed formatting issue for final `XML` generation to `drawio` output. The `edge` and `connectable` fields were not being added properly.
+- Fixed formatting issue with Template Builder not outputting correct JSON fields.
