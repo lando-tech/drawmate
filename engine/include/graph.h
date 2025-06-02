@@ -169,7 +169,7 @@ private:
    * @param has_waypoints Whether the link has waypoints.
    * @param waypoints List of waypoints for the link.
    */
-  void add_link_export(const std::string& source_id, const std::string& target_id, double src_x, double src_y, double tgt_x, double tgt_y, bool has_waypoints, std::vector<WaypointLinks> waypoints);
+  void add_link_export(const std::string& source_id, const std::string& target_id, const std::string& label, double src_x, double src_y, double tgt_x, double tgt_y, bool has_waypoints, std::vector<WaypointLinks> waypoints);
 
   /**
    * @brief Adds incoming links to the graph.
@@ -188,18 +188,11 @@ private:
   void verify_node_meta_key(const std::unordered_map<std::string, std::string> &node_meta_data) const;
 
   /**
-   * @brief Verifies and returns the height for a node based on port count.
+   * @brief Function for verifying node height calculation.
    * @param port_count Number of ports.
    * @return Calculated node height.
    */
   double verify_node_height(double port_count);
-
-  /**
-   * @brief Test function for verifying node height calculation.
-   * @param port_count Number of ports.
-   * @return Calculated node height.
-   */
-  double verify_node_height_test(double port_count);
 
   /**
    * @brief Calculates the leftmost X coordinate for node placement.

@@ -6,6 +6,8 @@
 #define LINK_H
 #include <iostream>
 #include <vector>
+#include "port.h"
+#include "node.h"
 #include "keys.h"
 
 class Port;
@@ -34,11 +36,20 @@ class Link
     double target_x{};
     double target_y{};
     std::string id{};
+    std::string label{};
     bool has_waypoints{false};
     std::vector<WaypointLinks> vec_waypoint_links{};
 
+    std::string link_label_err();
+
     void set_source_port(PortKey source_port_id, double source_x, double source_y);
     void set_target_port(PortKey target_port_id, double target_x, double target_y);
+
+    void set_link_label_center(int column, int row);
+    void set_link_label_left_justified(int column, int row);
+    void set_link_label_right_justified(int column, int row);
+    void set_link_label(int column, int row, NodeOrientation node_orientation, PortOrientation port_orientation);
+
     void add_waypoints(double source_x, double source_y, double target_x, double target_y);
     friend class Graph;
 

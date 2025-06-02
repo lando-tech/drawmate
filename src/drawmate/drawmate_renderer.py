@@ -34,7 +34,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         self.root.appendChild(node_elem)
 
     def draw_connection(self, attributes: dict, __id__: str, has_label: bool = False):
-        connection_elem = self.create_mxcell_arrow(attributes, __id__=__id__)
+        connection_elem = self.create_mxcell_arrow(attributes, __id__=__id__, has_label=has_label)
         self.root.appendChild(connection_elem)
 
     def init_graph(self):
@@ -121,7 +121,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
 
             self.graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right) # type: ignore
     
-    def link_nodes(self):
+    def link_nodes(self, has_label: bool = False):
         # Only call after all nodes have been added to the graph
         self.graph.connect_nodes()
         links = self.graph.get_links()
@@ -133,9 +133,9 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 "target_x": link.target_x,
                 "target_y": link.target_y,
                 "style": MX_GRAPH_XML_STYLES["arrow"],
-                "label": ""
+                "label": link.label #type: ignore
             }
-            self.draw_connection(link_attributes, link._id)
+            self.draw_connection(link_attributes, link._id, has_label)
 
     def render_nodes(self):
         nodes_export = self.graph.get_nodes()

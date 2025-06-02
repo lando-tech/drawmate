@@ -79,11 +79,14 @@ class MxBuilder:
         return cell_elem       
 
     def create_mxcell_arrow(
-        self, data: dict, __id__: str = ""
+        self, data: dict, __id__: str = "", has_label: bool = False
     ) -> Element:
         # Create mxCell object
         cell = MxCell()
-        cell.set_mxcell_values_point(data["style"], data["label"], __id__)
+        if has_label:
+            cell.set_mxcell_values_point(data["style"], data["label"], __id__)
+        else:
+            cell.set_mxcell_values_point(data["style"], "", __id__)
 
         # Append mxCell to mxObject
         cell_elem = cell.create_xml_element("mxCell", cell.attributes)

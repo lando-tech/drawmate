@@ -94,39 +94,6 @@ void Graph::verify_node_meta_key(
 
 double Graph::verify_node_height(const double port_count)
 {
-  /*
-   * Verifies the height of each node and ensures it has room to house
-   * all of the ports, based on the max number of ports either left/right.
-   */
-  double node_height{};
-  if (port_count <= 1)
-  {
-    node_height = this->node_config_.height;
-    this->base_height_ = node_height;
-  }
-  else if (port_count == 2)
-  {
-    node_height = (this->node_config_.height * port_count) +
-                  this->port_config_.port_height;
-    this->base_height_ = node_height;
-  }
-  else
-  {
-    node_height = (this->node_config_.height * port_count) +
-                  (this->port_config_.port_height * (port_count - 1));
-    this->base_height_ = node_height;
-  }
-
-  if (this->base_height_ > this->max_height_)
-  {
-    this->max_height_ = this->base_height_;
-  }
-
-  return node_height;
-}
-
-double Graph::verify_node_height_test(const double port_count)
-{
   double actual_height{
       (this->port_config_.port_height * port_count) +
       (this->layout_config_.port_spacing * (port_count - 1)) +
@@ -556,7 +523,9 @@ void Graph::add_link_outgoing()
       link->add_link(it, incoming_port_id,
                      outgoing_port->get_x(), outgoing_port->get_y(),
                      incoming_port->get_x(), incoming_port->get_y());
-      this->add_link_export(convert_port_key_internal(it), convert_port_key_internal(incoming_port_id), 
+      link->set_link_label(it.column, it.row, node_orientation, port_orientation);
+      this->add_link_export(convert_port_key_internal(it), convert_port_key_internal(incoming_port_id),
+                            link->label, 
                             outgoing_port->get_x(), outgoing_port->get_y(),
                             incoming_port->get_x(), incoming_port->get_y(),
                             link->has_waypoints, link->vec_waypoint_links);
@@ -572,6 +541,7 @@ void Graph::add_port_target_id(PortKey source_port_key, PortKey target_port_key)
 }
 
 void Graph::add_link_export(const std::string& source_id, const std::string& target_id, 
+                            const std::string& label,
                             double src_x, double src_y, double tgt_x,
                             double tgt_y, bool has_waypoints,
                             std::vector<WaypointLinks> waypoints)
@@ -585,6 +555,7 @@ void Graph::add_link_export(const std::string& source_id, const std::string& tar
   link_export.target_y = src_y + this->port_config_.port_height / 2.0;
   link_export.source_id = source_id;
   link_export.target_id = target_id;
+  link_export.label = label;
   link_export._id = export_id;
   if (has_waypoints)
   {

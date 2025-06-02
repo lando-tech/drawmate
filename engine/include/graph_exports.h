@@ -20,6 +20,7 @@ struct LinkExport
     double source_y{}; /**< double source_y */
     double target_x{}; /**< double target_x */
     double target_y{}; /**< double target_y */
+    std::string label{}; /**< std::string label */
     std::string _id{}; /**< std::string _id */
     std::string source_id{}; /**< std::string source_id */
     std::string target_id{}; /**< std::string target_id */
