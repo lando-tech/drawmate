@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "drawmate"
-version = "1.2.0"
+version = "1.2.0-beta"
 description = "Graph processing and visualization tools - automate draw.io diagrams"
 readme = "README.md"
 authors = [

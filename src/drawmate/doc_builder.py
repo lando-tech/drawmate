@@ -1,6 +1,7 @@
 """Add summary"""
 
 from xml.dom.minidom import getDOMImplementation
+from sys import platform
 from datetime import datetime
 import random
 
@@ -38,9 +39,31 @@ def get_timestamp() -> str:
         str: A formatted timestamp
     """
     timestamp = datetime.now().replace(microsecond=0)
-    formatted_timestamp = timestamp.strftime("%Y-%m-%dT%I%M%S")
+    if platform == "win32":
+        formatted_timestamp = timestamp.strftime("%Y-%m-%dT%I-%M-%S")
+    elif platform == "linux" or platform == "darwin":
+        formatted_timestamp = timestamp.strftime("%Y-%m-%dT%I:%M:%S")
+    else:
+        formatted_timestamp = timestamp.strftime("%Y-%m-%dT%I-%M-%S")
 
     return formatted_timestamp
+
+
+def format_file_with_timestamp(output_file: str):
+    formatted_file = ""
+    timestamp = get_timestamp()
+
+    file_toks = output_file.split(".")
+    if file_toks[-1].lower() != "drawio" or file_toks[-1].lower() != "xml":
+        formatted_file = file_toks[0] + "-" + timestamp + ".drawio"
+    elif file_toks[-1].lower() == "drawio":
+        formatted_file = file_toks[0] + "-" + timestamp + file_toks[-1]
+    elif file_toks[-1].lower() == "xml":
+        formatted_file = file_toks[0] + "-" + timestamp + file_toks[-1]
+    else:
+        formatted_file = file_toks[0] + "-" + timestamp + ".drawio" + ".xml"
+    return formatted_file
+
 
 
 # TEMPLATE_STORAGE_PATH = (
@@ -124,15 +147,18 @@ class DocBuilder:
         self.root.appendChild(cell_one)
         self.root.appendChild(cell_two)
 
-    def create_xml(self, output_file_path: str):
+    def create_xml(self, output_file_path: str, add_timestamp: bool = False):
         """
         Summary:
         Writes the xml template to disk, omitting the xml declaration.
         """
+        if add_timestamp:
+            output_file_path = format_file_with_timestamp(output_file_path)
         xml_data = self.new_xml.childNodes[0].toprettyxml(indent="  ")
         try:
             with open(output_file_path, "w", encoding="utf-8") as file:
                 file.write(xml_data)
+                print(f"Diagram saved: @ {output_file_path}")
                 # if file:
                 #     log_data = f"Export-Template file saved: {output_file_path}"
                 #     log_mgr.add_log(
@@ -178,5 +204,3 @@ class DocBuilder:
         #         is_error=True,
         #         is_warning=False,
         #     )
-
-

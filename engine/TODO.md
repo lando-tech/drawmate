@@ -11,7 +11,7 @@
             This protects the user from accidentally passing in improper
             configuration parameters. 
 
-- ```P-1``` Add drawio compatible keys, and ensure that they are appended
+- ✅ ```P-1``` Add drawio compatible keys, and ensure that they are appended
             on each export. For each port and link, there must be a source
             and target ID in order to add proper attributes to the final
             xml document.
@@ -22,12 +22,12 @@
             verifying metadata keys, and verifying node enum class
             attributes.
 
-- ```P-2``` Add py::docs to each function and create .pyi files to ensure
+- ✅ ```P-2``` Add py::docs to each function and create .pyi files to ensure
             IDE compatability and type checking for the Python interface.
             Write a script that automatically updates the .pyi files when
             building the C++ backend.
 
-- ```P-3``` Add build documentation for packaging and build from source
+- ✅ ```P-3``` Add build documentation for packaging and build from source
             tutorials. Ensure the environment is reproducible. Likely this
             will be done via GitHub releases to ensure target architectures
             are built more systematically.

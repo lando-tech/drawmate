@@ -24,6 +24,12 @@ class TemplateBuilder:
             "tenth"
         ]
 
+    def build_test_template(self, file_path: str):
+        self.init_graph_dimensions(4000, 4000)
+        self.init_matrices("Central Appliance", 200, 12)
+        self.init_nodes_test(6)
+        self.create_template(file_path)
+
     def create_template(self, file_path: str) -> bool:
         with open(file_path, "w") as new_template:
             json.dump(self.template_dict, new_template, indent=2)
@@ -66,13 +72,24 @@ class TemplateBuilder:
 
         for i in range(self.num_columns):
 
-            self.template_dict[f"{self.levels[i]}-level-left"] = []
+            self.template_dict[f"{self.levels[i]}-level-left"] = {"labels": []}
             for j in range(self.num_connections):
-                self.template_dict[f"{self.levels[i]}-level-left"].append(["", "", "", ["NONE"], ["NONE"]])
+                self.template_dict[f"{self.levels[i]}-level-left"]["labels"].append(["", "", "", ["NONE"], ["NONE"]])
 
-            self.template_dict[f"{self.levels[i]}-level-right"] = []
+            self.template_dict[f"{self.levels[i]}-level-right"] = {"labels": []}
             for k in range(self.num_connections):
-                self.template_dict[f"{self.levels[i]}-level-right"].append(["", "", "", ["NONE"], ["NONE"]])
+                self.template_dict[f"{self.levels[i]}-level-right"]["labels"].append(["", "", "", ["NONE"], ["NONE"]])
+    
+    def init_nodes_test(self, num_columns):
+        self.num_columns = num_columns
+        for i in range(self.num_columns):
+            self.template_dict[f"{self.levels[i]}-level-left"] = {"labels": []}
+            for j in range(self.num_connections):
+                self.template_dict[f"{self.levels[i]}-level-left"]["labels"].append(["Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]])
+
+            self.template_dict[f"{self.levels[i]}-level-right"] = {"labels": []}
+            for k in range(self.num_connections):
+                self.template_dict[f"{self.levels[i]}-level-right"]["labels"].append(["Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]])
 
 
 def print_welcome_message():

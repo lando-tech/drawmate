@@ -9,3 +9,6 @@ except OSError as e:
         f"Failed to preload 'libdrawmate_lib.so'."
         f"Original error {e}"
     )
+except ImportError as i_err:
+    print("Failed to import 'libdrawmate_lib.so'")
+    print(f"Original error {i_err}")
