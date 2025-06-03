@@ -38,6 +38,9 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         self.root.appendChild(connection_elem)
 
     def init_graph(self):
+        # TODO Fix Pylance warnings, stub file is present, but not being recognized
+        # TODO Port spacing, node spacing (y), label and port height(s) should be a calculated ration based on
+        # the height of the Nodes. Remove these from the user facing exports
         layout_config = drawmate_engine.LayoutConfig( # type: ignore
             base_x=2000.0,
             base_y=2000.0,
@@ -46,6 +49,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             port_spacing=70.0
         )
         grid_config = drawmate_engine.GridConfig( # type: ignore
+            # TODO Add bounds checking to ensure these variables are accurate on the backend to ensure graph integrity
             columns_left=self.config.num_levels,
             columns_right=self.config.num_levels,
             rows_left=self.matrix_dims.num_connections,
@@ -62,6 +66,8 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             label_height=23.33,
         )
         port_config = drawmate_engine.PortConfig( # type: ignore
+            # TODO Port width should be calculated on the backend to ensure proper placement.
+            # Calculation is 1/2 the width of the node
             port_width=60.0,
             port_height=23.33
         )

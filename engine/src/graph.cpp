@@ -10,7 +10,6 @@
 #include <sstream>
 #include <string>
 
-
 NodeType verify_node_type(const std::string &node_type_str)
 {
   /*
