@@ -1,0 +1,44 @@
+{
+    "graph-dimensions": {
+        "dx": 4000,
+        "dy": 4000,
+        "width": 4000,
+        "height": 4000
+    },
+    "matrices": {
+        "labels": "Video/Audio Codec",
+        "width": 200,
+        "height": 400,
+        "x": 2000,
+        "y": 2000,
+        "num_connections": 4
+    },
+    "first-level-left": {
+        "labels": [
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]]
+        ]
+    },
+    "first-level-right": {
+        "labels": [
+            ["AV Audio", "MIC-IN", "OUT", ["NONE"], ["NONE"]],
+            ["", "", "", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
+            ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]]
+        ]
+    },
+    "connections-left": [
+        "HDMI",
+        "HDMI",
+        "HDMI",
+        "HDMI"
+    ],
+    "connections-right": [
+        "MIC",
+        "HDMI",
+        "HDMI",
+        "HDMI"
+    ]
+}
