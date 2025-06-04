@@ -1,5 +1,6 @@
 # 🚨 **BREAKING CHANGES** 🚨
 
+- Please refer to [BUILD.md](./docs/BUILD.md), [API.md](./docs/API.md), and [CHANGELOG.md](CHANGELOG.md) for details on the new architecture and help pages.
 - The original Python-only version of Drawmate has been moved to the [`legacy-python`](https://github.com/lando-tech/drawmate/tree/legacy) branch. If you need the old behavior, please continue using that branch.
 - **New architecture:** Drawmate now uses a C++ backend via `pybind11`, bundled into a wheel for easier installation.
 - **Upcoming releases:** I’ll be pushing wheels for multiple architectures and Python versions via GitHub Releases over the coming weeks.
@@ -34,7 +35,7 @@
 
 ### **Key Points:**
 - 📍 **Matrix Positioning:** Set the starting `x` and `y` coordinates for the `Matrix`. All connected nodes will be placed relative to this position.
-- 🚫 **Signaling Gaps:** If there is a gap between appliances, pass an empty string (`""`) in the list. 
+- 🚫 **Signaling Gaps:** If there is a gap between appliances, pass an empty string (`""`) or the (`__SPAN__`) variable in the list. 
     - Example: If the `Matrix` has 4 connections but only 3 appliances, include 4 connections in the list with a blank string representing the gap.
 - **Connection/Flow:** The arrows/connection currently flow left to right, but this is also easily adjusted.
 - **Label Entries:** Label entries follow this basic structure
@@ -74,7 +75,7 @@
     "first-level-right": {
         "labels": [
             ["AV Audio", "MIC-IN", "OUT", ["NONE"], ["NONE"]],
-            ["", "", ""],  // 🚫 Gap between appliances
+            ["", "", "", ["NONE"], ["NONE"]],  // 🚫 Gap between appliances
             ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]],
             ["AV Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]]
         ]
@@ -100,7 +101,7 @@
  
 ---
 
-![Basic Network Diagram](data/images/test.drawio.png)
+![Basic Network Diagram](data/images/sc_test_1.drawio.png)
 
 ---
 
