@@ -89,30 +89,36 @@ def drawmate_render(input_file: str, output_file: str, has_label: bool = False, 
 
 
 def generate_test():
-    write_done = threading.Event()
-    temp_builder = TemplateBuilder()
-    input_path = f"test_template_{get_timestamp()}"
-    output_path = input_path + ".drawio"
-    temp_builder.build_test_template()
+    if os.path.isdir(CONFIG_HOME):
+        write_done = threading.Event()
+        temp_builder = TemplateBuilder()
+        input_path = f"test_template_{get_timestamp()}"
+        output_path = input_path
+        temp_builder.build_test_template()
 
-    def create_template_and_signal(file_path):
+        def create_template_and_signal(file_path):
+            try:
+                temp_builder.create_template(file_path)
+            finally:
+                print(f"JSON template saved: @ {TEST_HOME}/{input_path}.json")
+                write_done.set()
+
         try:
-            temp_builder.create_template(file_path)
-        finally:
-            write_done.set()
+            t = threading.Thread(target=create_template_and_signal, args=(f"{TEST_HOME}/{input_path}.json",))
+            t.start()
+            if write_done.wait(timeout=3):
+                drawmate_render(f"{TEST_HOME}/{input_path}.json", f"{TEST_HOME}/{output_path}.drawio", has_label=True, add_timestamp=False)
+            else:
+                print(f"Timeout: could not find file: {TEST_HOME}/{input_path}.json")
+            t.join()
+        except IOError as e:
+            print("Failed to create test file")
+            print(f"Original error {e}")
 
-    try:
-        t = threading.Thread(target=create_template_and_signal, args=(f"{TEST_HOME}/{input_path}.json",))
-        t.start()
-        if write_done.wait(timeout=3):
-            drawmate_render(f"{TEST_HOME}/{input_path}.json", output_path, has_label=True, add_timestamp=True)
-        else:
-            print(f"Timeout: could not find file: {input_path}")
-        t.join()
-    except IOError as e:
-        print("Failed to create test file")
-        print(f"Original error {e}")
-
+        return True
+    else:
+        print(f"Failed to generate test file: config directory not found! {CONFIG_HOME}")
+        return False
 
 def build():
     from .template_builder import init_template_builder

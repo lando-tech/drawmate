@@ -14,7 +14,7 @@ NodeType verify_node_type(const std::string &node_type_str)
 {
   /*
    * This function simply enforces the API between the Python
-   * dict being passed in based on the accetable keys.
+   * dict being passed in based on the acceptable keys.
    * It also returns the node type back to the caller, or throws
    * an error if not found.
    */
