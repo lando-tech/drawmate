@@ -5,6 +5,9 @@
   - Lowest  ```P-3```
 
 ## TODO
+- Break up larger matrices into submatrices and output on separate pages
+- Add port type to link label
+- Add page dimensions
 - ```P-1``` Validate configuration classes and attributes,
             and consolidate them into more manageable containers.
             Also, remove some attributes that affect grid calculations.

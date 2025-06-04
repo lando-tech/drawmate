@@ -47,7 +47,7 @@ private:
 
   double base_y_left{}; /**< double base_y_left */
   double base_x_left{}; /**< double base_x_left */
-  double base_y_right{}; /**< dobule base_y_right */
+  double base_y_right{}; /**< double base_y_right */
   double base_x_right{}; /**< double base_x_right */
 
   double max_height_{0.0}; /**< double max_height */

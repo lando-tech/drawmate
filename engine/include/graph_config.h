@@ -24,10 +24,12 @@ enum class GridOrientation
  */
 struct LayoutConfig
 {
+    // TODO add bounds checking to ensure Graph/Grid integrity
     double base_x{};
     double base_y{};
     double node_spacing_x_axis{};
     double node_spacing_y_axis{};
+    // TODO calculated at runtime, remove from Python interface
     double port_spacing{};
 };
 
@@ -56,6 +58,7 @@ struct NodeConfig
 {
     double width{};
     double height{};
+    // TODO calculated at runtime, remove from Python interface
     double label_height{};
 };
 
@@ -69,6 +72,7 @@ struct CentralNodeConfig
 {
     double width{};
     double height{};
+    // TODO calculated at runtime, remove from Python interface
     double label_height{};
 };
 
@@ -80,6 +84,7 @@ struct CentralNodeConfig
  */
 struct PortConfig
 {
+    // TODO calculated at runtime, remove from Python interface
     double port_width{};
     double port_height{};
 };

@@ -1,6 +1,6 @@
 import argparse
 import os
-import time
+import threading
 from .doc_builder import get_timestamp
 from .pathfinder import print_system_info
 from .drawmate_renderer import DrawmateRenderer
@@ -59,29 +59,21 @@ def output_file_help():
 
 def build_template_help():
     msg = (
-        "Interactive guide to build a starter JSON template.\n" \
-        "The template will leave node data blank, but it will configure a valid JSON template will all of the appropriate key/value pairs.\n"
-        "This is especially helpful if you require a large template with many columns/rows\n"
+        "Interactive guide to build a starter JSON template with valid structure and empty node data."
     )
     return msg
 
 
 def link_label_help():
     msg = (
-        "Boolean flag to add labels to each Link using the column/row of the connecting node. Ex:\n" \
-        "Link @ column 0 row 0 would be '0001'\n" \
-        "Link @ column 1 row 0 would be '0101'\n" \
-        "The second digit is the column of the node and the last digit is the row.\n" \
-        "Even though the rows are zero indexed, it seemed cleaner and more readable to add +1 to each row to avoid all zeros on the first node.\n" \
-        "Otherwise the first node would be '0000'."
+        "Add labels to links based on node positions (e.g., '0101'). See docs for label format."
     )
     return msg
 
 
 def generate_test_help():
     msg = (
-        "Generates a test JSON template and exports to drawio.\n" \
-        "Test will be saved inside ~/.config/drawmate/tests"
+        "Generate a test JSON template and output Draw.io XML. Test files are saved to ~/.config/drawmate/tests."
     )
     return msg
 
@@ -97,28 +89,36 @@ def drawmate_render(input_file: str, output_file: str, has_label: bool = False, 
 
 
 def generate_test():
-    temp_builder = TemplateBuilder()
-    input_path = f"test_template_{get_timestamp()}"
-    output_path = input_path + ".drawio"
-    try:
-        temp_builder.build_test_template(TEST_HOME + f"/{input_path}" + ".json")
-    except IOError as e:
-        print("Failed to create test file")
-        print(f"Original error {e}")
+    if os.path.isdir(CONFIG_HOME):
+        write_done = threading.Event()
+        temp_builder = TemplateBuilder()
+        input_path = f"test_template_{get_timestamp()}"
+        output_path = input_path
+        temp_builder.build_test_template()
 
-    print("Waiting for template file to populate...")
-    time.sleep(3.0)
-    try:
-        drawmate_test = DrawmateRenderer(TEST_HOME + f"/{input_path}" + ".json")
-        drawmate_test.init_matrix()
-        drawmate_test.init_nodes("left")
-        drawmate_test.init_nodes("right")
-        drawmate_test.render_nodes()
-        drawmate_test.link_nodes(has_label=True)
-        drawmate_test.create_xml(TEST_HOME + f"/{output_path}")
-    except FileNotFoundError as e:
-        print("Failed to find template file")
+        def create_template_and_signal(file_path):
+            try:
+                temp_builder.create_template(file_path)
+            finally:
+                print(f"JSON template saved: @ {TEST_HOME}/{input_path}.json")
+                write_done.set()
 
+        try:
+            t = threading.Thread(target=create_template_and_signal, args=(f"{TEST_HOME}/{input_path}.json",))
+            t.start()
+            if write_done.wait(timeout=3):
+                drawmate_render(f"{TEST_HOME}/{input_path}.json", f"{TEST_HOME}/{output_path}.drawio", has_label=True, add_timestamp=False)
+            else:
+                print(f"Timeout: could not find file: {TEST_HOME}/{input_path}.json")
+            t.join()
+        except IOError as e:
+            print("Failed to create test file")
+            print(f"Original error {e}")
+
+        return True
+    else:
+        print(f"Failed to generate test file: config directory not found! {CONFIG_HOME}")
+        return False
 
 def build():
     from .template_builder import init_template_builder

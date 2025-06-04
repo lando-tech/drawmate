@@ -24,11 +24,10 @@ class TemplateBuilder:
             "tenth"
         ]
 
-    def build_test_template(self, file_path: str):
+    def build_test_template(self):
         self.init_graph_dimensions(4000, 4000)
         self.init_matrices("Central Appliance", 200, 12)
         self.init_nodes_test(6)
-        self.create_template(file_path)
 
     def create_template(self, file_path: str) -> bool:
         with open(file_path, "w") as new_template:
