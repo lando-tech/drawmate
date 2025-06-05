@@ -1,7 +1,7 @@
 # 🚨 **BREAKING CHANGES** 🚨
 
-- Please refer to [BUILD.md](./docs/BUILD.md), [API.md](./docs/API.md), and [CHANGELOG.md](CHANGELOG.md) for details on the new architecture and help pages.
-- The original Python-only version of Drawmate has been moved to the [`legacy-python`](https://github.com/lando-tech/drawmate/tree/legacy) branch. If you need the old behavior, please continue using that branch.
+- Please refer to [BUILD.md](./docs/BUILD.md), [API.md](./docs/API.md), and [CHANGELOG.md](CHANGELOG.md) for details on the new architecture, help pages and how to build from source.
+- The original Python-only version of drawmate has been moved to the [`legacy-python`](https://github.com/lando-tech/drawmate/tree/legacy) branch. If you need the old behavior, please continue using that branch.
 - **New architecture:** Drawmate now uses a C++ backend via `pybind11`, bundled into a wheel for easier installation.
 - **Upcoming releases:** I’ll be pushing wheels for multiple architectures and Python versions via GitHub Releases over the coming weeks.
 - **No changes to the JSON API** — existing JSON templates and workflows are still fully compatible.
@@ -23,28 +23,48 @@
 
 ## **How It Works**
 1. **JSON API Integration:** Input network data through JSON to auto-generate wiremaps.
-2. **Scripting Capability:** Extend functionality by scripting advanced layouts with the provided base classes.
-3. **Draw.io Compatibility:** Export diagrams in Draw.io XML format for further customization or sharing.
+2. **Draw.io Compatibility:** Export diagrams in Draw.io XML format for further customization or sharing.
 
 ---
 
 ### **Usage**
-- ```python3 main.py <path/to/input.json> <path/to/output.drawio>```
+```man
+usage: drawmate [-h] [-v] [-b] [-t] [-l] [-gt] [input_file] [output_file]
 
+positional arguments:
+  input_file            The path to the JSON template file. See API documentation for how to format the
+                        input file. Alternatively, pass in the '-b' or '--build-template' flag to get a
+                        blank starter template in the correct format
+  output_file           The path to the drawio.xml output file. Acceptable file extensions are
+                        ['.drawio', '.xml', '.drawio.xml']. Drawio will accept any of those three. You
+                        can also pass in the '-t' or '--timestamp' flag to append a timestamp to the
+                        file.
+
+options:
+  -h, --help            show this help message and exit
+  -v, --version         Print drawmate version, as well as system information
+  -b, --build-template  Interactive guide to build a starter JSON template with valid structure and
+                        empty node data.
+  -t, --timestamp       Add a timestamp to the output file
+  -l, --link-label      Add labels to links based on node positions (e.g., '0101'). See docs for label
+                        format.
+  -gt, --generate-test  Generate a test JSON template and output Draw.io XML. Test files are saved to
+                        ~/.config/drawmate/tests.
+```
 ---
 
 ### **Key Points:**
 - 📍 **Matrix Positioning:** Set the starting `x` and `y` coordinates for the `Matrix`. All connected nodes will be placed relative to this position.
 - 🚫 **Signaling Gaps:** If there is a gap between appliances, pass an empty string (`""`) or the (`__SPAN__`) variable in the list. 
-    - Example: If the `Matrix` has 4 connections but only 3 appliances, include 4 connections in the list with a blank string representing the gap.
-- **Connection/Flow:** The arrows/connection currently flow left to right, but this is also easily adjusted.
-- **Label Entries:** Label entries follow this basic structure
-  - `["Label of appliance", "input/output", "input/output", ["connection-indexes"], ["connection-indexes"]]`
+    - Example: If the `Matrix` has 4 connections but only 3 appliances, include 4 connections in the list with a blank string or the (`__SPAN__`) variable representing the gap.
+- **Connection/Flow:** The arrows/connection currently flow left to right and I am working on a function to allow reversing the flow.
+- **Label Entries:** Label entries in the JSON API follow this basic structure:
+  - `["Label of appliance", "input" | ["input", "input"], "output" | ["output", "output"], ["connection-indexes"], ["connection-indexes"]]`
   - ```connection-indexes``` refers to the index location of the ports. Indexes follow the 0 indexing system, 
     so if you have a Node at index 0, but it has two ports on each side, the indexes would be ```[0, 1]```.
   - You can alternatively pass in ```["NONE"]``` and the engine will infer an adjacent connection based on the position of the Node/Port.
     I kept this design to allow for different routing mechanisms in the future.
-  - `"connections-left"` refers to the connections on the matrix itself
+  - `"connections-left/right"` refers to the connections on the matrix itself
 - **Add more levels:** To add more levels/columns, just use the same naming convention `second-level-left`, `third-level-left` and so on.
 - **IMPORTANT:** Make sure the value of `num_connections` matches the number of appliances in each entry.
 
@@ -108,29 +128,6 @@
 ### **Examples** ###
 To see more examples, go to "data/images/" in the project directory.
 
----
-
-## **Basic Overview**
-
-Drawmate's engine generates a wiremap or diagram using the `Matrix` class as the central component of the layout. The `Matrix` serves as a hub, representing a device such as:
-
-- 🛡️ **Firewall**
-- 🖥️ **Switch**
-- 🎛️ **Audio/Video Codec**
-- 🔗 **Any Centralized Appliance**
-
-## 🧠 **Entry Point: `drawmate.py`**
-
-The `drawmate.py` module `drawmate_engine/drawmate.py` is the primary entry point for Drawmate, handling most of the diagram generation logic. It serves as a **template module**, offering a foundation for contributors to create new diagram templates with minimal effort.
-
-### **How `drawmate.py` Works**
-- 🛠️ **Core Logic:** Implements the primary flow for generating wiremaps from JSON input.
-- 📑 **Template Structure:** The module follows a modular and reusable design, enabling quick adaptation for new use cases.
-- 🔄 **Customizable:** By modifying the core logic, you can easily extend Drawmate's capabilities to support different diagram types.
-
----
-
 ## Author
 
 + Aaron Newman
-+ <aaron.newman@landotech.io>
