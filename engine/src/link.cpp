@@ -65,7 +65,7 @@ void Link::set_link_label_center(int column, int row)
     std::string label{};
     label.append("1");
     label.append(std::to_string(column));
-    label.append("0");
+    if (!((row + 1) >= 10)) label.append("0");
     label.append(std::to_string(row + 1));
     this->label = label;
 }
@@ -75,7 +75,7 @@ void Link::set_link_label_left_justified(int column, int row)
     std::string label{};
     label.append("0");
     label.append(std::to_string(column));
-    label.append("0");
+    if (!((row + 1) >= 10)) label.append("0");
     label.append(std::to_string(row + 1));
     this->label = label;
 }
@@ -85,7 +85,7 @@ void Link::set_link_label_right_justified(int column, int row)
     std::string label{};
     label.append("1");
     label.append(std::to_string(column + 1));
-    label.append("0");
+    if (!((row + 1) >= 10)) label.append("0");
     label.append(std::to_string(row + 1));
     this->label = label;
 }
