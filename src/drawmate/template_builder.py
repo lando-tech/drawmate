@@ -33,7 +33,7 @@ class TemplateBuilder:
         with open(file_path, "w") as new_template:
             json.dump(self.template_dict, new_template, indent=2)
             if os.path.isfile(file_path):
-                return True 
+                return True
             else:
                 return False
 
@@ -46,7 +46,7 @@ class TemplateBuilder:
             "width": self.page_width,
             "height": self.page_height
         }
-    
+
     def init_matrices(self, matrix_label, matrix_width, num_connections):
         self.num_connections = num_connections
         self.template_dict["matrices"] = {
@@ -63,7 +63,7 @@ class TemplateBuilder:
         for i in range(self.num_connections):
             self.template_dict["connections-left"].append("NONE")
             self.template_dict["connections-right"].append("NONE")
-    
+
     def init_nodes(self, num_columns):
         self.num_columns = num_columns
         if len(self.levels) < self.num_columns:
@@ -78,7 +78,7 @@ class TemplateBuilder:
             self.template_dict[f"{self.levels[i]}-level-right"] = {"labels": []}
             for k in range(self.num_connections):
                 self.template_dict[f"{self.levels[i]}-level-right"]["labels"].append(["", "", "", ["NONE"], ["NONE"]])
-    
+
     def init_nodes_test(self, num_columns):
         self.num_columns = num_columns
         for i in range(self.num_columns):
@@ -101,13 +101,15 @@ def print_welcome_message():
 def get_page_width_height() -> tuple[int, int]:
     width_verified: bool = False
     height_verified: bool = False
+    page_width: int = 0
+    page_height: int = 0
     while not width_verified:
         page_width = get_width()
         if page_width <= 0:
             page_width = get_width()
         else:
             width_verified = True
-    
+
     while not height_verified:
         page_height = get_height()
         if page_height <= 0:
@@ -143,20 +145,22 @@ def get_height() -> int:
 def get_columns_row() -> tuple[int, int]:
     columns_verified: bool = False
     rows_verified: bool = False
+    columns: int = 0
+    rows: int = 0
     while not columns_verified:
         columns = get_columns()
         if columns <= 0:
             columns = get_columns()
         else:
             columns_verified = True
-    
+
     while not rows_verified:
         rows = get_rows()
         if rows <= 0:
             rows = get_rows()
         else:
             rows_verified = True
-    
+
     return columns, rows
 
 

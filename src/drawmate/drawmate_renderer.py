@@ -1,7 +1,7 @@
 # from xml.dom.minidom import Element
 # import sys
 # import os
-from .pathfinder import PathFinder
+# from .pathfinder import PathFinder
 
 # pf = PathFinder()
 # root_dir = pf.get_project_dir()
@@ -28,7 +28,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
     def draw_node(self, attributes: dict, _id:str, has_label: bool = False):
         node_elem = self.create_mxcell(attributes, _id, has_label)
         self.root.appendChild(node_elem)
-    
+
     def draw_node_with_target(self, attributes: dict, __id__: str, source_id: str, target_id: str, has_label: bool = False):
         node_elem = self.create_mxcell_with_target(attributes, __id__, source_id, target_id)
         self.root.appendChild(node_elem)
@@ -85,7 +85,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         matrix_ports_left, matrix_ports_right = self.config.get_matrix_connection_labels()
 
         self.graph.add_node(matrix_meta, matrix_ports_left, matrix_ports_right, conn_indexes_left, conn_indexes_right)
-    
+
     def init_nodes(self, orientation: str):
         if orientation == "left":
             nodes = self.left_nodes
@@ -94,7 +94,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
 
         for k, v in nodes.items():
 
-            col = int(k.split("-")[1])
+            # col = int(k.split("-")[1])
             row = int(k.split("-")[2])
 
             node_meta = {}
@@ -126,7 +126,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 conn_indexes_right = [row]
 
             self.graph.add_node(node_meta, port_labels_left, port_labels_right, conn_indexes_left, conn_indexes_right) # type: ignore
-    
+
     def link_nodes(self, has_label: bool = False):
         # Only call after all nodes have been added to the graph
         self.graph.connect_nodes()
@@ -151,10 +151,10 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 node = nodes_export.get(i)
             except IndexError:
                 continue
-            
+
             # print(node.source_id)
 
-            attributes = { 
+            attributes = {
                 "x": node.x, # type: ignore
                 "y": node.y, # type: ignore
                 "label": node.name, # type: ignore
@@ -191,12 +191,12 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
     def test_nodes(self):
         # for key, node in self.graph.get_nodes().items():
         #     print(key, node)
-        
+
         self.graph.connect_nodes()
         links = self.graph.get_links()
         for link in links:
             print(link.source_id, link.target_id)
-            
+
 
 
 # if __name__ == "__main__":

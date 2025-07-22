@@ -40,7 +40,7 @@ class DrawmateConfig:
             #     is_warning=False,
             # )
             exit("Failed to find template file")
-        except json.JSONDecodeError as json_error:
+        except json.JSONDecodeError:
             # log_data = (
             #     f"Invalid JSON in template file: {self.template_path}\n"
             #     + f"Json error: {json_error}"

@@ -173,7 +173,7 @@ class DocBuilder:
                 #     # Print statement used for debugging. This will print the raw xml string
                 #     # print(self.newXML.childNodes[0].toprettyxml(indent="  "))
         except IOError as e:
-            error_message = f"Error saving template file" + f"\nError message: {e}"
+            error_message = "Error saving template file" + f"\nError message: {e}"
             print(error_message)
             exit()
             # log_mgr.add_log(

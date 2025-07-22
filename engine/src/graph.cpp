@@ -4,10 +4,10 @@
 
 #include "graph.h"
 #include "keys.h"
-#include <algorithm>
-#include <cstdint>
-#include <cstdio>
-#include <sstream>
+// #include <algorithm>
+// #include <cstdint>
+// #include <cstdio>
+// #include <sstream>
 #include <string>
 
 NodeType verify_node_type(const std::string &node_type_str)
@@ -199,7 +199,7 @@ void Graph::add_node(
   NodeType node_type{verify_node_type(node_meta_data.at("node-type"))};
   NodeOrientation node_orientation{
       verify_node_orientation(node_meta_data.at("node-orientation"))};
-  
+
   if (this->nodes_.empty() && node_orientation != NodeOrientation::CENTER)
   {
     throw std::runtime_error("First node must be center aligned!");
@@ -524,7 +524,7 @@ void Graph::add_link_outgoing()
                      incoming_port->get_x(), incoming_port->get_y());
       link->set_link_label(it.column, it.row, node_orientation, port_orientation);
       this->add_link_export(convert_port_key_internal(it), convert_port_key_internal(incoming_port_id),
-                            link->label, 
+                            link->label,
                             outgoing_port->get_x(), outgoing_port->get_y(),
                             incoming_port->get_x(), incoming_port->get_y(),
                             link->has_waypoints, link->vec_waypoint_links);
@@ -539,7 +539,7 @@ void Graph::add_port_target_id(PortKey source_port_key, PortKey target_port_key)
   source_port.target_id = target_port.source_id;
 }
 
-void Graph::add_link_export(const std::string& source_id, const std::string& target_id, 
+void Graph::add_link_export(const std::string& source_id, const std::string& target_id,
                             const std::string& label,
                             double src_x, double src_y, double tgt_x,
                             double tgt_y, bool has_waypoints,
