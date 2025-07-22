@@ -1,18 +1,3 @@
-# 🚨 **BREAKING CHANGES** 🚨
-
-- Please refer to [BUILD.md](./docs/BUILD.md), [API.md](./docs/API.md), and [CHANGELOG.md](CHANGELOG.md) for details on the new architecture, help pages and how to build from source.
-- The original Python-only version of drawmate has been moved to the [`legacy-python`](https://github.com/lando-tech/drawmate/tree/legacy) branch. If you need the old behavior, please continue using that branch.
-- **New architecture:** Drawmate now uses a C++ backend via `pybind11`, bundled into a wheel for easier installation.
-- **Upcoming releases:** I’ll be pushing wheels for multiple architectures and Python versions via GitHub Releases over the coming weeks.
-- **No changes to the JSON API** — existing JSON templates and workflows are still fully compatible.
-- **WILL be pip-installable in the future** 🎉  
-  Once I have built the wheels, you'll be able to install the new version directly with:
-  
-  ```
-  pip install drawmate
-  ```
----
-
 ## **Drawmate: Automate Wiremaps and Diagrams with Draw.io**
 
 **Drawmate** is a powerful tool designed to automate the creation of wiremaps and network architecture diagrams using the **Draw.io XML format**. This tool streamlines the diagramming process by utilizing a JSON API to automatically generate basic wiremaps, saving time and effort for network engineers and IT professionals.
@@ -55,12 +40,12 @@ options:
 
 ### **Key Points:**
 - 📍 **Matrix Positioning:** Set the starting `x` and `y` coordinates for the `Matrix`. All connected nodes will be placed relative to this position.
-- 🚫 **Signaling Gaps:** If there is a gap between appliances, pass an empty string (`""`) or the (`__SPAN__`) variable in the list. 
+- 🚫 **Signaling Gaps:** If there is a gap between appliances, pass an empty string (`""`) or the (`__SPAN__`) variable in the list.
     - Example: If the `Matrix` has 4 connections but only 3 appliances, include 4 connections in the list with a blank string or the (`__SPAN__`) variable representing the gap.
 - **Connection/Flow:** The arrows/connection currently flow left to right and I am working on a function to allow reversing the flow.
 - **Label Entries:** Label entries in the JSON API follow this basic structure:
   - `["Label of appliance", "input" | ["input", "input"], "output" | ["output", "output"], ["connection-indexes"], ["connection-indexes"]]`
-  - ```connection-indexes``` refers to the index location of the ports. Indexes follow the 0 indexing system, 
+  - ```connection-indexes``` refers to the index location of the ports. Indexes follow the 0 indexing system,
     so if you have a Node at index 0, but it has two ports on each side, the indexes would be ```[0, 1]```.
   - You can alternatively pass in ```["NONE"]``` and the engine will infer an adjacent connection based on the position of the Node/Port.
     I kept this design to allow for different routing mechanisms in the future.
@@ -118,7 +103,7 @@ options:
 
 - This is a very simple implementation, with only one level of connections for a basic AV Codec.
 - Here is a view of what the above JSON would output (the numbering system can easily be altered to fit specific use cases):
- 
+
 ---
 
 ![Basic Network Diagram](data/images/sc_test_1.drawio.png)
