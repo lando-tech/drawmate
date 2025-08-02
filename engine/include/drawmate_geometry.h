@@ -1,6 +1,8 @@
 #ifndef DRAWMATE_GEOMETRY_H
 #define DRAWMATE_GEOMETRY_H
 
+#include <tuple>
+
 class DrawmateGeometry {
 
 private:
@@ -11,11 +13,13 @@ public:
 
     void set_x(double x);
 
-    const double get_x();
+    [[nodiscard]] const double get_x();
 
     void set_y(double y);
 
-    const double get_y();
+    [[nodiscard]] const double get_y();
+
+    std::tuple<double, double> get_x_y_tuple() const;
 
 };
 
