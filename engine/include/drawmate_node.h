@@ -2,6 +2,7 @@
 #define DRAWMATE_NODE_H
 
 #include "drawmate_geometry.h"
+#include <tuple>
 
 class AbstractDrawmateNode {
 
@@ -26,6 +27,18 @@ public:
     virtual double get_height() const = 0;
 
     virtual double set_height(const double height) = 0;
+
+    virtual std::tuple<double, double> get_width_height_tuple() const = 0;
+
+    virtual void set_geometry(DrawmateGeometry geometry) = 0;
+
+    virtual DrawmateGeometry& get_geometry() const = 0;
+
+    virtual double get_x() const = 0;
+
+    virtual void set_x(double x) = 0;
+
+    virtual double get_y() const = 0;
 
     virtual ~AbstractDrawmateNode() = default;
 
