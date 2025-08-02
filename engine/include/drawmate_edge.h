@@ -6,6 +6,7 @@
 #include <memory>
 
 class DrawmateEdge {
+
 private:
     long m_id{};
     long m_source_id{};

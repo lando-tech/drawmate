@@ -9,10 +9,6 @@ class AbstractDrawmateNode {
 protected:
     long m_id{};
 
-    double m_width{};
-
-    double m_height{};
-
     DrawmateGeometry m_geometry{};
 
 public:

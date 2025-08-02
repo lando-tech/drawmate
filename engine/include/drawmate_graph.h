@@ -1,7 +1,7 @@
 #ifndef DRAWMATE_GRAPH_H
 #define DRAWMATE_GRAPH_H
 
-#include "keys.h"
+#include "abstract_layout_manager.h"
 #include "drawmate_node.h"
 #include "drawmate_edge.h"
 
@@ -16,10 +16,12 @@ private:
 
 public:
 
+    DrawmateGraph(AbstractLayoutManager layout_manager);
+
     // Node operations
     void add_node(AbstractDrawmateNode &&node);
     void remove_node(long node_key);
-    [[nodiscard]] AbstractDrawmateNode& get_node_ref(NodeKey node_key);
+    [[nodiscard]] AbstractDrawmateNode& get_node_ref(long node_key);
     [[nodiscard]] const AbstractDrawmateNode& get_node_const_ref(long node_key) const;
     [[nodiscard]] bool has_node(long node_key) const;
     [[nodiscard]] size_t get_node_count() const;
