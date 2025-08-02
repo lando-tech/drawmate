@@ -169,7 +169,7 @@ void Graph::increment_y_right(const double node_height)
 void Graph::increment_grid_column_left()
 {
   this->row_count_left++;
-  if (this->row_count_left >= this->grid_config_.rows_left)
+  if (this->row_count_left >= this->m_grid_config_.rows_left)
   {
     this->row_count_left = 0;
     this->column_count_left++;
@@ -179,7 +179,7 @@ void Graph::increment_grid_column_left()
 void Graph::increment_grid_column_right()
 {
   this->row_count_right++;
-  if (this->row_count_right >= this->grid_config_.rows_right)
+  if (this->row_count_right >= this->m_grid_config_.rows_right)
   {
     this->row_count_right = 0;
     this->column_count_right++;
@@ -569,7 +569,7 @@ Graph::Graph(const LayoutConfig &layout_config, const GridConfig &grid_config,
              const NodeConfig &node_config, const PortConfig &port_config)
 {
   this->layout_config_ = layout_config;
-  this->grid_config_ = grid_config;
+  this->m_grid_config_ = grid_config;
   this->central_node_config_ = central_node_config;
   this->node_config_ = node_config;
   this->port_config_ = port_config;

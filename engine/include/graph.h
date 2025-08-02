@@ -14,23 +14,23 @@
 
 
 /** Graph class
- * The base Graph class responsible for building the diagram model. 
+ * The base Graph class responsible for building the diagram model.
  * The Graph class handles containerization of all node objects, to include
  * Nodes, Ports, Links, and their corresponding exports.
- * Objects that end with 'export' are lightweight structs that are exposed 
+ * Objects that end with 'export' are lightweight structs that are exposed
  * to the Python interface.
  * The Graph class implements a multitude of functions to track x/y bounding
- * limits, grid counters responsible for keeping nodes in their respective columns/rows, 
+ * limits, grid counters responsible for keeping nodes in their respective columns/rows,
  * creation and storage of Graph objects, and various test functions to ensure exports are
- * synced with the native C++ containers. The decision to keep some functions that could 
+ * synced with the native C++ containers. The decision to keep some functions that could
  * have been placed externally was intentional to ensure the state and ownership of objects
- * were tightly controlled by the Graph. 
+ * were tightly controlled by the Graph.
  */
 
 class Graph
 {
 private:
-  GridConfig grid_config_{}; /**< GridConfig grid_config_ */
+  GridConfig m_grid_config_{}; /**< GridConfig m_grid_config_ */
   LayoutConfig layout_config_{}; /**< LayoutConfig layout_config_ */
   NodeConfig node_config_{}; /**< NodeConfig node_config_ */
   CentralNodeConfig central_node_config_{}; /**< CentralNodeConfig central_node_config_ */
@@ -74,22 +74,22 @@ private:
   std::vector<std::string> node_meta_valid_keys_{"node-label", "node-type",
                                                  "node-orientation"}; /**< std::vector<std::string> node_meta_valid_keys_ */
 
-  NodeKey add_node_left_justified(const double max_ports, 
-                               NodeType node_type, 
-                               const std::string &node_label, 
-                               std::vector<int> connection_indexes_left, 
+  NodeKey add_node_left_justified(const double max_ports,
+                               NodeType node_type,
+                               const std::string &node_label,
+                               std::vector<int> connection_indexes_left,
                                std::vector<int> connection_indexes_right);
 
-  NodeKey add_node_right_justified(const double max_ports, 
-                                NodeType node_type, 
-                                const std::string &node_label, 
-                                std::vector<int> connection_indexes_left, 
+  NodeKey add_node_right_justified(const double max_ports,
+                                NodeType node_type,
+                                const std::string &node_label,
+                                std::vector<int> connection_indexes_left,
                                 std::vector<int> connection_indexes_right);
 
   NodeKey add_node_center_justified(const double max_ports,
-                                 NodeType node_type, 
-                                 const std::string &node_label, 
-                                 std::vector<int> connection_indexes_left, 
+                                 NodeType node_type,
+                                 const std::string &node_label,
+                                 std::vector<int> connection_indexes_left,
                                  std::vector<int> connection_indexes_right);
 
   void add_node_spanning(NodeOrientation node_orientation);
@@ -120,10 +120,10 @@ private:
    * @param port_index Index of the port.
    */
   void add_node_ports_left_justified(std::vector<std::string> port_labels,
-                                     const NodeKey node_key, 
-                                     double x_left, 
-                                     double y_left, 
-                                     NodeExport& node_export, 
+                                     const NodeKey node_key,
+                                     double x_left,
+                                     double y_left,
+                                     NodeExport& node_export,
                                      int port_index);
 
   /**
@@ -135,11 +135,11 @@ private:
    * @param node_export Reference to the node export struct.
    * @param port_index Index of the port.
    */
-  void add_node_ports_right_justified(std::vector<std::string> port_labels, 
-                                      const NodeKey node_key, 
-                                      double x_left, 
-                                      double y_left, 
-                                      NodeExport& node_export, 
+  void add_node_ports_right_justified(std::vector<std::string> port_labels,
+                                      const NodeKey node_key,
+                                      double x_left,
+                                      double y_left,
+                                      NodeExport& node_export,
                                       int port_index);
 
   /**
