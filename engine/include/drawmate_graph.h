@@ -14,9 +14,20 @@ private:
     std::map<long, std::unique_ptr<AbstractDrawmateNode>> m_node_map{};
     std::map<long, std::unique_ptr<DrawmateEdge>> m_edge_map{};
 
+    long m_node_counter{};
+    long m_edge_counter{};
+
 public:
 
     DrawmateGraph(AbstractLayoutManager layout_manager);
+
+    void increment_node_counter() { this->m_node_counter++; }
+    void decrement_node_counter() { this->m_node_counter--; }
+    void reset_node_counter() { this->m_node_counter = 0; }
+
+    void increment_edge_counter() { this->m_edge_counter++; }
+    void decrement_edge_counter() { this->m_edge_counter--; }
+    void reset_edge_counter() { this->m_edge_counter = 0; }
 
     // Node operations
     void add_node(AbstractDrawmateNode &&node);
