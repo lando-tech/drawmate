@@ -34,8 +34,8 @@ struct DrawmateNodeSpec {
 };
 
 struct DrawmatePortSpec {
-    std::vector<std::string> m_input_labels{};
-    std::vector<std::string> m_output_labels{};
+    std::string m_input_label{};
+    std::string m_output_label{};
     NodeShape m_shape{};
 };
 

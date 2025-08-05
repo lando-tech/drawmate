@@ -2,6 +2,7 @@
 #define ABSTRACT_DRAWMATE_NODE_H
 
 #include "drawmate_geometry.h"
+#include "drawmate_node_spec.h"
 #include <tuple>
 
 class AbstractDrawmateNode {
