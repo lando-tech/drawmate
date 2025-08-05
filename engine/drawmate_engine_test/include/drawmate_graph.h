@@ -14,6 +14,8 @@ private:
     std::map<long, std::unique_ptr<AbstractDrawmateNode>> m_node_map{};
     std::map<long, std::unique_ptr<DrawmateEdge>> m_edge_map{};
 
+    AbstractLayoutManager m_layout_manager{};
+
 public:
 
     DrawmateGraph(AbstractLayoutManager layout_manager);

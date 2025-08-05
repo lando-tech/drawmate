@@ -3,6 +3,10 @@
 #include <iostream>
 
 
+DrawmateGraph::DrawmateGraph(AbstractLayoutManager layout_manager) {
+    this->m_layout_manager = layout_manager;
+}
+
 void DrawmateGraph::add_node(std::unique_ptr<AbstractDrawmateNode> node) {
     long node_id {node->get_id()};
     if (this->m_node_map.find(node_id) != this->m_node_map.end()) {
