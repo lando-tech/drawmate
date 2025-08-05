@@ -10,6 +10,8 @@ private:
     long m_id{};
 
     DrawmateGeometry m_geometry{};
+    NodeOrientation m_orientation{};
+    bool m_is_grid_based{false};
 
 public:
     [[nodiscard]] virtual const long get_id() const = 0;
@@ -45,6 +47,13 @@ public:
     [[nodiscard]] std::tuple<double, double> get_x_y_tuple() const {
         return this->m_geometry.get_x_y_tuple();
     }
+
+    void set_node_orientation(NodeOrientation orientation) {
+        this->m_orientation = orientation;
+        this->m_is_grid_based = true;
+    }
+
+    NodeOrientation get_node_orientation() { return this->m_orientation; }
 
     virtual ~AbstractDrawmateNode() = default;
 

@@ -4,11 +4,12 @@
 #include "drawmate_node_rect.h"
 #include <vector>
 
-class MultiPortNode : public DrawmateNodeRect {
+class DrawmateMultiPortNode : public DrawmateNodeRect {
 
 private:
     std::vector<long> m_port_ids_input{};
     std::vector<long> m_port_ids_output{};
+
 
 public:
     [[nodiscard]] const std::vector<long>& get_port_ids_input() const { return this->m_port_ids_input; }
@@ -18,24 +19,32 @@ public:
     void add_output_port(long port_id) { this->m_port_ids_output.push_back(port_id); }
 };
 
-class SwitchNode : public MultiPortNode {
+class GeneralApplianceNode : public DrawmateMultiPortNode {
+
+};
+
+class SwitchNode : public DrawmateMultiPortNode {
 
 
 };
 
-class AudioMatrixNode : public MultiPortNode {
+class RouterNode: public DrawmateMultiPortNode {
 
 };
 
-class VideoMatrixNode : public MultiPortNode {
+class AudioMatrixNode : public DrawmateMultiPortNode {
 
 };
 
-class AudioCodecNode: public MultiPortNode {
+class VideoMatrixNode : public DrawmateMultiPortNode {
 
 };
 
-class VideoCodecNode: public MultiPortNode {
+class AudioCodecNode: public DrawmateMultiPortNode {
+
+};
+
+class VideoCodecNode: public DrawmateMultiPortNode {
 
 };
 

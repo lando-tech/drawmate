@@ -30,7 +30,7 @@ public:
     void set_target_id(long target_id) { m_target_id = target_id; }
 
     // Waypoint operations
-    void add_waypoint(DrawmateWaypoint &&waypoint);
+    void add_waypoint(std::unique_ptr<DrawmateWaypoint> waypoint);
     void remove_waypoint(long waypoint_id);
     [[nodiscard]] DrawmateWaypoint& get_waypoint_ref(long waypoint_id);
     [[nodiscard]] const DrawmateWaypoint& get_waypoint_const_ref(long waypoint_id) const;
