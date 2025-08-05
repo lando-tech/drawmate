@@ -15,7 +15,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(drawmate_engine_lib SHARED
     src/drawmate_graph.cpp
-    src/drawmate_node_builder.cpp
 )
 
 include_directories(drawmate_engine PUBLIC include)
