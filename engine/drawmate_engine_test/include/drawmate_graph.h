@@ -2,7 +2,7 @@
 #define DRAWMATE_GRAPH_H
 
 #include "abstract_layout_manager.h"
-#include "drawmate_node.h"
+#include "abstract_drawmate_node.h"
 #include "drawmate_edge.h"
 
 #include <map>
@@ -19,7 +19,7 @@ public:
     DrawmateGraph(AbstractLayoutManager layout_manager);
 
     // Node operations
-    void add_node(AbstractDrawmateNode &&node);
+    void add_node(std::unique_ptr<AbstractDrawmateNode> node);
     void remove_node(long node_key);
     [[nodiscard]] AbstractDrawmateNode& get_node_ref(long node_key);
     [[nodiscard]] const AbstractDrawmateNode& get_node_const_ref(long node_key) const;
@@ -27,7 +27,7 @@ public:
     [[nodiscard]] size_t get_node_count() const;
 
     // Edge operations
-    void add_edge(DrawmateEdge &&edge);
+    void add_edge(std::unique_ptr<DrawmateEdge> edge);
     void remove_edge(long edge_id);
     [[nodiscard]] DrawmateEdge& get_edge_ref(long edge_id);
     [[nodiscard]] const DrawmateEdge& get_edge_const_ref(long edge_id) const;
