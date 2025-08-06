@@ -17,7 +17,13 @@ add_library(drawmate_engine_lib SHARED
     src/drawmate_graph.cpp
 )
 
-include_directories(drawmate_engine PUBLIC include)
+include_directories(drawmate_engine PUBLIC
+    include
+    include/drawmate_node
+    include/drawmate_geometry
+    include/drawmate_edge
+    include/layout
+)
 
 add_executable(drawmate_engine src/main.cpp)
 target_link_libraries(drawmate_engine PUBLIC drawmate_engine_lib)

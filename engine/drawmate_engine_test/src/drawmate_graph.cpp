@@ -1,5 +1,5 @@
 #include "drawmate_graph.h"
-#include "abstract_drawmate_node.h"
+#include "drawmate_node/abstract_drawmate_node.h"
 #include <iostream>
 
 

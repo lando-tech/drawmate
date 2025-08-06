@@ -1,7 +1,7 @@
 #ifndef ABSTRACT_DRAWMATE_NODE_H
 #define ABSTRACT_DRAWMATE_NODE_H
 
-#include "drawmate_geometry.h"
+#include "drawmate_geometry/drawmate_geometry.h"
 #include <tuple>
 
 class AbstractDrawmateNode {

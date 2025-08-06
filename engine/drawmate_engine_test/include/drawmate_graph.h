@@ -1,9 +1,9 @@
 #ifndef DRAWMATE_GRAPH_H
 #define DRAWMATE_GRAPH_H
 
-#include "abstract_layout_manager.h"
-#include "abstract_drawmate_node.h"
-#include "drawmate_edge.h"
+#include "layout/abstract_layout_manager.h"
+#include "drawmate_node/abstract_drawmate_node.h"
+#include "drawmate_edge/drawmate_edge.h"
 
 #include <map>
 #include <memory>
