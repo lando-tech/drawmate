@@ -190,7 +190,7 @@ class DrawmateConfig:
 
         raise RuntimeError("Failed to load template file: build_node_dict()")
 
-    def get_matrix_connection_labels(self) -> tuple[list, list]:
+    def get_matrix_connection_labels(self) -> tuple[list[str], list[str]]:
         return self.template_data.get("connections-left"), self.template_data.get(
             "connections-right"
         ) # type: ignore

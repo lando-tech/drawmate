@@ -1,4 +1,4 @@
-from .matrix_constants import MatrixDimensions
+from matrix_constants import MatrixDimensions
 
 class DrawmateSpacingManager:
     def __init__(self, matrix_dimensions: MatrixDimensions) -> None:
