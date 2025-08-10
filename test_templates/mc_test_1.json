@@ -70,8 +70,8 @@
                 "AV Appliance",
                 ["HDMI", "HDMI", "HDMI"],
                 ["HDMI", "HDMI", "HDMI"],
-                ["NONE"],
-                ["NONE"]
+                [4, 5, 6],
+                [4, 5, 6]
             ],
             [
                 "__SPAN__",

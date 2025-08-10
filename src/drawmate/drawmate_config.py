@@ -1,9 +1,9 @@
 import json
 from dataclasses import dataclass
-from .drawmate_node import DrawmateNode
-from .drawmate_port import DrawmatePort
+from drawmate_node import DrawmateNode
+from drawmate_port import DrawmatePort
 
-from .matrix_constants import MatrixDimensions
+from matrix_constants import MatrixDimensions
 
 
 @dataclass
@@ -141,52 +141,54 @@ class DrawmateConfig:
         else:
             raise RuntimeError("Failed to load template file: build_node_dict()")
 
-    # def build_node_dict_test(self, num_connections: int) -> tuple[dict[str, DrawmateNode], dict[str, DrawmateNode]]:
-    #     left_side = {}
-    #     right_side = {}
-    #     levels = [
-    #         "first",
-    #         "second",
-    #         "third",
-    #         "fourth",
-    #         "fifth",
-    #         "sixth",
-    #         "seventh",
-    #         "eighth",
-    #     ]
-    #     col_index_left = 0
-    #     row_index_left = 0
-    #     col_index_right = 0
-    #     row_index_right = 0
-    #     if self.template_data:
-    #         for key, value in self.template_data.items():
-    #             current_key = key.split("-")
-    #             current_level = current_key[0]
-    #             current_side = current_key[-1]
+    def build_node_dict_test(self, num_connections: int) -> tuple[dict[str, DrawmateNode], dict[str, DrawmateNode]]:
+        left_side = {}
+        right_side = {}
+        levels = [
+            "first",
+            "second",
+            "third",
+            "fourth",
+            "fifth",
+            "sixth",
+            "seventh",
+            "eighth",
+        ]
+        col_index_left = 0
+        row_index_left = 0
+        col_index_right = 0
+        row_index_right = 0
+        if self.template_data:
+            for key, value in self.template_data.items():
+                current_key = key.split("-")
+                current_level = current_key[0]
+                current_side = current_key[-1]
 
-    #             if current_level == levels[col_index_left] and current_side == "left":
-    #                 self.num_levels += 1
-    #                 for label in value["labels"]:
-    #                     if row_index_left >= num_connections:
-    #                         row_index_left = 0
-    #                     object_key = f"L-{col_index_left}-{row_index_left}"
-    #                     left_side[object_key] = DrawmateNode(label[0], DrawmatePort(label[1], label[2], label[3], label[4]))
-    #                     row_index_left += 1
-    #                 col_index_left += 1
-    #             elif (
-    #                 current_level == levels[col_index_right] and current_side == "right"
-    #             ):
-    #                 for label in value["labels"]:
-    #                     if row_index_right >= num_connections:
-    #                         row_index_right = 0
-    #                     object_key = f"R-{col_index_right}-{row_index_right}"
-    #                     right_side[object_key] = DrawmateNode()
-    #                     row_index_right += 1
-    #                 col_index_right += 1
+                if current_level == levels[col_index_left] and current_side == "left":
+                    self.num_levels += 1
+                    for label in value["labels"]:
+                        if row_index_left >= num_connections:
+                            row_index_left = 0
+                        object_key = f"L-{col_index_left}-{row_index_left}"
+                        # left_side[object_key] =
+                        self.add_node(left_side, object_key, label)
+                        row_index_left += 1
+                    col_index_left += 1
+                elif (
+                    current_level == levels[col_index_right] and current_side == "right"
+                ):
+                    for label in value["labels"]:
+                        if row_index_right >= num_connections:
+                            row_index_right = 0
+                        object_key = f"R-{col_index_right}-{row_index_right}"
+                        # right_side[object_key] = DrawmateNode()
+                        self.add_node(right_side, object_key, label)
+                        row_index_right += 1
+                    col_index_right += 1
 
-    #         return left_side, right_side
-        # else:
-        #     raise RuntimeError("Failed to load template file: build_node_dict()")
+            return left_side, right_side
+
+        raise RuntimeError("Failed to load template file: build_node_dict()")
 
     def get_matrix_connection_labels(self) -> tuple[list, list]:
         return self.template_data.get("connections-left"), self.template_data.get(
@@ -195,3 +197,10 @@ class DrawmateConfig:
 
     def get_matrix_label(self):
         return self.template_data.get("matrices")["labels"] # type: ignore
+
+    @staticmethod
+    def add_node(node_dict: dict, node_key: str, label_array: list):
+        node = DrawmateNode(label_array[0])
+        node.add_port_input(label_array[1], label_array[3])
+        node.add_port_output(label_array[2], label_array[4])
+        node_dict[node_key] = node
