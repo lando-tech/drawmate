@@ -41,9 +41,9 @@ class MxCell(DocBuilder):
         self,
         style: str,
         value: str,
-        __id__: str = None, # type: ignore
-        src_id: str = None, # type: ignore
-        tgt_id: str = None, # type: ignore
+        __id__: str = None,  # type: ignore
+        src_id: str = None,  # type: ignore
+        tgt_id: str = None,  # type: ignore
     ):
         """_summary_
 

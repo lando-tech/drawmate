@@ -163,8 +163,10 @@
 #             drawmate_render(args.input_file, args.output_file)
 #         exit(code=0)
 
+
 def main():
     from .drawmate_renderer import DrawmateRenderer
+
     render = DrawmateRenderer("/home/landotech/Projects/drawmate/test/mc_test_1.json")
     for i in render.left_nodes:
         print(i)

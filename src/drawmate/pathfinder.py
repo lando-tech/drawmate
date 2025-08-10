@@ -2,14 +2,18 @@ import os
 import json
 import platform
 
+
 def get_os_name():
     return platform.system()
+
 
 def get_architecture():
     return platform.architecture()
 
+
 def get_python_version():
     return platform.python_version()
+
 
 def get_processor():
     return platform.processor()
@@ -18,7 +22,7 @@ def get_processor():
 OS_NAME = get_os_name()
 PROCESSOR = get_processor()
 ARCHITECTURE = get_architecture()
-PYTHON_VERSION = get_python_version() 
+PYTHON_VERSION = get_python_version()
 
 
 def print_system_info():

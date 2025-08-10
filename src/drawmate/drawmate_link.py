@@ -1,4 +1,3 @@
-
 class DrawmateLink:
     def __init__(self, source_id: str, target_id: str) -> None:
         self.id: str

@@ -37,7 +37,9 @@ class DrawmateConfig:
         dimensions = self.template_data.get("graph-dimensions")
 
         if not dimensions:
-            raise RuntimeError("Failed to fetch graph dimensions: get_graph_dimensions()")
+            raise RuntimeError(
+                "Failed to fetch graph dimensions: get_graph_dimensions()"
+            )
 
         return GraphDimensions(
             dimensions["dx"],
@@ -54,7 +56,9 @@ class DrawmateConfig:
         dimensions = self.template_data.get("matrices")
 
         if not dimensions:
-            raise RuntimeError("Failed to fetch matrix dimensions: get_matrix_dimensions()")
+            raise RuntimeError(
+                "Failed to fetch matrix dimensions: get_matrix_dimensions()"
+            )
 
         return MatrixDimensions(
             dimensions["labels"],
@@ -94,7 +98,9 @@ class DrawmateConfig:
         else:
             return None
 
-    def build_node_dict(self, num_connections: int) -> tuple[dict[str, list[str] | str], dict[str, list[str] | str]]:
+    def build_node_dict(
+        self, num_connections: int
+    ) -> tuple[dict[str, list[str] | str], dict[str, list[str] | str]]:
         left_side = {}
         right_side = {}
         levels = [
@@ -141,7 +147,9 @@ class DrawmateConfig:
         else:
             raise RuntimeError("Failed to load template file: build_node_dict()")
 
-    def build_node_dict_test(self, num_connections: int) -> tuple[dict[str, DrawmateNode], dict[str, DrawmateNode]]:
+    def build_node_dict_test(
+        self, num_connections: int
+    ) -> tuple[dict[str, DrawmateNode], dict[str, DrawmateNode]]:
         left_side = {}
         right_side = {}
         levels = [
@@ -193,10 +201,10 @@ class DrawmateConfig:
     def get_matrix_connection_labels(self) -> tuple[list[str], list[str]]:
         return self.template_data.get("connections-left"), self.template_data.get(
             "connections-right"
-        ) # type: ignore
+        )  # type: ignore
 
     def get_matrix_label(self):
-        return self.template_data.get("matrices")["labels"] # type: ignore
+        return self.template_data.get("matrices")["labels"]  # type: ignore
 
     @staticmethod
     def add_node(node_dict: dict, node_key: str, label_array: list):

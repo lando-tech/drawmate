@@ -1,5 +1,3 @@
-
-
 class DrawmateGridLayout:
     def __init__(self) -> None:
         self.column_count_left = 0

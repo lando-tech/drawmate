@@ -11,7 +11,6 @@ from .constants import (
 )
 
 
-
 def generate_id() -> int:
     """
     Summary:
@@ -23,6 +22,7 @@ def generate_id() -> int:
     stop = 9999999999999999999
     _id = random.randrange(start=start, stop=stop)
     return _id
+
 
 def get_timestamp() -> str:
     """
@@ -95,7 +95,7 @@ class DocBuilder:
         # Append root to mxGraphModel
         self.mx_graph_model.appendChild(self.root)
         # Append diagram to top_level of document
-        self.top_level.appendChild(self.diagram) # type: ignore
+        self.top_level.appendChild(self.diagram)  # type: ignore
 
     def set_graph_values(self, dx: int, dy: int, page_width: int, page_height: int):
         """

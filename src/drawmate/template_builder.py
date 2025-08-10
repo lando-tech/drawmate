@@ -21,7 +21,7 @@ class TemplateBuilder:
             "seventh",
             "eighth",
             "ninth",
-            "tenth"
+            "tenth",
         ]
 
     def build_test_template(self):
@@ -44,7 +44,7 @@ class TemplateBuilder:
             "dx": self.page_width,
             "dy": self.page_height,
             "width": self.page_width,
-            "height": self.page_height
+            "height": self.page_height,
         }
 
     def init_matrices(self, matrix_label, matrix_width, num_connections):
@@ -73,28 +73,38 @@ class TemplateBuilder:
 
             self.template_dict[f"{self.levels[i]}-level-left"] = {"labels": []}
             for j in range(self.num_connections):
-                self.template_dict[f"{self.levels[i]}-level-left"]["labels"].append(["", "", "", ["NONE"], ["NONE"]])
+                self.template_dict[f"{self.levels[i]}-level-left"]["labels"].append(
+                    ["", "", "", ["NONE"], ["NONE"]]
+                )
 
             self.template_dict[f"{self.levels[i]}-level-right"] = {"labels": []}
             for k in range(self.num_connections):
-                self.template_dict[f"{self.levels[i]}-level-right"]["labels"].append(["", "", "", ["NONE"], ["NONE"]])
+                self.template_dict[f"{self.levels[i]}-level-right"]["labels"].append(
+                    ["", "", "", ["NONE"], ["NONE"]]
+                )
 
     def init_nodes_test(self, num_columns):
         self.num_columns = num_columns
         for i in range(self.num_columns):
             self.template_dict[f"{self.levels[i]}-level-left"] = {"labels": []}
             for j in range(self.num_connections):
-                self.template_dict[f"{self.levels[i]}-level-left"]["labels"].append(["Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]])
+                self.template_dict[f"{self.levels[i]}-level-left"]["labels"].append(
+                    ["Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]]
+                )
 
             self.template_dict[f"{self.levels[i]}-level-right"] = {"labels": []}
             for k in range(self.num_connections):
-                self.template_dict[f"{self.levels[i]}-level-right"]["labels"].append(["Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]])
+                self.template_dict[f"{self.levels[i]}-level-right"]["labels"].append(
+                    ["Appliance", "HDMI", "HDMI", ["NONE"], ["NONE"]]
+                )
 
 
 def print_welcome_message():
-    msg = ("\n\nWelcome to the drawmate template builder!\n"
-           "This tool will guide you through building a basic JSON template for drawmate.\n"
-           "Please follow the prompts below:\n")
+    msg = (
+        "\n\nWelcome to the drawmate template builder!\n"
+        "This tool will guide you through building a basic JSON template for drawmate.\n"
+        "Please follow the prompts below:\n"
+    )
     print(msg)
 
 
@@ -167,7 +177,11 @@ def get_columns_row() -> tuple[int, int]:
 def get_columns() -> int:
     columns: int = 0
     try:
-        columns = int(input("Enter the number of columns (levels to span from the matrix, left/right): "))
+        columns = int(
+            input(
+                "Enter the number of columns (levels to span from the matrix, left/right): "
+            )
+        )
     except ValueError as e:
         print(f"Please enter a valid number: {e}")
         return 0
@@ -178,7 +192,11 @@ def get_columns() -> int:
 def get_rows() -> int:
     rows: int = 0
     try:
-        rows = int(input("Enter number of connections for the matrix (this will be the total amount of rows): "))
+        rows = int(
+            input(
+                "Enter number of connections for the matrix (this will be the total amount of rows): "
+            )
+        )
     except ValueError as e:
         print(f"Please enter a valid number: {e}")
         return 0
@@ -188,7 +206,11 @@ def get_rows() -> int:
 
 def get_matrix_width() -> int:
     try:
-        matrix_width: int = int(input("Enter the desired width of the matrix (height is automatically calculated): "))
+        matrix_width: int = int(
+            input(
+                "Enter the desired width of the matrix (height is automatically calculated): "
+            )
+        )
     except ValueError as e:
         print(f"Please enter a valid number: {e}")
         return 0
@@ -217,7 +239,9 @@ def init_template_builder():
             print(f"File saved @ {file_path}")
             exit()
         else:
-            print("Oops! Something went wrong! Please check drawmate logs (~/.config/drawmate/logs)")
+            print(
+                "Oops! Something went wrong! Please check drawmate logs (~/.config/drawmate/logs)"
+            )
             exit()
     except KeyboardInterrupt:
         print("\nExiting template builder! Goodbye!")
