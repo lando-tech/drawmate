@@ -1,5 +1,4 @@
 lxml
 toml
 black
-pybind11-stubgen
 build

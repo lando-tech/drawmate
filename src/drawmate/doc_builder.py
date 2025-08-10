@@ -5,18 +5,11 @@ from sys import platform
 from datetime import datetime
 import random
 
-# Imports the pathfinder class from the utils directory.
-# See the pathfinder.py for specific uses.
-# from pathfinder import PathFinder
-# from log_manager import LogManager
 from .constants import (
     TOP_LEVEL_MX_CELL,
     MX_GRAPH_MODEL_ATTRIBUTES,
 )
 
-# Instance of the pathfinder class for directory navigation
-# pf = PathFinder()
-# log_mgr = LogManager()
 
 
 def generate_id() -> int:
@@ -65,12 +58,6 @@ def format_file_with_timestamp(output_file: str):
     return formatted_file
 
 
-
-# TEMPLATE_STORAGE_PATH = (
-#     f"{pf.xml_template_dir}builder_template__{get_timestamp()}.drawio"
-# )
-
-
 class DocBuilder:
     """
     The top level class for building the boilerplate xml structure for the template.
@@ -99,7 +86,7 @@ class DocBuilder:
 
     def create_xml_structure(self):
         """
-        Instantiates the appropriate parent/child elements to the file
+        Appends the appropriate parent/child elements to the file
         """
         self.diagram.setAttribute(attname="name", value="Page-1")
         self.diagram.setAttribute(attname="id", value=str(generate_id()))
@@ -112,7 +99,7 @@ class DocBuilder:
 
     def set_graph_values(self, dx: int, dy: int, page_width: int, page_height: int):
         """
-        Summary: This function sets the dimensions for the graph. All calculations and placement
+        This function sets the dimensions for the graph. All calculations and placement
         of graph objects will be directly affected by the parameters passed to this function.
 
         Args:
@@ -159,48 +146,7 @@ class DocBuilder:
             with open(output_file_path, "w", encoding="utf-8") as file:
                 file.write(xml_data)
                 print(f"Diagram saved: @ {output_file_path}")
-                # if file:
-                #     log_data = f"Export-Template file saved: {output_file_path}"
-                #     log_mgr.add_log(
-                #         object_log="doc_builder",
-                #         message=log_data,
-                #         line_number="216",
-                #         is_error=False,
-                #         is_warning=False,
-                #     )
-                # else:
-                #     print("File not saved")
-                #     # Print statement used for debugging. This will print the raw xml string
-                #     # print(self.newXML.childNodes[0].toprettyxml(indent="  "))
         except IOError as e:
             error_message = "Error saving template file" + f"\nError message: {e}"
             print(error_message)
             exit()
-            # log_mgr.add_log(
-            #     object_log="doc_builder",
-            #     message=error_message,
-            #     line_number="225",
-            #     is_error=True,
-            #     is_warning=False,
-            # )
-
-        # try:
-        #     with open(TEMPLATE_STORAGE_PATH, "w", encoding="utf-8") as temp_file:
-        #         temp_file.write(xml_data)
-        #         # success_msg = f"Storage-Template file saved: {TEMPLATE_STORAGE_PATH}"
-        #         # log_mgr.add_log(
-        #         #     object_log="doc_builder",
-        #         #     message=success_msg,
-        #         #     line_number="230",
-        #         #     is_error=False,
-        #         #     is_warning=False,
-        #         # )
-        # except IOError as e:
-        #     error_message = f"Error saving template file" + f"\nError message: {e}"
-        #     log_mgr.add_log(
-        #         object_log="doc_builder",
-        #         message=error_message,
-        #         line_number="239",
-        #         is_error=True,
-        #         is_warning=False,
-        #     )
