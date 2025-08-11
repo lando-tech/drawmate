@@ -34,7 +34,7 @@ class MxCell(DocBuilder):
             self.attributes["id"] = __id__
             # print("Using Node ID")
         else:
-            self.attributes["id"] = str(generate_id())
+            self.attributes["id"] = generate_id()
             # print("Generating Node ID")
 
     def set_mxcell_values_point(

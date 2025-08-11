@@ -10,18 +10,84 @@ from drawmate.constants import (
     MX_GRAPH_MODEL_ATTRIBUTES,
 )
 
+ALL_CHARACTERS = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+]
 
-def generate_id() -> int:
+
+def generate_id(id_size: int = 20) -> str:
     """
     Summary:
     Generates a unique id for each object.
     Returns:
         int: A unique id.
     """
-    start = 100000000000000000
-    stop = 9999999999999999999
-    _id = random.randrange(start=start, stop=stop)
-    return _id
+    __id__ = []
+    for i in range(id_size):
+        rand_idx = random.randrange(0, len(ALL_CHARACTERS))
+        __id__.append(ALL_CHARACTERS[rand_idx])
+    return "".join(__id__)
 
 
 def get_timestamp() -> str:

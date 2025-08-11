@@ -1,6 +1,7 @@
 from drawmate.doc_builder import DocBuilder
 from drawmate.mx_builder import MxBuilder
 from drawmate.drawmate_grid_layout import DrawmateGridLayout
+from drawmate.drawmate_node import DrawmateNode
 from drawmate.constants import MX_GRAPH_XML_STYLES
 
 
@@ -30,6 +31,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 "style": MX_GRAPH_XML_STYLES["rect"],
             }
             self.render_node(attr)
+            self.render_ports(node)
 
         for key, node in self.layout_mgr.right_nodes.items():
             if node.label.strip() == "__SPAN__" or node.label.strip() == "":
@@ -43,6 +45,30 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 "style": MX_GRAPH_XML_STYLES["rect"],
             }
             self.render_node(attr)
+            self.render_ports(node)
+
+    def render_ports(self, node: DrawmateNode):
+        ports_input = node.ports_input
+        ports_output = node.ports_output
+        for port_l, port_r in zip(ports_input, ports_output):
+            attr_l = {
+                "width": port_l.width,
+                "height": port_l.height,
+                "x": port_l.x,
+                "y": port_l.y,
+                "label": port_l.label,
+                "style": MX_GRAPH_XML_STYLES["rect"],
+            }
+            attr_r = {
+                "width": port_r.width,
+                "height": port_r.height,
+                "x": port_r.x,
+                "y": port_r.y,
+                "label": port_r.label,
+                "style": MX_GRAPH_XML_STYLES["rect"],
+            }
+            self.render_node(attr_l, has_label=True)
+            self.render_node(attr_r, has_label=True)
 
 
 def main():
@@ -62,6 +88,7 @@ def main():
             "style": MX_GRAPH_XML_STYLES["rect"],
         }
     )
+    renderer.render_ports(matrix)
     renderer.iterate_render_nodes()
     renderer.render_graph()
 

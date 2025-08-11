@@ -1,13 +1,21 @@
 from drawmate.drawmate_config import DrawmateConfig
 from drawmate.drawmate_node import DrawmateNode
 from drawmate.drawmate_port import DrawmatePort
+from drawmate.doc_builder import generate_id
+from drawmate.drawmate_matrix_builder import DrawmateMatrixBuilder
 from drawmate.drawmate_spacing_manager import DrawmateSpacingManager
+from drawmate.drawmate_port_configurator import DrawmatePortConfigurator
+from drawmate.drawmate_node_configurator import DrawmateNodeConfigurator
 
 
 class DrawmateGridLayout:
     def __init__(self, config_file):
+        self.total_node_count = 0
         self.config = DrawmateConfig(config_file)
         self.spacing_mgr = DrawmateSpacingManager(self.config.get_matrix_dimensions())
+        self.matrix_builder = DrawmateMatrixBuilder(self.spacing_mgr)
+        self.port_configurator = DrawmatePortConfigurator(self.spacing_mgr)
+        self.node_configurator = DrawmateNodeConfigurator()
         self.graph_dims = self.config.get_graph_dimensions()
         self.matrix: DrawmateNode = self.init_matrix()
         self.left_nodes, self.right_nodes = self.config.build_node_dict_test(
@@ -18,6 +26,18 @@ class DrawmateGridLayout:
         self.row_count_left = 0
         self.row_count_right = 0
 
+    def get_id(self):
+        __id__ = generate_id() + "-" + str(self.total_node_count)
+        self.increment_total_node_count()
+        return __id__
+
+    def generate_port_ids(self, node: DrawmateNode):
+        len_ports = len(node.ports_input)
+        port_ids = []
+        for i in range(len_ports):
+            port_ids.append(self.get_id())
+        return port_ids
+
     def init_graph(self, enable_debug: bool = False):
         self.emplace_left_nodes()
         self.emplace_right_nodes()
@@ -25,72 +45,46 @@ class DrawmateGridLayout:
             self.debug_mode()
 
     def init_matrix(self):
-        matrix = DrawmateNode(
+        matrix = self.matrix_builder.build_matrix(
+            self.get_id(),
             self.spacing_mgr.matrix_dimensions.label,
-            width=self.spacing_mgr.matrix_width,
-            height=self.spacing_mgr.matrix_height,
-            x=self.spacing_mgr.base_x,
-            y=self.spacing_mgr.base_y,
+            self.config.get_matrix_connection_labels(),
         )
-        self.add_matrix_ports(matrix)
+        self.port_configurator.configure_ports_input_matrix(
+            matrix, self.generate_port_ids(matrix)
+        )
+        self.port_configurator.configure_ports_output_matrix(
+            matrix, self.generate_port_ids(matrix)
+        )
         return matrix
-
-    def init_node_helper(self, node: DrawmateNode, base_y, is_left: bool = True):
-        if is_left:
-            self.init_node_left(node, base_y)
-        else:
-            self.init_node_right(node, base_y)
-        self.init_ports_input(node)
-        self.init_ports_output(node)
-
-    def init_node_left(self, node: DrawmateNode, base_y):
-        node.height = self.spacing_mgr.get_node_height(len(node.ports_input))
-        node.width = self.spacing_mgr.node_width
-        node.x = self.spacing_mgr.get_node_x_left(self.column_count_left)
-        node.y = base_y
-
-    def init_node_right(self, node: DrawmateNode, base_y):
-        node.height = self.spacing_mgr.get_node_height(len(node.ports_input))
-        node.width = self.spacing_mgr.node_width
-        node.x = self.spacing_mgr.get_node_x_right(self.column_count_right)
-        node.y = base_y
-
-    def init_ports_input(self, node: DrawmateNode):
-        base_y = node.y
-        ports = node.ports_input
-        for port in ports:
-            port.height = self.spacing_mgr.port_height
-            port.width = self.spacing_mgr.port_width
-            port.x = node.x
-            port.y = base_y + self.spacing_mgr.label_height
-            base_y += self.spacing_mgr.port_spacing_y
-
-    def init_ports_output(self, node: DrawmateNode):
-        base_y = node.y
-        ports = node.ports_output
-        for port in ports:
-            port.height = self.spacing_mgr.port_height
-            port.width = self.spacing_mgr.port_width
-            port.x = node.x + node.width
-            port.y = base_y
-            base_y += self.spacing_mgr.port_spacing_y
-
-    def add_matrix_ports(self, matrix: DrawmateNode):
-        ports = self.config.get_matrix_connection_labels()
-        matrix.add_port_input(ports[0], [0] * len(ports[0]))
-        matrix.add_port_output(ports[1], [0] * len(ports[1]))
 
     def emplace_left_nodes(self):
         base_y = self.spacing_mgr.base_y
         for key, node in self.left_nodes.items():
-            self.init_node_helper(node, base_y)
+            self.node_configurator.configure_node_left(
+                self.get_id(), base_y, self.column_count_left, node, self.spacing_mgr
+            )
+            self.port_configurator.configure_ports_input(
+                node, self.generate_port_ids(node)
+            )
+            self.port_configurator.configure_ports_output(
+                node, self.generate_port_ids(node)
+            )
             self.manage_counters_left()
             base_y = self.spacing_mgr.get_node_y(base_y, self.spacing_mgr.node_height)
 
     def emplace_right_nodes(self):
         base_y = self.spacing_mgr.base_y
         for key, node in self.right_nodes.items():
-            self.init_node_helper(node, base_y, is_left=False)
+            self.node_configurator.configure_node_right(
+                self.get_id(), base_y, self.column_count_right, node, self.spacing_mgr
+            )
+            self.port_configurator.configure_ports_input(
+                node, self.generate_port_ids(node)
+            )
+            self.port_configurator.configure_ports_output(
+                node, self.generate_port_ids(node)
+            )
             self.manage_counters_right()
             base_y = self.spacing_mgr.get_node_y(base_y, self.spacing_mgr.node_height)
 
@@ -123,6 +117,9 @@ class DrawmateGridLayout:
 
     def increment_row_count_right(self):
         self.row_count_right += 1
+
+    def increment_total_node_count(self):
+        self.total_node_count += 1
 
     def debug_mode(self):
         self.pretty_print_node(self.matrix)
