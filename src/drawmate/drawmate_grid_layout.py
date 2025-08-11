@@ -121,7 +121,8 @@ class DrawmateGridLayout:
 
     def iterate_left_nodes(self):
         print()
-        print("+++++ LEFT NODES +++++")
+        print("+++++          LEFT NODES          +++++")
+        print()
         for key, node in self.left_nodes.items():
             if node.label == "__SPAN__" or node.label == "":
                 pass
@@ -133,7 +134,8 @@ class DrawmateGridLayout:
 
     def iterate_right_nodes(self):
         print()
-        print("+++++ RIGHT NODES +++++")
+        print("+++++          RIGHT NODES          +++++")
+        print()
         for key, node in self.right_nodes.items():
             if node.label == "__SPAN__" or node.label == "":
                 pass
@@ -142,11 +144,12 @@ class DrawmateGridLayout:
                 for l_port, r_port in zip(node.ports_input, node.ports_output):
                     self.pretty_print_port(l_port)
                     self.pretty_print_port(r_port)
+                print()
 
     @staticmethod
     def pretty_print_node(node: DrawmateNode):
         print(f"Node           : {node.label}")
-        print(f"Number of ports: {len(node.ports_input)}")
+        print(f"#Ports (ea)    : {len(node.ports_input)}")
         print(f"Height         : {node.height}")
         print(f"Width          : {node.width}")
         print(f"X              : {node.x}")
