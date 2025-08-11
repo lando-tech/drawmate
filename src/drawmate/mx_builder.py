@@ -83,16 +83,10 @@ class MxBuilder:
             )
         # Append mxCell to mxObject
         cell_elem = cell.create_xml_element("mxCell", cell.attributes)
+        geo = MxGeometry()
+        geo_elem = cell.create_xml_element("mxGeometry", {"relative": "1", "as": "geometry"})
+        cell_elem.appendChild(geo_elem)
         cell.mxcell_object.appendChild(cell_elem)
-
-        # Create mxGeometry object
-        # geo = MxGeometry()
-        # geo.set_geometry_values(attributes["x"], attributes["y"], attributes["width"], attributes["height"])
-
-        # # Append mxGeometry to mxCell
-        # geo_elem = cell.create_xml_element("mxGeometry", geo.attributes)
-        # cell_elem.appendChild(geo_elem)
-
         return cell_elem
 
     def create_mxcell_arrow(

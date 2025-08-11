@@ -6,6 +6,7 @@ from drawmate.drawmate_matrix_builder import DrawmateMatrixBuilder
 from drawmate.drawmate_spacing_manager import DrawmateSpacingManager
 from drawmate.drawmate_port_configurator import DrawmatePortConfigurator
 from drawmate.drawmate_node_configurator import DrawmateNodeConfigurator
+from drawmate.drawmate_linker import DrawmateLinker
 
 
 class DrawmateGridLayout:
@@ -39,8 +40,8 @@ class DrawmateGridLayout:
         return port_ids
 
     def init_graph(self, enable_debug: bool = False):
-        self.emplace_left_nodes()
-        self.emplace_right_nodes()
+        self.init_nodes_left()
+        self.init_nodes_right()
         if enable_debug:
             self.debug_mode()
 
@@ -50,43 +51,48 @@ class DrawmateGridLayout:
             self.spacing_mgr.matrix_dimensions.label,
             self.config.get_matrix_connection_labels(),
         )
-        self.port_configurator.configure_ports_input_matrix(
-            matrix, self.generate_port_ids(matrix)
+        self.port_configurator.configure_ports_input(
+            matrix, "C-0-0", self.generate_port_ids(matrix),
         )
-        self.port_configurator.configure_ports_output_matrix(
-            matrix, self.generate_port_ids(matrix)
+        self.port_configurator.configure_ports_output(
+            matrix, "C-0-0", self.generate_port_ids(matrix), is_matrix=True
         )
         return matrix
 
-    def emplace_left_nodes(self):
+    def init_nodes_left(self):
         base_y = self.spacing_mgr.base_y
         for key, node in self.left_nodes.items():
             self.node_configurator.configure_node_left(
                 self.get_id(), base_y, self.column_count_left, node, self.spacing_mgr
             )
             self.port_configurator.configure_ports_input(
-                node, self.generate_port_ids(node)
+                node, key, self.generate_port_ids(node)
             )
             self.port_configurator.configure_ports_output(
-                node, self.generate_port_ids(node)
+                node, key, self.generate_port_ids(node)
             )
             self.manage_counters_left()
             base_y = self.spacing_mgr.get_node_y(base_y, self.spacing_mgr.node_height)
 
-    def emplace_right_nodes(self):
+    def init_nodes_right(self):
         base_y = self.spacing_mgr.base_y
         for key, node in self.right_nodes.items():
             self.node_configurator.configure_node_right(
                 self.get_id(), base_y, self.column_count_right, node, self.spacing_mgr
             )
             self.port_configurator.configure_ports_input(
-                node, self.generate_port_ids(node)
+                node, key, self.generate_port_ids(node)
             )
             self.port_configurator.configure_ports_output(
-                node, self.generate_port_ids(node)
+                node, key, self.generate_port_ids(node)
             )
             self.manage_counters_right()
             base_y = self.spacing_mgr.get_node_y(base_y, self.spacing_mgr.node_height)
+
+    def init_links(self):
+        linker = DrawmateLinker(self.port_configurator.output_ports_dict, self.port_configurator.input_ports_dict)
+        linker.link()
+        return linker.output_ports
 
     def manage_counters_left(self):
         self.increment_row_count_left()
