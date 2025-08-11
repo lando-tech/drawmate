@@ -1,4 +1,4 @@
-from .constants import MX_ARRAY_ATTRIBUTES
+from drawmate.constants import MX_ARRAY_ATTRIBUTES
 
 
 class MxArray:

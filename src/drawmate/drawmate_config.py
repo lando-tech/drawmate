@@ -1,9 +1,9 @@
 import json
 from dataclasses import dataclass
-from drawmate_node import DrawmateNode
-from drawmate_port import DrawmatePort
+from drawmate.drawmate_node import DrawmateNode
+from drawmate.drawmate_port import DrawmatePort
 
-from matrix_constants import MatrixDimensions
+from drawmate.matrix_constants import MatrixDimensions
 
 
 @dataclass

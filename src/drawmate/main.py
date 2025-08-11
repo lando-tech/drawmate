@@ -1,10 +1,10 @@
 # import argparse
 # import os
 # import threading
-# from .doc_builder import get_timestamp
-# from .pathfinder import print_system_info
-# from .drawmate_renderer import DrawmateRenderer
-# from .template_builder import TemplateBuilder
+# from drawmate.doc_builder import get_timestamp
+# from drawmate.pathfinder import print_system_info
+# from drawmate.drawmate_renderer import DrawmateRenderer
+# from drawmate.template_builder import TemplateBuilder
 
 
 # USER_HOME = os.path.expanduser("~")
@@ -121,7 +121,7 @@
 #         return False
 
 # def build():
-#     from .template_builder import init_template_builder
+#     from drawmate.template_builder import init_template_builder
 #     init_template_builder()
 
 
@@ -165,9 +165,9 @@
 
 
 def main():
-    from .drawmate_renderer import DrawmateRenderer
+    from drawmate.drawmate_grid_layout import DrawmateGridLayout
 
-    render = DrawmateRenderer("/home/landotech/Projects/drawmate/test/mc_test_1.json")
+    render = DrawmateGridLayout("/home/landotech/Projects/drawmate/test/mc_test_1.json")
     for i in render.left_nodes:
         print(i)
 

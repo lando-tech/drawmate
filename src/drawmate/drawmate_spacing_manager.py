@@ -1,11 +1,10 @@
-from matrix_constants import MatrixDimensions
+from drawmate.matrix_constants import MatrixDimensions
 from dataclasses import dataclass
 
 DEFAULT_SPACING_Y = 23.33
 DEFAULT_SPACING_X = 250
-DEFAULT_NODE_HEIGHT = DEFAULT_SPACING_Y * 33.33
+DEFAULT_NODE_HEIGHT = DEFAULT_SPACING_Y * 3.33
 DEFAULT_NODE_WIDTH = 120
-
 
 
 class DrawmateSpacingManager:
@@ -45,8 +44,18 @@ class DrawmateSpacingManager:
             + (self.label_height + self.port_height)
         )
 
+    def get_node_x_left(self, idx: int):
+        return self.base_x - (idx * self.node_width) - self.node_spacing_x
+
+    def get_node_x_right(self, idx: int):
+        return self.base_x + self.matrix_width + (idx * self.node_width) + self.node_spacing_x
+
+    def get_node_y(self, base_y, node_height):
+        y = base_y + (node_height + self.node_spacing_y)
+        return self.reset_base_y(y)
+
     def reset_base_y(self, external_base_y):
-        if external_base_y > self.max_y:
+        if external_base_y >= self.max_y:
             return self.base_y
         else:
             return external_base_y

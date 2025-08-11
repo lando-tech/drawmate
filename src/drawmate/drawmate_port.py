@@ -1,4 +1,4 @@
-from drawmate_link import DrawmateLink
+from drawmate.drawmate_link import DrawmateLink
 
 
 class DrawmatePort:

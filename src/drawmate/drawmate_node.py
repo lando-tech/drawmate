@@ -1,4 +1,4 @@
-from drawmate_port import DrawmatePort
+from drawmate.drawmate_port import DrawmatePort
 
 
 class DrawmateNode:
@@ -12,8 +12,8 @@ class DrawmateNode:
     ) -> None:
         self.id: str
         self.label = label
-        self.ports_input = []
-        self.ports_output = []
+        self.ports_input: list[DrawmatePort] = []
+        self.ports_output: list[DrawmatePort] = []
         self.width: float = width
         self.height: float = height
         self.x: float = x

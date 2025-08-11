@@ -5,7 +5,7 @@ from sys import platform
 from datetime import datetime
 import random
 
-from .constants import (
+from drawmate.constants import (
     TOP_LEVEL_MX_CELL,
     MX_GRAPH_MODEL_ATTRIBUTES,
 )
