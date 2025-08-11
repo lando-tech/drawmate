@@ -47,10 +47,10 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
 
 def main():
     layout_mgr = DrawmateGridLayout(
-        "/home/landotech/Projects/drawmate/test_templates/mc_test_1.json"
+        "/home/aaron/Projects/Portfolio/drawmate/test_templates/mc_test_1.json"
     )
     layout_mgr.init_graph(enable_debug=True)
-    renderer = DrawmateRenderer("/mnt/c/Users/aaron/Desktop/test.drawio", layout_mgr)
+    renderer = DrawmateRenderer("/home/aaron/Documents/test.drawio", layout_mgr)
     matrix = layout_mgr.matrix
     renderer.render_node(
         {

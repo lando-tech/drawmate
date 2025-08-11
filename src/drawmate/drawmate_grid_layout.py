@@ -35,6 +35,14 @@ class DrawmateGridLayout:
         self.add_matrix_ports(matrix)
         return matrix
 
+    def init_node_helper(self, node: DrawmateNode, base_y, is_left: bool = True):
+        if is_left:
+            self.init_node_left(node, base_y)
+        else:
+            self.init_node_right(node, base_y)
+        self.init_ports_input(node)
+        self.init_ports_output(node)
+
     def init_node_left(self, node: DrawmateNode, base_y):
         node.height = self.spacing_mgr.get_node_height(len(node.ports_input))
         node.width = self.spacing_mgr.node_width
@@ -75,22 +83,24 @@ class DrawmateGridLayout:
     def emplace_left_nodes(self):
         base_y = self.spacing_mgr.base_y
         for key, node in self.left_nodes.items():
-            self.init_node_left(node, base_y)
-            self.init_ports_input(node)
-            self.init_ports_output(node)
-            self.increment_row_count_left()
-            self.reset_left_counters()
-            base_y = self.spacing_mgr.get_node_y(base_y, node.height)
+            self.init_node_helper(node, base_y)
+            self.manage_counters_left()
+            base_y = self.spacing_mgr.get_node_y(base_y, self.spacing_mgr.node_height)
 
     def emplace_right_nodes(self):
         base_y = self.spacing_mgr.base_y
         for key, node in self.right_nodes.items():
-            self.init_node_right(node, base_y)
-            self.init_ports_input(node)
-            self.init_ports_output(node)
-            self.increment_row_count_right()
-            self.reset_right_counters()
-            base_y = self.spacing_mgr.get_node_y(base_y, node.height)
+            self.init_node_helper(node, base_y, is_left=False)
+            self.manage_counters_right()
+            base_y = self.spacing_mgr.get_node_y(base_y, self.spacing_mgr.node_height)
+
+    def manage_counters_left(self):
+        self.increment_row_count_left()
+        self.reset_left_counters()
+
+    def manage_counters_right(self):
+        self.increment_row_count_right()
+        self.reset_right_counters()
 
     def reset_left_counters(self):
         if self.row_count_left >= self.spacing_mgr.matrix_dimensions.num_connections:

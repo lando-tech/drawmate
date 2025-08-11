@@ -1,8 +1,9 @@
 from drawmate.matrix_constants import MatrixDimensions
+from dataclasses import dataclass
 
-DEFAULT_SPACING_Y = 25
+DEFAULT_SPACING_Y = 23.33
 DEFAULT_SPACING_X = 250
-DEFAULT_NODE_HEIGHT = DEFAULT_SPACING_Y * 3
+DEFAULT_NODE_HEIGHT = DEFAULT_SPACING_Y * 3.33
 DEFAULT_NODE_WIDTH = 120
 
 
