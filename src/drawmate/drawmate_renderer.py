@@ -84,11 +84,8 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
             try:
                 self.render_link(attr, port.link.source_id, port.link.target_id)
             except AttributeError:
-                print("Link does not exist for this port")
-            # print(f"Port ID: {port.id}")
-            # print(f"Link: {port.link}")
-            # print(f"Source: {port.link.source_id}")
-            # print(f"Target: {port.link.target_id}")
+                # print("Link does not exist for this port")
+                pass
 
 
 def main():

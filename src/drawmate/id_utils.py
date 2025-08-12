@@ -94,19 +94,19 @@ def get_adjacent_port_key(port_key_str: str) -> str:
     if node_orientation == "L" and node_col == 0:
         adj_orientation = "C"
         adj_col = "0"
-        adj_node_row = "0"
+        adj_node_row = str(port_row)
     elif node_orientation == "L" and node_col > 0:
         adj_orientation = "L"
         adj_col = f"{node_col - 1}"
-        adj_node_row = str(node_row)
+        adj_node_row = str(port_row)
     elif node_orientation == "R":
         adj_orientation = "R"
         adj_col = f"{node_col + 1}"
-        adj_node_row = str(node_row)
+        adj_node_row = str(port_row)
     elif node_orientation == "C":
         adj_orientation = "R"
         adj_col = "0"
-        adj_node_row = str(node_row)
+        adj_node_row = str(port_row)
 
     adj_port_row = str(port_row)
 

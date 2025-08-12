@@ -14,6 +14,10 @@ class DrawmateLinker:
             try:
                 target_port = self.input_ports[adjacent_key]
                 value.link = DrawmateLink(source_id, target_port.id)
+                print(f"Output Key: {key} | Input Key {adjacent_key}")
+                print("Link made")
+                print()
             except KeyError:
+                pass
                 # raise RuntimeError("Unable to find adjacent key")
-                print(f"Unable to locate key: {adjacent_key}")
+                # print(f"Unable to locate key: {adjacent_key}")
