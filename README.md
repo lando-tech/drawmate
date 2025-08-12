@@ -1,5 +1,10 @@
 ## **Drawmate: Automate Wiremaps and Diagrams with Draw.io**
 
+> 🎉 **NEW: Version 2.0.0-beta Now Available on TestPyPI!**
+> **Major Update:** Complete rewrite from C++ to pure Python! No more complex build dependencies.
+> 📦 **Beta Testing:** `pip install -i https://test.pypi.org/simple/ drawmate`
+> 📋 **See [CHANGELOG.md](CHANGELOG.md) for full details on what's new, improved, and fixed.**
+
 **Drawmate** is a powerful tool designed to automate the creation of wiremaps and network architecture diagrams using the **Draw.io XML format**. This tool streamlines the diagramming process by utilizing a JSON API to automatically generate basic wiremaps, saving time and effort for network engineers and IT professionals.
 
 ## **Key Features**
@@ -9,6 +14,28 @@
 ## **How It Works**
 1. **JSON API Integration:** Input network data through JSON to auto-generate wiremaps.
 2. **Draw.io Compatibility:** Export diagrams in Draw.io XML format for further customization or sharing.
+
+---
+
+## **Installation**
+
+### **📦 TestPyPI (Beta Testing)**
+Currently available on TestPyPI for beta testing:
+```bash
+pip install -i https://test.pypi.org/simple/ drawmate
+```
+
+### **🎯 Coming Soon: Official PyPI**
+Once testing is complete, the package will be available on the official PyPI:
+```bash
+pip install drawmate  # Coming soon!
+```
+
+### **✅ Benefits of Python Version**
+- **No build dependencies** - No more CMake or C++ compiler requirements
+- **No architecture-specific builds** - Works across multiple platforms
+- **Simple installation** - Standard pip workflow
+- **Easy updates** - `pip install --upgrade drawmate`
 
 ---
 
