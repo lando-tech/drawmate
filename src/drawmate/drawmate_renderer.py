@@ -16,8 +16,12 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         node_elem = self.create_mxcell(attributes, __id__=__id__, has_label=has_label)
         self.root.appendChild(node_elem)
 
-    def render_link(self, attributes: dict, source_id, target_id, has_label: bool = False):
-        link_elem = self.create_mxcell_with_target(attributes, "", source_id, target_id, has_label=has_label)
+    def render_link(
+        self, attributes: dict, source_id, target_id, has_label: bool = False
+    ):
+        link_elem = self.create_mxcell_with_target(
+            attributes, "", source_id, target_id, has_label=has_label
+        )
         self.root.appendChild(link_elem)
 
     def render_graph(self, add_timestamp: bool = False):
@@ -35,14 +39,17 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 "style": MX_GRAPH_XML_STYLES["rect"],
             }
             self.render_node(attr)
-            self.render_node({
-                "width": node.width,
-                "height": label_height,
-                "label": node.label,
-                "x": node.x,
-                "y": node.y,
-                "style": MX_GRAPH_XML_STYLES["rect"]
-            }, has_label=True)
+            self.render_node(
+                {
+                    "width": node.width,
+                    "height": label_height,
+                    "label": node.label,
+                    "x": node.x,
+                    "y": node.y,
+                    "style": MX_GRAPH_XML_STYLES["rect"],
+                },
+                has_label=True,
+            )
             self.render_ports(node)
 
         for key, node in self.layout_mgr.right_nodes.items():
@@ -56,14 +63,17 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
                 "style": MX_GRAPH_XML_STYLES["rect"],
             }
             self.render_node(attr)
-            self.render_node({
-                "width": node.width,
-                "height": label_height,
-                "label": node.label,
-                "x": node.x,
-                "y": node.y,
-                "style": MX_GRAPH_XML_STYLES["rect"]
-            }, has_label=True)
+            self.render_node(
+                {
+                    "width": node.width,
+                    "height": label_height,
+                    "label": node.label,
+                    "x": node.x,
+                    "y": node.y,
+                    "style": MX_GRAPH_XML_STYLES["rect"],
+                },
+                has_label=True,
+            )
             self.render_ports(node)
 
     def render_ports(self, node: DrawmateNode):
@@ -94,10 +104,12 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
         for key, port in port_links.items():
             attr = {
                 "label": self.create_link_label(key),
-                "style": MX_GRAPH_XML_STYLES["arrow"]
+                "style": MX_GRAPH_XML_STYLES["arrow"],
             }
             try:
-                self.render_link(attr, port.link.source_id, port.link.target_id, has_label=True)
+                self.render_link(
+                    attr, port.link.source_id, port.link.target_id, has_label=True
+                )
             except AttributeError:
                 # print("Link does not exist for this port")
                 pass
@@ -121,9 +133,7 @@ class DrawmateRenderer(DocBuilder, MxBuilder):
 
 
 def create_diagram(input_path, output_path, add_timestamp: bool = False):
-    layout_mgr = DrawmateGridLayout(
-        input_path
-    )
+    layout_mgr = DrawmateGridLayout(input_path)
     layout_mgr.init_graph()
     renderer = DrawmateRenderer(output_path, layout_mgr)
     matrix = layout_mgr.matrix
@@ -136,18 +146,18 @@ def create_diagram(input_path, output_path, add_timestamp: bool = False):
             "style": MX_GRAPH_XML_STYLES["rect"],
         }
     )
-    renderer.render_node({
-        "width": matrix.width,
-        "height": layout_mgr.spacing_mgr.label_height,
-        "x": matrix.x,
-        "y": matrix.y - layout_mgr.spacing_mgr.label_height,
-        "label": matrix.label,
-        "style": MX_GRAPH_XML_STYLES["rect"]
-    }, has_label=True)
+    renderer.render_node(
+        {
+            "width": matrix.width,
+            "height": layout_mgr.spacing_mgr.label_height,
+            "x": matrix.x,
+            "y": matrix.y - layout_mgr.spacing_mgr.label_height,
+            "label": matrix.label,
+            "style": MX_GRAPH_XML_STYLES["rect"],
+        },
+        has_label=True,
+    )
     renderer.render_ports(matrix)
     renderer.iterate_render_nodes(layout_mgr.spacing_mgr.label_height)
     renderer.iterate_render_links()
     renderer.render_graph(add_timestamp=add_timestamp)
-
-if __name__ == "__main__":
-    create_diagram("/home/aaron/Projects/Portfolio/drawmate/test_templates/mc_test_1.json", "/home/aaron/Documents/test.drawio", add_timestamp=True)
