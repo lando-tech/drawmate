@@ -176,3 +176,5 @@ logs/doc_builder_logs.txt
 data/templates/*.drawio
 data/output.drawio
 .vs
+obj
+bin
