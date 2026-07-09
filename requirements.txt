@@ -1,4 +1,0 @@
-lxml
-toml
-black
-build
